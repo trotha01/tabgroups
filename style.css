@@ -1,0 +1,11 @@
+html, body {
+  height: 2000px;
+  width: 2000px;
+  background-color: #C1C1C1;
+}
+
+.tabGroup {
+  background-color: #F8F8F8;
+  color: #B0B1BB;
+}
+
