@@ -10905,7 +10905,7 @@ var _user$project$Main$update = F2(
 				var newTabGroups = A2(
 					_elm_lang$core$List$filter,
 					function (tg) {
-						return !_elm_lang$core$Native_Utils.eq(tg.title, _p11._0);
+						return !_elm_lang$core$Native_Utils.eq(tg.id, _p11._0);
 					},
 					model.tabGroups);
 				var newModel = _elm_lang$core$Native_Utils.update(
@@ -10935,7 +10935,7 @@ var _user$project$Main$update = F2(
 				var newTabGroups = A2(
 					_elm_lang$core$List$map,
 					function (tabGroup) {
-						return _elm_lang$core$Native_Utils.eq(tabGroup.title, _p11._0) ? _elm_lang$core$Native_Utils.update(
+						return _elm_lang$core$Native_Utils.eq(tabGroup.id, _p11._0) ? _elm_lang$core$Native_Utils.update(
 							tabGroup,
 							{title: _p11._1}) : tabGroup;
 					},
@@ -10952,7 +10952,7 @@ var _user$project$Main$update = F2(
 				var newTabGroups = A2(
 					_elm_lang$core$List$map,
 					function (tabGroup) {
-						return _elm_lang$core$Native_Utils.eq(tabGroup.title, _p11._0) ? _elm_lang$core$Native_Utils.update(
+						return _elm_lang$core$Native_Utils.eq(tabGroup.id, _p11._0) ? _elm_lang$core$Native_Utils.update(
 							tabGroup,
 							{changingTitle: false}) : tabGroup;
 					},
@@ -10969,7 +10969,7 @@ var _user$project$Main$update = F2(
 				var newTabGroups = A2(
 					_elm_lang$core$List$map,
 					function (tabGroup) {
-						return _elm_lang$core$Native_Utils.eq(tabGroup.title, _p11._0) ? _elm_lang$core$Native_Utils.update(
+						return _elm_lang$core$Native_Utils.eq(tabGroup.id, _p11._0) ? _elm_lang$core$Native_Utils.update(
 							tabGroup,
 							{changingTitle: true}) : tabGroup;
 					},
@@ -11056,7 +11056,7 @@ var _user$project$Main$viewTabGroupDeleteButton = function (tabGroup) {
 		{
 			ctor: '::',
 			_0: _elm_lang$html$Html_Events$onClick(
-				_user$project$Main$DeleteTabGroup(tabGroup.title)),
+				_user$project$Main$DeleteTabGroup(tabGroup.id)),
 			_1: {
 				ctor: '::',
 				_0: _elm_lang$html$Html_Attributes$style(
@@ -11099,15 +11099,15 @@ var _user$project$Main$viewTabGroupTitle = function (tabGroup) {
 				{
 					ctor: '::',
 					_0: _elm_lang$html$Html_Events$onInput(
-						_user$project$Main$ChangeGroupTitle(tabGroup.title)),
+						_user$project$Main$ChangeGroupTitle(tabGroup.id)),
 					_1: {
 						ctor: '::',
 						_0: _elm_community$html_extra$Html_Events_Extra$onEnter(
-							_user$project$Main$FinishGroupTitleEdit(tabGroup.title)),
+							_user$project$Main$FinishGroupTitleEdit(tabGroup.id)),
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Events$onBlur(
-								_user$project$Main$FinishGroupTitleEdit(tabGroup.title)),
+								_user$project$Main$FinishGroupTitleEdit(tabGroup.id)),
 							_1: {
 								ctor: '::',
 								_0: _elm_lang$html$Html_Attributes$value(tabGroup.title),
@@ -11127,7 +11127,7 @@ var _user$project$Main$viewTabGroupTitle = function (tabGroup) {
 		{
 			ctor: '::',
 			_0: _elm_lang$html$Html_Events$onClick(
-				_user$project$Main$StartGroupTitleEdit(tabGroup.title)),
+				_user$project$Main$StartGroupTitleEdit(tabGroup.id)),
 			_1: {
 				ctor: '::',
 				_0: _elm_lang$html$Html_Attributes$style(

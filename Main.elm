@@ -10,8 +10,10 @@ import String.Extra exposing (ellipsis)
 
 
 {-
-   TODO: fix ability to change model without
-   clearing local storage
+   TODO:
+   - fix ability to change model without clearing local storage
+   - click and drag tabs to new tab groups
+   - catch tab rearrangement
 -}
 
 
@@ -109,10 +111,10 @@ type Msg
     | GotTabGroup TabGroup
     | GotTabScreenshot TabScreenshot
     | GotSavedModel (Maybe Model)
-    | StartGroupTitleEdit String
-    | FinishGroupTitleEdit String
-    | ChangeGroupTitle String String
-    | DeleteTabGroup String
+    | StartGroupTitleEdit Int
+    | FinishGroupTitleEdit Int
+    | ChangeGroupTitle Int String
+    | DeleteTabGroup Int
     | AddTabGroup
     | DragMsg ( GroupTitle, DragMsg )
 
@@ -176,10 +178,10 @@ update msg model =
             in
             ( newModel, saveModel newModel )
 
-        DeleteTabGroup title ->
+        DeleteTabGroup id ->
             let
                 newTabGroups =
-                    List.filter (\tg -> tg.title /= title) model.tabGroups
+                    List.filter (\tg -> tg.id /= id) model.tabGroups
 
                 newModel =
                     { model | tabGroups = newTabGroups }
@@ -196,13 +198,13 @@ update msg model =
             in
             ( newModel, saveModel newModel )
 
-        ChangeGroupTitle oldTitle newTitle ->
+        ChangeGroupTitle id newTitle ->
             let
                 newTabGroups =
                     model.tabGroups
                         |> List.map
                             (\tabGroup ->
-                                if tabGroup.title == oldTitle then
+                                if tabGroup.id == id then
                                     { tabGroup | title = newTitle }
                                 else
                                     tabGroup
@@ -213,13 +215,13 @@ update msg model =
             in
             ( newModel, saveModel newModel )
 
-        FinishGroupTitleEdit title ->
+        FinishGroupTitleEdit id ->
             let
                 newTabGroups =
                     model.tabGroups
                         |> List.map
                             (\tabGroup ->
-                                if tabGroup.title == title then
+                                if tabGroup.id == id then
                                     { tabGroup | changingTitle = False }
                                 else
                                     tabGroup
@@ -230,13 +232,13 @@ update msg model =
             in
             ( newModel, saveModel newModel )
 
-        StartGroupTitleEdit title ->
+        StartGroupTitleEdit id ->
             let
                 newTabGroups =
                     model.tabGroups
                         |> List.map
                             (\tabGroup ->
-                                if tabGroup.title == title then
+                                if tabGroup.id == id then
                                     { tabGroup | changingTitle = True }
                                 else
                                     tabGroup
@@ -321,16 +323,16 @@ viewTabGroupTitle tabGroup =
     if tabGroup.changingTitle then
         div []
             [ input
-                [ onInput (ChangeGroupTitle tabGroup.title)
-                , onEnter (FinishGroupTitleEdit tabGroup.title)
-                , onBlur (FinishGroupTitleEdit tabGroup.title)
+                [ onInput (ChangeGroupTitle tabGroup.id)
+                , onEnter (FinishGroupTitleEdit tabGroup.id)
+                , onBlur (FinishGroupTitleEdit tabGroup.id)
                 , value tabGroup.title
                 ]
                 [ text tabGroup.title ]
             ]
     else
         div
-            [ onClick (StartGroupTitleEdit tabGroup.title)
+            [ onClick (StartGroupTitleEdit tabGroup.id)
             , style [ ( "cursor", "pointer" ) ]
             ]
             [ text tabGroup.title ]
@@ -339,7 +341,7 @@ viewTabGroupTitle tabGroup =
 viewTabGroupDeleteButton : TabGroup -> Html Msg
 viewTabGroupDeleteButton tabGroup =
     div
-        [ onClick (DeleteTabGroup tabGroup.title)
+        [ onClick (DeleteTabGroup tabGroup.id)
         , style
             [ "float" => "right"
             , "cursor" => "pointer"
