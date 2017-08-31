@@ -521,8 +521,8 @@ viewTab length tab =
                 Nothing ->
                     div
                         [ style
-                            [ "width" => px length
-                            , "height" => px length
+                            [ "width" => "100%"
+                            , "height" => "100%"
                             , "background-color" => "white"
                             ]
                         ]

@@ -10258,16 +10258,10 @@ var _user$project$Main$viewTab = F2(
 						_0: _elm_lang$html$Html_Attributes$style(
 							{
 								ctor: '::',
-								_0: A2(
-									_user$project$Main_ops['=>'],
-									'width',
-									_user$project$Main$px(length)),
+								_0: A2(_user$project$Main_ops['=>'], 'width', '100%'),
 								_1: {
 									ctor: '::',
-									_0: A2(
-										_user$project$Main_ops['=>'],
-										'height',
-										_user$project$Main$px(length)),
+									_0: A2(_user$project$Main_ops['=>'], 'height', '100%'),
 									_1: {
 										ctor: '::',
 										_0: A2(_user$project$Main_ops['=>'], 'background-color', 'white'),
