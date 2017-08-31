@@ -10222,6 +10222,7 @@ var _elm_lang$mouse$Mouse$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Mouse'] = {pkg: 'elm-lang/mouse', init: _elm_lang$mouse$Mouse$init, onEffects: _elm_lang$mouse$Mouse$onEffects, onSelfMsg: _elm_lang$mouse$Mouse$onSelfMsg, tag: 'sub', subMap: _elm_lang$mouse$Mouse$subMap};
 
+var _user$project$Main$stopPropagation = {stopPropagation: true, preventDefault: true};
 var _user$project$Main$getPosition = function (_p0) {
 	var _p1 = _p0;
 	var _p5 = _p1.position;
@@ -10245,106 +10246,180 @@ _user$project$Main_ops['=>'] = F2(
 	function (v0, v1) {
 		return {ctor: '_Tuple2', _0: v0, _1: v1};
 	});
-var _user$project$Main$viewTab = function (tab) {
-	var screenshot = function () {
-		var _p6 = tab.screenshot;
-		if (_p6.ctor === 'Nothing') {
-			return A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$style(
-						{
-							ctor: '::',
-							_0: A2(_user$project$Main_ops['=>'], 'width', '100px'),
-							_1: {
-								ctor: '::',
-								_0: A2(_user$project$Main_ops['=>'], 'height', '80px'),
-								_1: {
-									ctor: '::',
-									_0: A2(_user$project$Main_ops['=>'], 'background-color', 'white'),
-									_1: {ctor: '[]'}
-								}
-							}
-						}),
-					_1: {ctor: '[]'}
-				},
-				{ctor: '[]'});
-		} else {
-			return A2(
-				_elm_lang$html$Html$img,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$src(_p6._0),
-					_1: {
+var _user$project$Main$viewTab = F2(
+	function (length, tab) {
+		var screenshot = function () {
+			var _p6 = tab.screenshot;
+			if (_p6.ctor === 'Nothing') {
+				return A2(
+					_elm_lang$html$Html$div,
+					{
 						ctor: '::',
 						_0: _elm_lang$html$Html_Attributes$style(
 							{
 								ctor: '::',
-								_0: A2(_user$project$Main_ops['=>'], 'width', '100px'),
+								_0: A2(
+									_user$project$Main_ops['=>'],
+									'width',
+									_user$project$Main$px(length)),
 								_1: {
 									ctor: '::',
-									_0: A2(_user$project$Main_ops['=>'], 'height', '80px'),
-									_1: {ctor: '[]'}
+									_0: A2(
+										_user$project$Main_ops['=>'],
+										'height',
+										_user$project$Main$px(length)),
+									_1: {
+										ctor: '::',
+										_0: A2(_user$project$Main_ops['=>'], 'background-color', 'white'),
+										_1: {ctor: '[]'}
+									}
 								}
 							}),
 						_1: {ctor: '[]'}
-					}
-				},
-				{ctor: '[]'});
-		}
-	}();
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$style(
-				{
-					ctor: '::',
-					_0: {ctor: '_Tuple2', _0: 'float', _1: 'left'},
-					_1: {
-						ctor: '::',
-						_0: {ctor: '_Tuple2', _0: 'width', _1: '100px'},
-						_1: {
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'height', _1: '100px'},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'margin', _1: '10px'},
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: screenshot,
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$div,
-					{ctor: '[]'},
+					},
+					{ctor: '[]'});
+			} else {
+				return A2(
+					_elm_lang$html$Html$img,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(
-							A2(_elm_community$string_extra$String_Extra$ellipsis, 20, tab.title)),
-						_1: {ctor: '[]'}
+						_0: _elm_lang$html$Html_Attributes$src(_p6._0),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$style(
+								{
+									ctor: '::',
+									_0: A2(_user$project$Main_ops['=>'], 'width', '100%'),
+									_1: {
+										ctor: '::',
+										_0: A2(_user$project$Main_ops['=>'], 'height', '100%'),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}
+					},
+					{ctor: '[]'});
+			}
+		}();
+		var margin = 10;
+		var border = 1;
+		var size = ((length - border) - (margin * 2)) - 1;
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'float', _1: 'left'},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'width',
+								_1: _user$project$Main$px(size)
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'height',
+									_1: _user$project$Main$px(size)
+								},
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple2',
+										_0: 'margin',
+										_1: _user$project$Main$px(margin)
+									},
+									_1: {
+										ctor: '::',
+										_0: {
+											ctor: '_Tuple2',
+											_0: 'border',
+											_1: A2(
+												_elm_lang$core$Basics_ops['++'],
+												_user$project$Main$px(border),
+												' solid black')
+										},
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
 					}),
 				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: screenshot,
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								A2(_elm_community$string_extra$String_Extra$ellipsis, 20, tab.title)),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Main$perfectlyEfficientSquareEdge = F3(
+	function (w, h, n) {
+		return _elm_lang$core$Basics$sqrt((w * h) / n);
+	});
+var _user$project$Main$maxWholeSquares = F3(
+	function (w, h, x) {
+		return _elm_lang$core$Basics$toFloat(
+			_elm_lang$core$Basics$floor(w / x) * _elm_lang$core$Basics$floor(h / x));
+	});
+var _user$project$Main$lessEfficientSquareEdge = F4(
+	function (w, h, n, x) {
+		lessEfficientSquareEdge:
+		while (true) {
+			if (_elm_lang$core$Native_Utils.cmp(
+				A3(_user$project$Main$maxWholeSquares, w, h, x),
+				n) > -1) {
+				return x;
+			} else {
+				var _v3 = w,
+					_v4 = h,
+					_v5 = n,
+					_v6 = x - 1;
+				w = _v3;
+				h = _v4;
+				n = _v5;
+				x = _v6;
+				continue lessEfficientSquareEdge;
 			}
-		});
-};
-var _user$project$Main$blankTabGroup = function (id) {
-	return {
-		id: id,
-		title: 'Add Title Here',
-		tabs: {ctor: '[]'},
-		position: A2(_elm_lang$mouse$Mouse$Position, 10, 10),
-		drag: _elm_lang$core$Maybe$Nothing,
-		changingTitle: false
-	};
+		}
+	});
+var _user$project$Main$bestFit = F3(
+	function (w, h, n) {
+		return A4(
+			_user$project$Main$lessEfficientSquareEdge,
+			w,
+			h,
+			n,
+			A3(_user$project$Main$perfectlyEfficientSquareEdge, w, h, n));
+	});
+var _user$project$Main$getDimensions = function (_p7) {
+	var _p8 = _p7;
+	var _p12 = _p8.dimensions;
+	var _p9 = _p8.resize;
+	if (_p9.ctor === 'Nothing') {
+		return _p12;
+	} else {
+		var _p11 = _p9._0.start;
+		var _p10 = _p9._0.current;
+		return {height: _p12.height + (_p10.y - _p11.y), width: _p12.width + (_p10.x - _p11.x)};
+	}
 };
 var _user$project$Main$initTabGroup = F3(
 	function (id, title, tabs) {
@@ -10354,9 +10429,49 @@ var _user$project$Main$initTabGroup = F3(
 			tabs: tabs,
 			position: A2(_elm_lang$mouse$Mouse$Position, 10, 10),
 			drag: _elm_lang$core$Maybe$Nothing,
-			changingTitle: false
+			changingTitle: false,
+			dimensions: {width: 400, height: 300},
+			resize: _elm_lang$core$Maybe$Nothing
 		};
 	});
+var _user$project$Main$blankTabGroup = function (id) {
+	return A3(
+		_user$project$Main$initTabGroup,
+		id,
+		'Add Title Here',
+		{ctor: '[]'});
+};
+var _user$project$Main$sampleTabs = {
+	ctor: '::',
+	_0: A3(
+		_user$project$Main$initTabGroup,
+		1,
+		'Group 1',
+		{
+			ctor: '::',
+			_0: {
+				id: 1,
+				title: 'tab1',
+				url: 'www.tab1.com',
+				screenshot: _elm_lang$core$Maybe$Nothing,
+				position: A2(_elm_lang$mouse$Mouse$Position, 10, 10),
+				drag: _elm_lang$core$Maybe$Nothing
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					id: 2,
+					title: 'tab2',
+					url: 'www.tab2.com',
+					screenshot: _elm_lang$core$Maybe$Nothing,
+					position: A2(_elm_lang$mouse$Mouse$Position, 10, 10),
+					drag: _elm_lang$core$Maybe$Nothing
+				},
+				_1: {ctor: '[]'}
+			}
+		}),
+	_1: {ctor: '[]'}
+};
 var _user$project$Main$getTabs = _elm_lang$core$Native_Platform.outgoingPort(
 	'getTabs',
 	function (v) {
@@ -10377,8 +10492,86 @@ var _user$project$Main$tabs = _elm_lang$core$Native_Platform.incomingPort(
 								return A2(
 									_elm_lang$core$Json_Decode$andThen,
 									function (screenshot) {
-										return _elm_lang$core$Json_Decode$succeed(
-											{id: id, title: title, url: url, screenshot: screenshot});
+										return A2(
+											_elm_lang$core$Json_Decode$andThen,
+											function (position) {
+												return A2(
+													_elm_lang$core$Json_Decode$andThen,
+													function (drag) {
+														return _elm_lang$core$Json_Decode$succeed(
+															{id: id, title: title, url: url, screenshot: screenshot, position: position, drag: drag});
+													},
+													A2(
+														_elm_lang$core$Json_Decode$field,
+														'drag',
+														_elm_lang$core$Json_Decode$oneOf(
+															{
+																ctor: '::',
+																_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+																_1: {
+																	ctor: '::',
+																	_0: A2(
+																		_elm_lang$core$Json_Decode$map,
+																		_elm_lang$core$Maybe$Just,
+																		A2(
+																			_elm_lang$core$Json_Decode$andThen,
+																			function (start) {
+																				return A2(
+																					_elm_lang$core$Json_Decode$andThen,
+																					function (current) {
+																						return _elm_lang$core$Json_Decode$succeed(
+																							{start: start, current: current});
+																					},
+																					A2(
+																						_elm_lang$core$Json_Decode$field,
+																						'current',
+																						A2(
+																							_elm_lang$core$Json_Decode$andThen,
+																							function (x) {
+																								return A2(
+																									_elm_lang$core$Json_Decode$andThen,
+																									function (y) {
+																										return _elm_lang$core$Json_Decode$succeed(
+																											{x: x, y: y});
+																									},
+																									A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																							},
+																							A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))));
+																			},
+																			A2(
+																				_elm_lang$core$Json_Decode$field,
+																				'start',
+																				A2(
+																					_elm_lang$core$Json_Decode$andThen,
+																					function (x) {
+																						return A2(
+																							_elm_lang$core$Json_Decode$andThen,
+																							function (y) {
+																								return _elm_lang$core$Json_Decode$succeed(
+																									{x: x, y: y});
+																							},
+																							A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																					},
+																					A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))))),
+																	_1: {ctor: '[]'}
+																}
+															})));
+											},
+											A2(
+												_elm_lang$core$Json_Decode$field,
+												'position',
+												A2(
+													_elm_lang$core$Json_Decode$andThen,
+													function (x) {
+														return A2(
+															_elm_lang$core$Json_Decode$andThen,
+															function (y) {
+																return _elm_lang$core$Json_Decode$succeed(
+																	{x: x, y: y});
+															},
+															A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+													},
+													A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))));
 									},
 									A2(
 										_elm_lang$core$Json_Decode$field,
@@ -10440,7 +10633,12 @@ var _user$project$Main$saveModel = _elm_lang$core$Native_Platform.outgoingPort(
 									id: v.id,
 									title: v.title,
 									url: v.url,
-									screenshot: (v.screenshot.ctor === 'Nothing') ? null : v.screenshot._0
+									screenshot: (v.screenshot.ctor === 'Nothing') ? null : v.screenshot._0,
+									position: {x: v.position.x, y: v.position.y},
+									drag: (v.drag.ctor === 'Nothing') ? null : {
+										start: {x: v.drag._0.start.x, y: v.drag._0.start.y},
+										current: {x: v.drag._0.current.x, y: v.drag._0.current.y}
+									}
 								};
 							}),
 						position: {x: v.position.x, y: v.position.y},
@@ -10448,7 +10646,12 @@ var _user$project$Main$saveModel = _elm_lang$core$Native_Platform.outgoingPort(
 							start: {x: v.drag._0.start.x, y: v.drag._0.start.y},
 							current: {x: v.drag._0.current.x, y: v.drag._0.current.y}
 						},
-						changingTitle: v.changingTitle
+						changingTitle: v.changingTitle,
+						dimensions: {height: v.dimensions.height, width: v.dimensions.width},
+						resize: (v.resize.ctor === 'Nothing') ? null : {
+							start: {x: v.resize._0.start.x, y: v.resize._0.start.y},
+							current: {x: v.resize._0.current.x, y: v.resize._0.current.y}
+						}
 					};
 				})
 		};
@@ -10505,8 +10708,86 @@ var _user$project$Main$savedModel = _elm_lang$core$Native_Platform.incomingPort(
 																		return A2(
 																			_elm_lang$core$Json_Decode$andThen,
 																			function (changingTitle) {
-																				return _elm_lang$core$Json_Decode$succeed(
-																					{id: id, title: title, tabs: tabs, position: position, drag: drag, changingTitle: changingTitle});
+																				return A2(
+																					_elm_lang$core$Json_Decode$andThen,
+																					function (dimensions) {
+																						return A2(
+																							_elm_lang$core$Json_Decode$andThen,
+																							function (resize) {
+																								return _elm_lang$core$Json_Decode$succeed(
+																									{id: id, title: title, tabs: tabs, position: position, drag: drag, changingTitle: changingTitle, dimensions: dimensions, resize: resize});
+																							},
+																							A2(
+																								_elm_lang$core$Json_Decode$field,
+																								'resize',
+																								_elm_lang$core$Json_Decode$oneOf(
+																									{
+																										ctor: '::',
+																										_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+																										_1: {
+																											ctor: '::',
+																											_0: A2(
+																												_elm_lang$core$Json_Decode$map,
+																												_elm_lang$core$Maybe$Just,
+																												A2(
+																													_elm_lang$core$Json_Decode$andThen,
+																													function (start) {
+																														return A2(
+																															_elm_lang$core$Json_Decode$andThen,
+																															function (current) {
+																																return _elm_lang$core$Json_Decode$succeed(
+																																	{start: start, current: current});
+																															},
+																															A2(
+																																_elm_lang$core$Json_Decode$field,
+																																'current',
+																																A2(
+																																	_elm_lang$core$Json_Decode$andThen,
+																																	function (x) {
+																																		return A2(
+																																			_elm_lang$core$Json_Decode$andThen,
+																																			function (y) {
+																																				return _elm_lang$core$Json_Decode$succeed(
+																																					{x: x, y: y});
+																																			},
+																																			A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																																	},
+																																	A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))));
+																													},
+																													A2(
+																														_elm_lang$core$Json_Decode$field,
+																														'start',
+																														A2(
+																															_elm_lang$core$Json_Decode$andThen,
+																															function (x) {
+																																return A2(
+																																	_elm_lang$core$Json_Decode$andThen,
+																																	function (y) {
+																																		return _elm_lang$core$Json_Decode$succeed(
+																																			{x: x, y: y});
+																																	},
+																																	A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																															},
+																															A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))))),
+																											_1: {ctor: '[]'}
+																										}
+																									})));
+																					},
+																					A2(
+																						_elm_lang$core$Json_Decode$field,
+																						'dimensions',
+																						A2(
+																							_elm_lang$core$Json_Decode$andThen,
+																							function (height) {
+																								return A2(
+																									_elm_lang$core$Json_Decode$andThen,
+																									function (width) {
+																										return _elm_lang$core$Json_Decode$succeed(
+																											{height: height, width: width});
+																									},
+																									A2(_elm_lang$core$Json_Decode$field, 'width', _elm_lang$core$Json_Decode$int));
+																							},
+																							A2(_elm_lang$core$Json_Decode$field, 'height', _elm_lang$core$Json_Decode$int))));
 																			},
 																			A2(_elm_lang$core$Json_Decode$field, 'changingTitle', _elm_lang$core$Json_Decode$bool));
 																	},
@@ -10598,8 +10879,86 @@ var _user$project$Main$savedModel = _elm_lang$core$Native_Platform.incomingPort(
 																					return A2(
 																						_elm_lang$core$Json_Decode$andThen,
 																						function (screenshot) {
-																							return _elm_lang$core$Json_Decode$succeed(
-																								{id: id, title: title, url: url, screenshot: screenshot});
+																							return A2(
+																								_elm_lang$core$Json_Decode$andThen,
+																								function (position) {
+																									return A2(
+																										_elm_lang$core$Json_Decode$andThen,
+																										function (drag) {
+																											return _elm_lang$core$Json_Decode$succeed(
+																												{id: id, title: title, url: url, screenshot: screenshot, position: position, drag: drag});
+																										},
+																										A2(
+																											_elm_lang$core$Json_Decode$field,
+																											'drag',
+																											_elm_lang$core$Json_Decode$oneOf(
+																												{
+																													ctor: '::',
+																													_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+																													_1: {
+																														ctor: '::',
+																														_0: A2(
+																															_elm_lang$core$Json_Decode$map,
+																															_elm_lang$core$Maybe$Just,
+																															A2(
+																																_elm_lang$core$Json_Decode$andThen,
+																																function (start) {
+																																	return A2(
+																																		_elm_lang$core$Json_Decode$andThen,
+																																		function (current) {
+																																			return _elm_lang$core$Json_Decode$succeed(
+																																				{start: start, current: current});
+																																		},
+																																		A2(
+																																			_elm_lang$core$Json_Decode$field,
+																																			'current',
+																																			A2(
+																																				_elm_lang$core$Json_Decode$andThen,
+																																				function (x) {
+																																					return A2(
+																																						_elm_lang$core$Json_Decode$andThen,
+																																						function (y) {
+																																							return _elm_lang$core$Json_Decode$succeed(
+																																								{x: x, y: y});
+																																						},
+																																						A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																																				},
+																																				A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))));
+																																},
+																																A2(
+																																	_elm_lang$core$Json_Decode$field,
+																																	'start',
+																																	A2(
+																																		_elm_lang$core$Json_Decode$andThen,
+																																		function (x) {
+																																			return A2(
+																																				_elm_lang$core$Json_Decode$andThen,
+																																				function (y) {
+																																					return _elm_lang$core$Json_Decode$succeed(
+																																						{x: x, y: y});
+																																				},
+																																				A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																																		},
+																																		A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))))),
+																														_1: {ctor: '[]'}
+																													}
+																												})));
+																								},
+																								A2(
+																									_elm_lang$core$Json_Decode$field,
+																									'position',
+																									A2(
+																										_elm_lang$core$Json_Decode$andThen,
+																										function (x) {
+																											return A2(
+																												_elm_lang$core$Json_Decode$andThen,
+																												function (y) {
+																													return _elm_lang$core$Json_Decode$succeed(
+																														{x: x, y: y});
+																												},
+																												A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																										},
+																										A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))));
 																						},
 																						A2(
 																							_elm_lang$core$Json_Decode$field,
@@ -10647,8 +11006,86 @@ var _user$project$Main$tabGroup = _elm_lang$core$Native_Platform.incomingPort(
 											return A2(
 												_elm_lang$core$Json_Decode$andThen,
 												function (changingTitle) {
-													return _elm_lang$core$Json_Decode$succeed(
-														{id: id, title: title, tabs: tabs, position: position, drag: drag, changingTitle: changingTitle});
+													return A2(
+														_elm_lang$core$Json_Decode$andThen,
+														function (dimensions) {
+															return A2(
+																_elm_lang$core$Json_Decode$andThen,
+																function (resize) {
+																	return _elm_lang$core$Json_Decode$succeed(
+																		{id: id, title: title, tabs: tabs, position: position, drag: drag, changingTitle: changingTitle, dimensions: dimensions, resize: resize});
+																},
+																A2(
+																	_elm_lang$core$Json_Decode$field,
+																	'resize',
+																	_elm_lang$core$Json_Decode$oneOf(
+																		{
+																			ctor: '::',
+																			_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+																			_1: {
+																				ctor: '::',
+																				_0: A2(
+																					_elm_lang$core$Json_Decode$map,
+																					_elm_lang$core$Maybe$Just,
+																					A2(
+																						_elm_lang$core$Json_Decode$andThen,
+																						function (start) {
+																							return A2(
+																								_elm_lang$core$Json_Decode$andThen,
+																								function (current) {
+																									return _elm_lang$core$Json_Decode$succeed(
+																										{start: start, current: current});
+																								},
+																								A2(
+																									_elm_lang$core$Json_Decode$field,
+																									'current',
+																									A2(
+																										_elm_lang$core$Json_Decode$andThen,
+																										function (x) {
+																											return A2(
+																												_elm_lang$core$Json_Decode$andThen,
+																												function (y) {
+																													return _elm_lang$core$Json_Decode$succeed(
+																														{x: x, y: y});
+																												},
+																												A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																										},
+																										A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))));
+																						},
+																						A2(
+																							_elm_lang$core$Json_Decode$field,
+																							'start',
+																							A2(
+																								_elm_lang$core$Json_Decode$andThen,
+																								function (x) {
+																									return A2(
+																										_elm_lang$core$Json_Decode$andThen,
+																										function (y) {
+																											return _elm_lang$core$Json_Decode$succeed(
+																												{x: x, y: y});
+																										},
+																										A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																								},
+																								A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))))),
+																				_1: {ctor: '[]'}
+																			}
+																		})));
+														},
+														A2(
+															_elm_lang$core$Json_Decode$field,
+															'dimensions',
+															A2(
+																_elm_lang$core$Json_Decode$andThen,
+																function (height) {
+																	return A2(
+																		_elm_lang$core$Json_Decode$andThen,
+																		function (width) {
+																			return _elm_lang$core$Json_Decode$succeed(
+																				{height: height, width: width});
+																		},
+																		A2(_elm_lang$core$Json_Decode$field, 'width', _elm_lang$core$Json_Decode$int));
+																},
+																A2(_elm_lang$core$Json_Decode$field, 'height', _elm_lang$core$Json_Decode$int))));
 												},
 												A2(_elm_lang$core$Json_Decode$field, 'changingTitle', _elm_lang$core$Json_Decode$bool));
 										},
@@ -10740,8 +11177,86 @@ var _user$project$Main$tabGroup = _elm_lang$core$Native_Platform.incomingPort(
 														return A2(
 															_elm_lang$core$Json_Decode$andThen,
 															function (screenshot) {
-																return _elm_lang$core$Json_Decode$succeed(
-																	{id: id, title: title, url: url, screenshot: screenshot});
+																return A2(
+																	_elm_lang$core$Json_Decode$andThen,
+																	function (position) {
+																		return A2(
+																			_elm_lang$core$Json_Decode$andThen,
+																			function (drag) {
+																				return _elm_lang$core$Json_Decode$succeed(
+																					{id: id, title: title, url: url, screenshot: screenshot, position: position, drag: drag});
+																			},
+																			A2(
+																				_elm_lang$core$Json_Decode$field,
+																				'drag',
+																				_elm_lang$core$Json_Decode$oneOf(
+																					{
+																						ctor: '::',
+																						_0: _elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+																						_1: {
+																							ctor: '::',
+																							_0: A2(
+																								_elm_lang$core$Json_Decode$map,
+																								_elm_lang$core$Maybe$Just,
+																								A2(
+																									_elm_lang$core$Json_Decode$andThen,
+																									function (start) {
+																										return A2(
+																											_elm_lang$core$Json_Decode$andThen,
+																											function (current) {
+																												return _elm_lang$core$Json_Decode$succeed(
+																													{start: start, current: current});
+																											},
+																											A2(
+																												_elm_lang$core$Json_Decode$field,
+																												'current',
+																												A2(
+																													_elm_lang$core$Json_Decode$andThen,
+																													function (x) {
+																														return A2(
+																															_elm_lang$core$Json_Decode$andThen,
+																															function (y) {
+																																return _elm_lang$core$Json_Decode$succeed(
+																																	{x: x, y: y});
+																															},
+																															A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																													},
+																													A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))));
+																									},
+																									A2(
+																										_elm_lang$core$Json_Decode$field,
+																										'start',
+																										A2(
+																											_elm_lang$core$Json_Decode$andThen,
+																											function (x) {
+																												return A2(
+																													_elm_lang$core$Json_Decode$andThen,
+																													function (y) {
+																														return _elm_lang$core$Json_Decode$succeed(
+																															{x: x, y: y});
+																													},
+																													A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																											},
+																											A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))))),
+																							_1: {ctor: '[]'}
+																						}
+																					})));
+																	},
+																	A2(
+																		_elm_lang$core$Json_Decode$field,
+																		'position',
+																		A2(
+																			_elm_lang$core$Json_Decode$andThen,
+																			function (x) {
+																				return A2(
+																					_elm_lang$core$Json_Decode$andThen,
+																					function (y) {
+																						return _elm_lang$core$Json_Decode$succeed(
+																							{x: x, y: y});
+																					},
+																					A2(_elm_lang$core$Json_Decode$field, 'y', _elm_lang$core$Json_Decode$int));
+																			},
+																			A2(_elm_lang$core$Json_Decode$field, 'x', _elm_lang$core$Json_Decode$int))));
 															},
 															A2(
 																_elm_lang$core$Json_Decode$field,
@@ -10769,28 +11284,32 @@ var _user$project$Main$tabGroup = _elm_lang$core$Native_Platform.incomingPort(
 var _user$project$Main$Model = function (a) {
 	return {tabGroups: a};
 };
-var _user$project$Main$TabGroup = F6(
-	function (a, b, c, d, e, f) {
-		return {id: a, title: b, tabs: c, position: d, drag: e, changingTitle: f};
+var _user$project$Main$TabGroup = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {id: a, title: b, tabs: c, position: d, drag: e, changingTitle: f, dimensions: g, resize: h};
+	});
+var _user$project$Main$Dimensions = F2(
+	function (a, b) {
+		return {height: a, width: b};
 	});
 var _user$project$Main$Drag = F2(
 	function (a, b) {
 		return {start: a, current: b};
 	});
-var _user$project$Main$updateTabGroup = F3(
-	function (title, msg, tabGroup) {
-		if (!_elm_lang$core$Native_Utils.eq(title, tabGroup.title)) {
+var _user$project$Main$dragTabGroup = F3(
+	function (id, msg, tabGroup) {
+		if (!_elm_lang$core$Native_Utils.eq(id, tabGroup.id)) {
 			return tabGroup;
 		} else {
-			var _p7 = msg;
-			switch (_p7.ctor) {
+			var _p13 = msg;
+			switch (_p13.ctor) {
 				case 'DragStart':
-					var _p8 = _p7._0;
+					var _p14 = _p13._0;
 					return _elm_lang$core$Native_Utils.update(
 						tabGroup,
 						{
 							drag: _elm_lang$core$Maybe$Just(
-								A2(_user$project$Main$Drag, _p8, _p8))
+								A2(_user$project$Main$Drag, _p14, _p14))
 						});
 				case 'DragAt':
 					return _elm_lang$core$Native_Utils.update(
@@ -10798,9 +11317,9 @@ var _user$project$Main$updateTabGroup = F3(
 						{
 							drag: A2(
 								_elm_lang$core$Maybe$map,
-								function (_p9) {
-									var _p10 = _p9;
-									return A2(_user$project$Main$Drag, _p10.start, _p7._0);
+								function (_p15) {
+									var _p16 = _p15;
+									return A2(_user$project$Main$Drag, _p16.start, _p13._0);
 								},
 								tabGroup.drag)
 						});
@@ -10814,12 +11333,49 @@ var _user$project$Main$updateTabGroup = F3(
 			}
 		}
 	});
+var _user$project$Main$resizeTabGroup = F3(
+	function (id, msg, tabGroup) {
+		if (!_elm_lang$core$Native_Utils.eq(id, tabGroup.id)) {
+			return tabGroup;
+		} else {
+			var _p17 = msg;
+			switch (_p17.ctor) {
+				case 'DragStart':
+					var _p18 = _p17._0;
+					return _elm_lang$core$Native_Utils.update(
+						tabGroup,
+						{
+							resize: _elm_lang$core$Maybe$Just(
+								A2(_user$project$Main$Drag, _p18, _p18))
+						});
+				case 'DragAt':
+					return _elm_lang$core$Native_Utils.update(
+						tabGroup,
+						{
+							resize: A2(
+								_elm_lang$core$Maybe$map,
+								function (_p19) {
+									var _p20 = _p19;
+									return A2(_user$project$Main$Drag, _p20.start, _p17._0);
+								},
+								tabGroup.resize)
+						});
+				default:
+					return _elm_lang$core$Native_Utils.update(
+						tabGroup,
+						{
+							dimensions: _user$project$Main$getDimensions(tabGroup),
+							resize: _elm_lang$core$Maybe$Nothing
+						});
+			}
+		}
+	});
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p11 = msg;
-		switch (_p11.ctor) {
+		var _p21 = msg;
+		switch (_p21.ctor) {
 			case 'GotSavedModel':
-				if (_p11._0.ctor === 'Nothing') {
+				if (_p21._0.ctor === 'Nothing') {
 					return {
 						ctor: '_Tuple2',
 						_0: model,
@@ -10827,7 +11383,7 @@ var _user$project$Main$update = F2(
 							{ctor: '_Tuple0'})
 					};
 				} else {
-					return {ctor: '_Tuple2', _0: _p11._0._0, _1: _elm_lang$core$Platform_Cmd$none};
+					return {ctor: '_Tuple2', _0: _p21._0._0, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'GotTabGroup':
 				return {
@@ -10835,7 +11391,7 @@ var _user$project$Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							tabGroups: {ctor: '::', _0: _p11._0, _1: model.tabGroups}
+							tabGroups: {ctor: '::', _0: _p21._0, _1: model.tabGroups}
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -10850,7 +11406,7 @@ var _user$project$Main$update = F2(
 					_elm_lang$core$List$head(model.tabGroups));
 				var newTabGroup = _elm_lang$core$Native_Utils.update(
 					tabGroup,
-					{tabs: _p11._0});
+					{tabs: _p21._0});
 				var newModel = _elm_lang$core$Native_Utils.update(
 					model,
 					{
@@ -10860,14 +11416,13 @@ var _user$project$Main$update = F2(
 							_1: {ctor: '[]'}
 						}
 					});
-				var _p12 = A2(_elm_lang$core$Debug$log, 'tab', 'new tabs');
 				return {
 					ctor: '_Tuple2',
 					_0: newModel,
 					_1: _user$project$Main$saveModel(newModel)
 				};
 			case 'GotTabScreenshot':
-				var _p13 = _p11._0;
+				var _p22 = _p21._0;
 				var tabGroup = A2(
 					_elm_lang$core$Maybe$withDefault,
 					A3(
@@ -10879,9 +11434,9 @@ var _user$project$Main$update = F2(
 				var newTabs = A2(
 					_elm_lang$core$List$map,
 					function (tab) {
-						return _elm_lang$core$Native_Utils.eq(tab.id, _p13.id) ? _elm_lang$core$Native_Utils.update(
+						return _elm_lang$core$Native_Utils.eq(tab.id, _p22.id) ? _elm_lang$core$Native_Utils.update(
 							tab,
-							{screenshot: _p13.img}) : tab;
+							{screenshot: _p22.img}) : tab;
 					},
 					tabGroup.tabs);
 				var newTabGroup = _elm_lang$core$Native_Utils.update(
@@ -10905,7 +11460,7 @@ var _user$project$Main$update = F2(
 				var newTabGroups = A2(
 					_elm_lang$core$List$filter,
 					function (tg) {
-						return !_elm_lang$core$Native_Utils.eq(tg.id, _p11._0);
+						return !_elm_lang$core$Native_Utils.eq(tg.id, _p21._0);
 					},
 					model.tabGroups);
 				var newModel = _elm_lang$core$Native_Utils.update(
@@ -10935,9 +11490,9 @@ var _user$project$Main$update = F2(
 				var newTabGroups = A2(
 					_elm_lang$core$List$map,
 					function (tabGroup) {
-						return _elm_lang$core$Native_Utils.eq(tabGroup.id, _p11._0) ? _elm_lang$core$Native_Utils.update(
+						return _elm_lang$core$Native_Utils.eq(tabGroup.id, _p21._0) ? _elm_lang$core$Native_Utils.update(
 							tabGroup,
-							{title: _p11._1}) : tabGroup;
+							{title: _p21._1}) : tabGroup;
 					},
 					model.tabGroups);
 				var newModel = _elm_lang$core$Native_Utils.update(
@@ -10952,7 +11507,7 @@ var _user$project$Main$update = F2(
 				var newTabGroups = A2(
 					_elm_lang$core$List$map,
 					function (tabGroup) {
-						return _elm_lang$core$Native_Utils.eq(tabGroup.id, _p11._0) ? _elm_lang$core$Native_Utils.update(
+						return _elm_lang$core$Native_Utils.eq(tabGroup.id, _p21._0) ? _elm_lang$core$Native_Utils.update(
 							tabGroup,
 							{changingTitle: false}) : tabGroup;
 					},
@@ -10969,7 +11524,7 @@ var _user$project$Main$update = F2(
 				var newTabGroups = A2(
 					_elm_lang$core$List$map,
 					function (tabGroup) {
-						return _elm_lang$core$Native_Utils.eq(tabGroup.id, _p11._0) ? _elm_lang$core$Native_Utils.update(
+						return _elm_lang$core$Native_Utils.eq(tabGroup.id, _p21._0) ? _elm_lang$core$Native_Utils.update(
 							tabGroup,
 							{changingTitle: true}) : tabGroup;
 					},
@@ -10982,13 +11537,27 @@ var _user$project$Main$update = F2(
 					_0: newModel,
 					_1: _user$project$Main$saveModel(newModel)
 				};
+			case 'ResizeMsg':
+				var newModel = _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						tabGroups: A2(
+							_elm_lang$core$List$map,
+							A2(_user$project$Main$resizeTabGroup, _p21._0._0, _p21._0._1),
+							model.tabGroups)
+					});
+				return {
+					ctor: '_Tuple2',
+					_0: newModel,
+					_1: _user$project$Main$saveModel(newModel)
+				};
 			default:
 				var newModel = _elm_lang$core$Native_Utils.update(
 					model,
 					{
 						tabGroups: A2(
 							_elm_lang$core$List$map,
-							A2(_user$project$Main$updateTabGroup, _p11._0._0, _p11._0._1),
+							A2(_user$project$Main$dragTabGroup, _p21._0._0, _p21._0._1),
 							model.tabGroups)
 					});
 				return {
@@ -10998,39 +11567,17 @@ var _user$project$Main$update = F2(
 				};
 		}
 	});
-var _user$project$Main$Tab = F4(
-	function (a, b, c, d) {
-		return {id: a, title: b, url: c, screenshot: d};
+var _user$project$Main$Tab = F6(
+	function (a, b, c, d, e, f) {
+		return {id: a, title: b, url: c, screenshot: d, position: e, drag: f};
 	});
-var _user$project$Main$sampleTabs = {
-	ctor: '::',
-	_0: A3(
-		_user$project$Main$initTabGroup,
-		1,
-		'Group 1',
-		{
-			ctor: '::',
-			_0: A4(_user$project$Main$Tab, 1, 'tab1', 'www.tab1.com', _elm_lang$core$Maybe$Nothing),
-			_1: {ctor: '[]'}
-		}),
-	_1: {
-		ctor: '::',
-		_0: A3(
-			_user$project$Main$initTabGroup,
-			2,
-			'Group 2',
-			{
-				ctor: '::',
-				_0: A4(_user$project$Main$Tab, 2, 'tab2', 'www.tab2.com', _elm_lang$core$Maybe$Nothing),
-				_1: {ctor: '[]'}
-			}),
-		_1: {ctor: '[]'}
-	}
-};
 var _user$project$Main$TabScreenshot = F2(
 	function (a, b) {
 		return {id: a, img: b};
 	});
+var _user$project$Main$ResizeMsg = function (a) {
+	return {ctor: 'ResizeMsg', _0: a};
+};
 var _user$project$Main$DragMsg = function (a) {
 	return {ctor: 'DragMsg', _0: a};
 };
@@ -11163,9 +11710,9 @@ var _user$project$Main$DragEnd = function (a) {
 var _user$project$Main$DragAt = function (a) {
 	return {ctor: 'DragAt', _0: a};
 };
-var _user$project$Main$tabGroupSub = function (tabGroup) {
-	var _p14 = tabGroup.drag;
-	if (_p14.ctor === 'Nothing') {
+var _user$project$Main$tabGroupDragSub = function (tabGroup) {
+	var _p23 = tabGroup.drag;
+	if (_p23.ctor === 'Nothing') {
 		return _elm_lang$core$Platform_Sub$none;
 	} else {
 		return _elm_lang$core$Platform_Sub$batch(
@@ -11175,7 +11722,7 @@ var _user$project$Main$tabGroupSub = function (tabGroup) {
 					_elm_lang$core$Platform_Sub$map,
 					function (msg) {
 						return _user$project$Main$DragMsg(
-							{ctor: '_Tuple2', _0: tabGroup.title, _1: msg});
+							{ctor: '_Tuple2', _0: tabGroup.id, _1: msg});
 					},
 					_elm_lang$mouse$Mouse$moves(_user$project$Main$DragAt)),
 				_1: {
@@ -11184,7 +11731,36 @@ var _user$project$Main$tabGroupSub = function (tabGroup) {
 						_elm_lang$core$Platform_Sub$map,
 						function (msg) {
 							return _user$project$Main$DragMsg(
-								{ctor: '_Tuple2', _0: tabGroup.title, _1: msg});
+								{ctor: '_Tuple2', _0: tabGroup.id, _1: msg});
+						},
+						_elm_lang$mouse$Mouse$ups(_user$project$Main$DragEnd)),
+					_1: {ctor: '[]'}
+				}
+			});
+	}
+};
+var _user$project$Main$tabGroupResizeSub = function (tabGroup) {
+	var _p24 = tabGroup.resize;
+	if (_p24.ctor === 'Nothing') {
+		return _elm_lang$core$Platform_Sub$none;
+	} else {
+		return _elm_lang$core$Platform_Sub$batch(
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$core$Platform_Sub$map,
+					function (msg) {
+						return _user$project$Main$ResizeMsg(
+							{ctor: '_Tuple2', _0: tabGroup.id, _1: msg});
+					},
+					_elm_lang$mouse$Mouse$moves(_user$project$Main$DragAt)),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$core$Platform_Sub$map,
+						function (msg) {
+							return _user$project$Main$ResizeMsg(
+								{ctor: '_Tuple2', _0: tabGroup.id, _1: msg});
 						},
 						_elm_lang$mouse$Mouse$ups(_user$project$Main$DragEnd)),
 					_1: {ctor: '[]'}
@@ -11193,7 +11769,10 @@ var _user$project$Main$tabGroupSub = function (tabGroup) {
 	}
 };
 var _user$project$Main$subscriptions = function (model) {
-	var subs = A2(_elm_lang$core$List$map, _user$project$Main$tabGroupSub, model.tabGroups);
+	var resizeSubs = _elm_lang$core$Platform_Sub$batch(
+		A2(_elm_lang$core$List$map, _user$project$Main$tabGroupResizeSub, model.tabGroups));
+	var dragSubs = _elm_lang$core$Platform_Sub$batch(
+		A2(_elm_lang$core$List$map, _user$project$Main$tabGroupDragSub, model.tabGroups));
 	return _elm_lang$core$Platform_Sub$batch(
 		{
 			ctor: '::',
@@ -11207,7 +11786,15 @@ var _user$project$Main$subscriptions = function (model) {
 					_1: {
 						ctor: '::',
 						_0: _user$project$Main$tabScreenshot(_user$project$Main$GotTabScreenshot),
-						_1: subs
+						_1: {
+							ctor: '::',
+							_0: dragSubs,
+							_1: {
+								ctor: '::',
+								_0: resizeSubs,
+								_1: {ctor: '[]'}
+							}
+						}
 					}
 				}
 			}
@@ -11216,7 +11803,7 @@ var _user$project$Main$subscriptions = function (model) {
 var _user$project$Main$DragStart = function (a) {
 	return {ctor: 'DragStart', _0: a};
 };
-var _user$project$Main$onMouseDown = function (tabGroup) {
+var _user$project$Main$dragOnMouseDown = function (tabGroup) {
 	return A2(
 		_elm_lang$html$Html_Events$on,
 		'mousedown',
@@ -11226,19 +11813,86 @@ var _user$project$Main$onMouseDown = function (tabGroup) {
 				return _user$project$Main$DragMsg(
 					{
 						ctor: '_Tuple2',
-						_0: tabGroup.title,
+						_0: tabGroup.id,
 						_1: _user$project$Main$DragStart(pos)
 					});
 			},
 			_elm_lang$mouse$Mouse$position));
 };
+var _user$project$Main$resizeOnMouseDown = function (tabGroup) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'mousedown',
+		_user$project$Main$stopPropagation,
+		A2(
+			_elm_lang$core$Json_Decode$map,
+			function (pos) {
+				return _user$project$Main$ResizeMsg(
+					{
+						ctor: '_Tuple2',
+						_0: tabGroup.id,
+						_1: _user$project$Main$DragStart(pos)
+					});
+			},
+			_elm_lang$mouse$Mouse$position));
+};
+var _user$project$Main$viewDraggableCorner = function (tabGroup) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _user$project$Main$resizeOnMouseDown(tabGroup),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: A2(_user$project$Main_ops['=>'], 'background-color', 'darkblue'),
+						_1: {
+							ctor: '::',
+							_0: A2(_user$project$Main_ops['=>'], 'height', '20px'),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$Main_ops['=>'], 'width', '20px'),
+								_1: {
+									ctor: '::',
+									_0: A2(_user$project$Main_ops['=>'], 'position', 'absolute'),
+									_1: {
+										ctor: '::',
+										_0: A2(_user$project$Main_ops['=>'], 'bottom', '0px'),
+										_1: {
+											ctor: '::',
+											_0: A2(_user$project$Main_ops['=>'], 'right', '0px'),
+											_1: {
+												ctor: '::',
+												_0: A2(_user$project$Main_ops['=>'], 'cursor', 'nwse-resize'),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
+		},
+		{ctor: '[]'});
+};
 var _user$project$Main$viewTabGroup = function (tabGroup) {
+	var tabCount = _elm_lang$core$Basics$toFloat(
+		_elm_lang$core$List$length(tabGroup.tabs));
+	var realDimensions = _user$project$Main$getDimensions(tabGroup);
+	var width = _elm_lang$core$Basics$toFloat(realDimensions.width);
+	var height = _elm_lang$core$Basics$toFloat(realDimensions.height);
+	var tabLength = _elm_lang$core$Basics$floor(
+		A3(_user$project$Main$bestFit, width, height, tabCount));
 	var realPosition = _user$project$Main$getPosition(tabGroup);
 	return A2(
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _user$project$Main$onMouseDown(tabGroup),
+			_0: _user$project$Main$dragOnMouseDown(tabGroup),
 			_1: {
 				ctor: '::',
 				_0: _elm_lang$html$Html_Attributes$class('tabGroup'),
@@ -11253,10 +11907,16 @@ var _user$project$Main$viewTabGroup = function (tabGroup) {
 								_0: A2(_user$project$Main_ops['=>'], 'cursor', 'move'),
 								_1: {
 									ctor: '::',
-									_0: A2(_user$project$Main_ops['=>'], 'width', '600px'),
+									_0: A2(
+										_user$project$Main_ops['=>'],
+										'width',
+										_user$project$Main$px(realDimensions.width)),
 									_1: {
 										ctor: '::',
-										_0: A2(_user$project$Main_ops['=>'], 'height', '400px'),
+										_0: A2(
+											_user$project$Main_ops['=>'],
+											'height',
+											_user$project$Main$px(realDimensions.height)),
 										_1: {
 											ctor: '::',
 											_0: A2(_user$project$Main_ops['=>'], 'border-radius', '4px'),
@@ -11275,7 +11935,15 @@ var _user$project$Main$viewTabGroup = function (tabGroup) {
 															_user$project$Main_ops['=>'],
 															'top',
 															_user$project$Main$px(realPosition.y)),
-														_1: {ctor: '[]'}
+														_1: {
+															ctor: '::',
+															_0: A2(_user$project$Main_ops['=>'], 'background-color', '#F8F8F8'),
+															_1: {
+																ctor: '::',
+																_0: A2(_user$project$Main_ops['=>'], 'color', '#B0B1BB'),
+																_1: {ctor: '[]'}
+															}
+														}
 													}
 												}
 											}
@@ -11294,7 +11962,14 @@ var _user$project$Main$viewTabGroup = function (tabGroup) {
 			_1: {
 				ctor: '::',
 				_0: _user$project$Main$viewTabGroupTitle(tabGroup),
-				_1: A2(_elm_lang$core$List$map, _user$project$Main$viewTab, tabGroup.tabs)
+				_1: {
+					ctor: '::',
+					_0: _user$project$Main$viewDraggableCorner(tabGroup),
+					_1: A2(
+						_elm_lang$core$List$map,
+						_user$project$Main$viewTab(tabLength),
+						tabGroup.tabs)
+				}
 			}
 		});
 };

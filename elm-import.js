@@ -1,24 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
   var app = Elm.Main.fullscreen();
 
-  // Subscribe to tab selection change
-  chrome.tabs.onActivated.addListener(function(activeInfo) {
-    chrome.tabs.captureVisibleTab(activeInfo.windowId, {}, function(img) {
-      // undefined doesn't work with ports
-      if (!img) {
-        img = null;
-      }
-      // Send tab screenshot back to Elm
-      app.ports.tabScreenshot.send({id: activeInfo.tabId, img: img});
+  if (chrome.tabs) {
+    // Subscribe to tab selection change
+    chrome.tabs.onActivated.addListener(function(activeInfo) {
+      chrome.tabs.captureVisibleTab(activeInfo.windowId, {}, function(img) {
+        // undefined doesn't work with ports
+        if (!img) {
+          img = null;
+        }
+        // Send tab screenshot back to Elm
+        app.ports.tabScreenshot.send({id: activeInfo.tabId, img: img});
+      });
     });
-  });
 
-  // Subscribe to tab remove
-  chrome.tabs.onRemoved.addListener(function(activeInfo) {
-    // Since this api doesn't give us the id of the removed tab,
-    // we have to query for all of them again
-    getAllTabs();
-  });
+    // Subscribe to tab remove
+    chrome.tabs.onRemoved.addListener(function(activeInfo) {
+      // Since this api doesn't give us the id of the removed tab,
+      // we have to query for all of them again
+      getAllTabs();
+    });
+  }
 
   // Subscribe to Elm getTabs port
   app.ports.getTabs.subscribe(function() {
@@ -31,8 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!chrome.tabs) {
       console.log("not in extenstion, sending example tabs");
       app.ports.tabs.send([
-	{ title: "tab 1", url: "tab1.com", screenshot: ""},
-	{ title: "tab 2", url: "tab2.com", screenshot: ""}
+	{ title: "tab 1", url: "tab1.com", screenshot: "", id: "0"},
+	{ title: "tab 2", url: "tab2.com", screenshot: "", id: "1"}
       ]);
       return
     }
@@ -52,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // append empty screenshot to each tab
       var newTabs = tabs.map(function(tab) {
         tab.screenshot = null;
+        tab.position = {x: 10, y: 10};
+        tab.drag = null;
         return tab;
       });
 
