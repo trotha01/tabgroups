@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Subscribe to Elm getTabs port
   app.ports.getTabs.subscribe(function() {
+    console.log("getting tabs");
     getAllTabs();
   });
 
@@ -73,15 +74,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
   app.ports.getModel.subscribe(function() {
     model = localStorage.getItem('model');
+
     if (!model) {
+      console.log("could not find saved model");
       app.ports.savedModel.send(null);
       return;
     }
+
     model = JSON.parse(model);
-    for (var id in model.tabGroups) {
-      console.log("sending tabGroup", model.tabGroups[id]);
-      app.ports.savedTabGroup.send(model.tabGroups[id]);
-    }
+    app.ports.savedModel.send(model);
+    return;
   });
 
 });

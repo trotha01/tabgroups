@@ -165,8 +165,12 @@ update msg model =
         GotSavedModel Nothing ->
             ( model, getTabs () )
 
-        GotSavedModel (Just newModel) ->
-            ( newModel, Cmd.none )
+        GotSavedModel (Just newSavedModel) ->
+            if List.length newSavedModel.tabGroups == 0 then
+                ( model, getTabs () )
+
+            else
+                ( newSavedModel, Cmd.none )
 
         GotTabGroup tabGroup ->
             ( { model | tabGroups = tabGroup :: model.tabGroups }, Cmd.none )
@@ -223,7 +227,8 @@ update msg model =
         AddTabGroup ->
             let
                 newTabGroups =
-                    blankTabGroup (List.length model.tabGroups) :: model.tabGroups
+                    blankTabGroup (List.length model.tabGroups)
+                        :: model.tabGroups
 
                 newModel =
                     { model | tabGroups = newTabGroups }

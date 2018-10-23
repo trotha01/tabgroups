@@ -6869,8 +6869,10 @@ var author$project$Main$update = F2(
 						model,
 						author$project$Main$getTabs(0));
 				} else {
-					var newModel = msg.a.a;
-					return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
+					var newSavedModel = msg.a.a;
+					return (!elm$core$List$length(newSavedModel.d)) ? _Utils_Tuple2(
+						model,
+						author$project$Main$getTabs(0)) : _Utils_Tuple2(newSavedModel, elm$core$Platform$Cmd$none);
 				}
 			case 1:
 				var tabGroup = msg.a;
