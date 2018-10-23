@@ -165,8 +165,12 @@ update msg model =
         GotSavedModel Nothing ->
             ( model, getTabs () )
 
-        GotSavedModel (Just newModel) ->
-            ( newModel, Cmd.none )
+        GotSavedModel (Just newSavedModel) ->
+            if List.length newSavedModel.tabGroups == 0 then
+                ( model, getTabs () )
+
+            else
+                ( newSavedModel, Cmd.none )
 
         GotTabGroup tabGroup ->
             ( { model | tabGroups = tabGroup :: model.tabGroups }, Cmd.none )
@@ -223,7 +227,8 @@ update msg model =
         AddTabGroup ->
             let
                 newTabGroups =
-                    blankTabGroup (List.length model.tabGroups) :: model.tabGroups
+                    blankTabGroup (List.length model.tabGroups)
+                        :: model.tabGroups
 
                 newModel =
                     { model | tabGroups = newTabGroups }
@@ -637,7 +642,6 @@ subscriptions model =
     in
     Sub.batch
         [ savedModel GotSavedModel
-        , savedTabGroup GotTabGroup
         , tabs GotTabs
         , tabScreenshot GotTabScreenshot
         , dragSubs
@@ -721,6 +725,3 @@ port getModel : () -> Cmd msg
 
 
 port savedModel : (Maybe Model -> msg) -> Sub msg
-
-
-port savedTabGroup : (TabGroup -> msg) -> Sub msg

@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // TODO: get screenshot for each tab
   queryChromeForTabs = function() {
     chrome.tabs.query({}, function(tabs) {
-      console.log(tabs);
 
       // append empty screenshot to each tab
       var newTabs = tabs.map(function(tab) {
@@ -73,15 +72,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   app.ports.getModel.subscribe(function() {
     model = localStorage.getItem('model');
+
     if (!model) {
       app.ports.savedModel.send(null);
       return;
     }
+
     model = JSON.parse(model);
-    for (var id in model.tabGroups) {
-      console.log("sending tabGroup", model.tabGroups[id]);
-      app.ports.savedTabGroup.send(model.tabGroups[id]);
-    }
+    app.ports.savedModel.send(model);
+    return;
   });
 
 });
