@@ -1,12 +1,13 @@
-port module Main exposing (..)
+port module Main exposing (main)
 
+import Browser
+import Browser.Events exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Html.Events.Extra exposing (onEnter)
 import Json.Decode as Decode
-import Mouse exposing (Position)
 import String.Extra exposing (ellipsis)
+
 
 
 {-
@@ -19,7 +20,7 @@ import String.Extra exposing (ellipsis)
 
 
 main =
-    Html.program
+    Browser.element
         { init = init
         , update = update
         , view = view
@@ -32,7 +33,9 @@ main =
 
 
 type alias Model =
-    { tabGroups : List TabGroup }
+    { tabGroups : List TabGroup
+    , tabDrag : Maybe Tab
+    }
 
 
 type alias TabGroup =
@@ -54,6 +57,12 @@ type alias GroupTitle =
 type alias Dimensions =
     { height : Int
     , width : Int
+    }
+
+
+type alias Position =
+    { x : Int
+    , y : Int
     }
 
 
@@ -86,7 +95,6 @@ type alias Tab =
     , title : String
     , url : String
     , screenshot : Maybe String
-    , position : Position
     , drag : Maybe Drag
     }
 
@@ -97,9 +105,14 @@ type alias TabScreenshot =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( { tabGroups = [] }, getModel () )
+type alias Flags =
+    {}
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
+    --getModel () )
+    ( { tabGroups = [], tabDrag = Nothing }, Cmd.none )
 
 
 sampleTabs : List TabGroup
@@ -110,14 +123,12 @@ sampleTabs =
           , title = "tab1"
           , url = "www.tab1.com"
           , screenshot = Nothing
-          , position = Position 10 10
           , drag = Nothing
           }
         , { id = 2
           , title = "tab2"
           , url = "www.tab2.com"
           , screenshot = Nothing
-          , position = Position 10 10
           , drag = Nothing
           }
         ]
@@ -138,8 +149,9 @@ type Msg
     | ChangeGroupTitle Int String
     | DeleteTabGroup Int
     | AddTabGroup
-    | DragMsg ( Int, DragMsg )
-    | ResizeMsg ( Int, DragMsg )
+    | TabDragMsg ( Tab, DragMsg )
+    | TabGroupDragMsg ( Int, DragMsg )
+    | TabGroupResizeMsg ( Int, DragMsg )
 
 
 type DragMsg
@@ -152,7 +164,8 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotSavedModel Nothing ->
-            ( model, getTabs () )
+            -- ( model, getTabs () )
+            ( model, Cmd.none )
 
         GotSavedModel (Just newModel) ->
             ( newModel, Cmd.none )
@@ -172,7 +185,8 @@ update msg model =
                 newModel =
                     { model | tabGroups = [ newTabGroup ] }
             in
-            ( newModel, saveModel newModel )
+            -- ( newModel, saveModel newModel )
+            ( newModel, Cmd.none )
 
         GotTabScreenshot tabscreenshot ->
             let
@@ -185,6 +199,7 @@ update msg model =
                         (\tab ->
                             if tab.id == tabscreenshot.id then
                                 { tab | screenshot = tabscreenshot.img }
+
                             else
                                 tab
                         )
@@ -196,7 +211,8 @@ update msg model =
                 newModel =
                     { model | tabGroups = [ newTabGroup ] }
             in
-            ( newModel, saveModel newModel )
+            -- ( newModel, saveModel newModel )
+            ( newModel, Cmd.none )
 
         DeleteTabGroup id ->
             let
@@ -206,7 +222,8 @@ update msg model =
                 newModel =
                     { model | tabGroups = newTabGroups }
             in
-            ( newModel, saveModel newModel )
+            -- ( newModel, saveModel newModel )
+            ( newModel, Cmd.none )
 
         AddTabGroup ->
             let
@@ -216,7 +233,8 @@ update msg model =
                 newModel =
                     { model | tabGroups = newTabGroups }
             in
-            ( newModel, saveModel newModel )
+            -- ( newModel, saveModel newModel )
+            ( newModel, Cmd.none )
 
         ChangeGroupTitle id newTitle ->
             let
@@ -226,6 +244,7 @@ update msg model =
                             (\tabGroup ->
                                 if tabGroup.id == id then
                                     { tabGroup | title = newTitle }
+
                                 else
                                     tabGroup
                             )
@@ -233,7 +252,8 @@ update msg model =
                 newModel =
                     { model | tabGroups = newTabGroups }
             in
-            ( newModel, saveModel newModel )
+            -- ( newModel, saveModel newModel )
+            ( newModel, Cmd.none )
 
         FinishGroupTitleEdit id ->
             let
@@ -243,6 +263,7 @@ update msg model =
                             (\tabGroup ->
                                 if tabGroup.id == id then
                                     { tabGroup | changingTitle = False }
+
                                 else
                                     tabGroup
                             )
@@ -250,7 +271,8 @@ update msg model =
                 newModel =
                     { model | tabGroups = newTabGroups }
             in
-            ( newModel, saveModel newModel )
+            -- ( newModel, saveModel newModel )
+            ( newModel, Cmd.none )
 
         StartGroupTitleEdit id ->
             let
@@ -260,6 +282,7 @@ update msg model =
                             (\tabGroup ->
                                 if tabGroup.id == id then
                                     { tabGroup | changingTitle = True }
+
                                 else
                                     tabGroup
                             )
@@ -267,9 +290,10 @@ update msg model =
                 newModel =
                     { model | tabGroups = newTabGroups }
             in
-            ( newModel, saveModel newModel )
+            -- ( newModel, saveModel newModel )
+            ( newModel, Cmd.none )
 
-        ResizeMsg ( groupId, resizeMsg ) ->
+        TabGroupResizeMsg ( groupId, resizeMsg ) ->
             let
                 newModel =
                     { model
@@ -277,9 +301,10 @@ update msg model =
                             List.map (resizeTabGroup groupId resizeMsg) model.tabGroups
                     }
             in
-            ( newModel, saveModel newModel )
+            -- ( newModel, saveModel newModel )
+            ( newModel, Cmd.none )
 
-        DragMsg ( groupId, dragMsg ) ->
+        TabGroupDragMsg ( groupId, dragMsg ) ->
             let
                 newModel =
                     { model
@@ -287,13 +312,46 @@ update msg model =
                             List.map (dragTabGroup groupId dragMsg) model.tabGroups
                     }
             in
-            ( newModel, saveModel newModel )
+            -- ( newModel, saveModel newModel )
+            ( newModel, Cmd.none )
+
+        TabDragMsg ( tab, dragMsg ) ->
+            let
+                newModel =
+                    { model | tabDrag = dragTab tab.id dragMsg tab }
+
+                -- TODO: fix tab final position, add to new tab group, remove from old tabgroup
+            in
+            -- ( newModel, saveModel newModel )
+            ( newModel, Cmd.none )
+
+
+type alias Draggable a =
+    { a | id : Int, drag : Maybe Drag, position : Position }
+
+
+dragTab : Int -> DragMsg -> Tab -> Maybe Tab
+dragTab id msg item =
+    if id /= item.id then
+        Just item
+
+    else
+        case msg of
+            DragStart xy ->
+                Just { item | drag = Just (Drag xy xy) }
+
+            DragAt xy ->
+                Just { item | drag = Maybe.map (\{ start } -> Drag start xy) item.drag }
+
+            DragEnd _ ->
+                Nothing
 
 
 dragTabGroup : Int -> DragMsg -> TabGroup -> TabGroup
 dragTabGroup id msg tabGroup =
     if id /= tabGroup.id then
         tabGroup
+
     else
         case msg of
             DragStart xy ->
@@ -310,6 +368,7 @@ resizeTabGroup : Int -> DragMsg -> TabGroup -> TabGroup
 resizeTabGroup id msg tabGroup =
     if id /= tabGroup.id then
         tabGroup
+
     else
         case msg of
             DragStart xy ->
@@ -340,14 +399,27 @@ getDimensions { dimensions, resize } =
 
 view : Model -> Html Msg
 view model =
-    div [] <|
-        addTabGroupButton
+    div []
+        (div [] [ text "hello world" ]
+            :: addTabGroupButton
+            :: viewTabDragging model.tabDrag
             :: List.map viewTabGroup model.tabGroups
+        )
+
+
+viewTabDragging : Maybe Tab -> Html Msg
+viewTabDragging maybeTab =
+    case maybeTab of
+        Nothing ->
+            span [] []
+
+        Just tab ->
+            viewTab 20 tab
 
 
 addTabGroupButton : Html Msg
 addTabGroupButton =
-    button [ onClick AddTabGroup ] [ text "New Tab Group" ]
+    button [ Html.Events.onClick AddTabGroup ] [ text "New Tab Group" ]
 
 
 viewTabGroup : TabGroup -> Html Msg
@@ -372,26 +444,34 @@ viewTabGroup tabGroup =
             floor <| bestFit width height tabCount
     in
     div
-        [ dragOnMouseDown tabGroup
-        , class "tabGroup"
-        , style
-            [ "padding" => "10px"
-            , "cursor" => "move"
-            , "width" => px realDimensions.width
-            , "height" => px realDimensions.height
-            , "border-radius" => "4px"
-            , "position" => "absolute"
-            , "left" => px realPosition.x
-            , "top" => px realPosition.y
-            , "background-color" => "#F8F8F8"
-            , "color" => "#B0B1BB"
-            ]
+        [ -- dragOnMouseDown tabGroup
+          class "tabGroup"
+        , (\( a, b ) -> style a b) ( "padding", "10px" )
+        , (\( a, b ) -> style a b) ( "cursor", "move" )
+        , (\( a, b ) -> style a b) ( "width", px realDimensions.width )
+        , (\( a, b ) -> style a b) ( "height", px realDimensions.height )
+        , (\( a, b ) -> style a b) ( "border-radius", "4px" )
+        , (\( a, b ) -> style a b) ( "position", "absolute" )
+        , (\( a, b ) -> style a b) ( "left", px realPosition.x )
+        , (\( a, b ) -> style a b) ( "top", px realPosition.y )
+        , (\( a, b ) -> style a b) ( "background-color", "#F8F8F8" )
+        , (\( a, b ) -> style a b) ( "color", "#B0B1BB" )
         ]
         (viewTabGroupDeleteButton tabGroup
             :: viewTabGroupTitle tabGroup
             :: viewDraggableCorner tabGroup
             :: List.map (viewTab tabLength) tabGroup.tabs
         )
+
+
+newIndex : Position -> Int -> Int -> Dimensions -> Int
+newIndex position width height dimensions =
+    let
+        itemsPerRow =
+            dimensions.width // width
+    in
+    (position.x // width)
+        + ((position.y // height) * itemsPerRow)
 
 
 maxWholeSquares : Float -> Float -> Float -> Float
@@ -408,6 +488,7 @@ lessEfficientSquareEdge : Float -> Float -> Float -> Float -> Float
 lessEfficientSquareEdge w h n x =
     if maxWholeSquares w h x >= n then
         x
+
     else
         lessEfficientSquareEdge w h n (x - 1)
 
@@ -420,16 +501,14 @@ bestFit w h n =
 viewDraggableCorner : TabGroup -> Html Msg
 viewDraggableCorner tabGroup =
     div
-        [ resizeOnMouseDown tabGroup
-        , style
-            [ "background-color" => "darkblue"
-            , "height" => "20px"
-            , "width" => "20px"
-            , "position" => "absolute"
-            , "bottom" => "0px"
-            , "right" => "0px"
-            , "cursor" => "nwse-resize"
-            ]
+        [ -- resizeOnMouseDown tabGroup
+          (\( a, b ) -> style a b) ( "background-color", "darkblue" )
+        , (\( a, b ) -> style a b) ( "height", "20px" )
+        , (\( a, b ) -> style a b) ( "width", "20px" )
+        , (\( a, b ) -> style a b) ( "position", "absolute" )
+        , (\( a, b ) -> style a b) ( "bottom", "0px" )
+        , (\( a, b ) -> style a b) ( "right", "0px" )
+        , (\( a, b ) -> style a b) ( "cursor", "nwse-resize" )
         ]
         []
 
@@ -440,16 +519,18 @@ viewTabGroupTitle tabGroup =
         div []
             [ input
                 [ onInput (ChangeGroupTitle tabGroup.id)
-                , onEnter (FinishGroupTitleEdit tabGroup.id)
+
+                -- , onEnter (FinishGroupTitleEdit tabGroup.id)
                 , onBlur (FinishGroupTitleEdit tabGroup.id)
                 , value tabGroup.title
                 ]
                 [ text tabGroup.title ]
             ]
+
     else
         div
-            [ onClick (StartGroupTitleEdit tabGroup.id)
-            , style [ ( "cursor", "pointer" ) ]
+            [ Html.Events.onClick (StartGroupTitleEdit tabGroup.id)
+            , style "cursor" "pointer"
             ]
             [ text tabGroup.title ]
 
@@ -457,25 +538,19 @@ viewTabGroupTitle tabGroup =
 viewTabGroupDeleteButton : TabGroup -> Html Msg
 viewTabGroupDeleteButton tabGroup =
     div
-        [ onClick (DeleteTabGroup tabGroup.id)
-        , style
-            [ "float" => "right"
-            , "cursor" => "pointer"
-            ]
+        [ Html.Events.onClick (DeleteTabGroup tabGroup.id)
+        , (\( a, b ) -> style a b) ( "float", "right" )
+        , (\( a, b ) -> style a b) ( "cursor", "pointer" )
         ]
         [ text "X" ]
 
 
-(=>) =
-    (,)
-
-
 px : Int -> String
 px number =
-    toString number ++ "px"
+    String.fromInt number ++ "px"
 
 
-getPosition : TabGroup -> Position
+getPosition : Draggable a -> Position
 getPosition { position, drag } =
     case drag of
         Nothing ->
@@ -487,14 +562,16 @@ getPosition { position, drag } =
                 (position.y + current.y - start.y)
 
 
+
+{--
 dragOnMouseDown : TabGroup -> Attribute Msg
 dragOnMouseDown tabGroup =
-    on "mousedown" (Decode.map (\pos -> DragMsg ( tabGroup.id, DragStart pos )) Mouse.position)
+    on "mousedown" (Decode.map (\pos -> TabGroupDragMsg ( tabGroup.id, DragStart pos )) Mouse.position)
 
 
 resizeOnMouseDown : TabGroup -> Attribute Msg
 resizeOnMouseDown tabGroup =
-    onWithOptions "mousedown" stopPropagation (Decode.map (\pos -> ResizeMsg ( tabGroup.id, DragStart pos )) Mouse.position)
+    onWithOptions "mousedown" stopPropagation (Decode.map (\pos -> TabGroupResizeMsg ( tabGroup.id, DragStart pos )) Mouse.position)
 
 
 stopPropagation : Options
@@ -502,6 +579,7 @@ stopPropagation =
     { stopPropagation = True
     , preventDefault = True
     }
+    --}
 
 
 viewTab : Int -> Tab -> Html Msg
@@ -520,32 +598,26 @@ viewTab length tab =
             case tab.screenshot of
                 Nothing ->
                     div
-                        [ style
-                            [ "width" => "100%"
-                            , "height" => "100%"
-                            , "background-color" => "white"
-                            ]
+                        [ (\( a, b ) -> style a b) ( "width", "100%" )
+                        , (\( a, b ) -> style a b) ( "height", "100%" )
+                        , (\( a, b ) -> style a b) ( "background-color", "white" )
                         ]
                         []
 
-                Just screenshot ->
+                Just screenshotSrc ->
                     img
-                        [ src screenshot
-                        , style
-                            [ "width" => "100%"
-                            , "height" => "100%"
-                            ]
+                        [ src screenshotSrc
+                        , (\( a, b ) -> style a b) ( "width", "100%" )
+                        , (\( a, b ) -> style a b) ( "height", "100%" )
                         ]
                         []
     in
     div
-        [ style
-            [ ( "float", "left" )
-            , ( "width", px size )
-            , ( "height", px size )
-            , ( "margin", px margin )
-            , ( "border", px border ++ " solid black" )
-            ]
+        [ style "float" "left"
+        , style "width" (px size)
+        , style "height" (px size)
+        , style "margin" (px margin)
+        , style "border" (px border ++ " solid black")
         ]
         [ screenshot
         , div [] [ text (ellipsis 20 tab.title) ]
@@ -566,14 +638,30 @@ subscriptions model =
             Sub.batch <| List.map tabGroupResizeSub model.tabGroups
     in
     Sub.batch
-        (savedModel GotSavedModel
-            :: tabGroup GotTabGroup
-            :: tabs GotTabs
-            :: tabScreenshot GotTabScreenshot
-            :: dragSubs
+        -- savedModel GotSavedModel
+        -- tabGroup GotTabGroup
+        -- :: tabs GotTabs
+        -- :: tabScreenshot GotTabScreenshot
+        (dragSubs
             :: resizeSubs
             :: []
         )
+
+
+tabDragSub : Tab -> Sub Msg
+tabDragSub tab =
+    case tab.drag of
+        Nothing ->
+            Sub.none
+
+        Just _ ->
+            {--
+            Sub.batch []
+                [ Sub.map (\msg -> TabDragMsg ( tab, msg )) (Mouse.moves DragAt)
+                , Sub.map (\msg -> TabDragMsg ( tab, msg )) (Mouse.ups DragEnd)
+                ]
+                --}
+            Sub.none
 
 
 tabGroupDragSub : TabGroup -> Sub Msg
@@ -583,10 +671,13 @@ tabGroupDragSub tabGroup =
             Sub.none
 
         Just _ ->
+            {--
             Sub.batch
-                [ Sub.map (\msg -> DragMsg ( tabGroup.id, msg )) (Mouse.moves DragAt)
-                , Sub.map (\msg -> DragMsg ( tabGroup.id, msg )) (Mouse.ups DragEnd)
+                [ Sub.map (\msg -> TabGroupDragMsg ( tabGroup.id, msg )) (Mouse.moves DragAt)
+                , Sub.map (\msg -> TabGroupDragMsg ( tabGroup.id, msg )) (Mouse.ups DragEnd)
                 ]
+                --}
+            Sub.none
 
 
 tabGroupResizeSub : TabGroup -> Sub Msg
@@ -596,36 +687,34 @@ tabGroupResizeSub tabGroup =
             Sub.none
 
         Just _ ->
+            {--
             Sub.batch
-                [ Sub.map (\msg -> ResizeMsg ( tabGroup.id, msg )) (Mouse.moves DragAt)
-                , Sub.map (\msg -> ResizeMsg ( tabGroup.id, msg )) (Mouse.ups DragEnd)
+                [ Sub.map (\msg -> TabGroupResizeMsg ( tabGroup.id, msg )) (Mouse.moves DragAt)
+                , Sub.map (\msg -> TabGroupResizeMsg ( tabGroup.id, msg )) (Mouse.ups DragEnd)
                 ]
+                --}
+            Sub.none
 
 
 
 -- PORTS
+{- TAB PORTS
+   port getTabs : () -> Cmd msg
+
+   port tabs : (List Tab -> msg) -> Sub msg
+
+   port tabScreenshot : (TabScreenshot -> msg) -> Sub msg
 
 
-{-| TAB PORTS
 -}
-port getTabs : () -> Cmd msg
+{- LOCAL STORAGE PORTS
+   port saveModel : Model -> Cmd msg
+
+   port getModel : () -> Cmd msg
+
+   port savedModel : (Maybe Model -> msg) -> Sub msg
+
+   port tabGroup : (TabGroup -> msg) -> Sub msg
 
 
-port tabs : (List Tab -> msg) -> Sub msg
-
-
-port tabScreenshot : (TabScreenshot -> msg) -> Sub msg
-
-
-{-| LOCAL STORAGE PORTS
 -}
-port saveModel : Model -> Cmd msg
-
-
-port getModel : () -> Cmd msg
-
-
-port savedModel : (Maybe Model -> msg) -> Sub msg
-
-
-port tabGroup : (TabGroup -> msg) -> Sub msg

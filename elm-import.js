@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-  var app = Elm.Main.fullscreen();
+  var app = Elm.Main.init({
+        node: document.getElementById('elm')
+  });
 
   if (chrome.tabs) {
     // Subscribe to tab selection change
@@ -31,10 +33,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // If we're not running in a chrome extension
     // then return some sample results
     if (!chrome.tabs) {
-      console.log("not in extenstion, sending example tabs");
+      console.log("currently not running as a chrome extenstion, sending example tabs");
       app.ports.tabs.send([
-	{ title: "tab 1", url: "tab1.com", screenshot: "", id: "0"},
-	{ title: "tab 2", url: "tab2.com", screenshot: "", id: "1"}
+        { title: "tab 1", url: "tab1.com", screenshot: "", id: 0, drag: null },
+        { title: "tab 2", url: "tab2.com", screenshot: "", id: 1, drag: null },
+        { title: "tab 3", url: "tab3.com", screenshot: "", id: 2, drag: null }
       ]);
       return
     }
