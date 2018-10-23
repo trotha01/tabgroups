@@ -642,7 +642,6 @@ subscriptions model =
     in
     Sub.batch
         [ savedModel GotSavedModel
-        , savedTabGroup GotTabGroup
         , tabs GotTabs
         , tabScreenshot GotTabScreenshot
         , dragSubs
@@ -726,6 +725,3 @@ port getModel : () -> Cmd msg
 
 
 port savedModel : (Maybe Model -> msg) -> Sub msg
-
-
-port savedTabGroup : (TabGroup -> msg) -> Sub msg
