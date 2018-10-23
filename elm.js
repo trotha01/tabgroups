@@ -770,11 +770,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.F.J === region.ac.J)
+	if (region.h.O === region.aa.O)
 	{
-		return 'on line ' + region.F.J;
+		return 'on line ' + region.h.O;
 	}
-	return 'on lines ' + region.F.J + ' through ' + region.ac.J;
+	return 'on lines ' + region.h.O + ' through ' + region.aa.O;
 }
 
 
@@ -1841,7 +1841,7 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aI,
+		impl.aF,
 		impl.aS,
 		impl.aR,
 		function() { return function() {} }
@@ -2643,9 +2643,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		o: func(record.o),
-		X: record.X,
-		W: record.W
+		aH: func(record.aH),
+		aP: record.aP,
+		aN: record.aN
 	}
 });
 
@@ -2913,11 +2913,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.X;
+		var message = !tag ? value : tag < 3 ? value.a : value.aH;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.aP;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.W) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.aN) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3867,7 +3867,7 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aI,
+		impl.aF,
 		impl.aS,
 		impl.aR,
 		function(sendToApp, initialModel) {
@@ -3903,11 +3903,11 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aI,
+		impl.aF,
 		impl.aS,
 		impl.aR,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.L && impl.L(sendToApp)
+			var divertHrefToApp = impl.P && impl.P(sendToApp)
 			var view = impl.aT;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
@@ -3916,12 +3916,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aA);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ax);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.k) && (_VirtualDom_doc.title = title = doc.k);
+				(title !== doc.g) && (_VirtualDom_doc.title = title = doc.g);
 			});
 		}
 	);
@@ -3977,12 +3977,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aM;
-	var onUrlRequest = impl.aN;
+	var onUrlChange = impl.aK;
+	var onUrlRequest = impl.aL;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		L: function(sendToApp)
+		P: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -3998,9 +3998,9 @@ function _Browser_application(impl)
 					var next = elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aq === next.aq
-							&& curr.af === next.af
-							&& curr.an.a === next.an.a
+							&& curr.an === next.an
+							&& curr.ad === next.ad
+							&& curr.ak.a === next.ak.a
 						)
 							? elm$browser$Browser$Internal(next)
 							: elm$browser$Browser$External(href)
@@ -4008,9 +4008,9 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aI: function(flags)
+		aF: function(flags)
 		{
-			return A3(impl.aI, flags, _Browser_getUrl(), key);
+			return A3(impl.aF, flags, _Browser_getUrl(), key);
 		},
 		aT: impl.aT,
 		aS: impl.aS,
@@ -4080,17 +4080,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aF: 'hidden', aB: 'visibilitychange' }
+		? { aC: 'hidden', ay: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aF: 'mozHidden', aB: 'mozvisibilitychange' }
+		? { aC: 'mozHidden', ay: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aF: 'msHidden', aB: 'msvisibilitychange' }
+		? { aC: 'msHidden', ay: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aF: 'webkitHidden', aB: 'webkitvisibilitychange' }
-		: { aF: 'hidden', aB: 'visibilitychange' };
+		? { aC: 'webkitHidden', ay: 'webkitvisibilitychange' }
+		: { aC: 'hidden', ay: 'visibilitychange' };
 }
 
 
@@ -4171,12 +4171,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		au: _Browser_getScene(),
-		ax: {
-			s: _Browser_window.pageXOffset,
-			t: _Browser_window.pageYOffset,
-			z: _Browser_doc.documentElement.clientWidth,
-			B: _Browser_doc.documentElement.clientHeight
+		ar: _Browser_getScene(),
+		au: {
+			b: _Browser_window.pageXOffset,
+			c: _Browser_window.pageYOffset,
+			s: _Browser_doc.documentElement.clientWidth,
+			t: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4186,8 +4186,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		z: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		B: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		s: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		t: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4210,15 +4210,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			au: {
-				z: node.scrollWidth,
-				B: node.scrollHeight
+			ar: {
+				s: node.scrollWidth,
+				t: node.scrollHeight
 			},
-			ax: {
-				s: node.scrollLeft,
-				t: node.scrollTop,
-				z: node.clientWidth,
-				B: node.clientHeight
+			au: {
+				b: node.scrollLeft,
+				c: node.scrollTop,
+				s: node.clientWidth,
+				t: node.clientHeight
 			}
 		};
 	});
@@ -4248,18 +4248,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			au: _Browser_getScene(),
-			ax: {
-				s: x,
-				t: y,
-				z: _Browser_doc.documentElement.clientWidth,
-				B: _Browser_doc.documentElement.clientHeight
+			ar: _Browser_getScene(),
+			au: {
+				b: x,
+				c: y,
+				s: _Browser_doc.documentElement.clientWidth,
+				t: _Browser_doc.documentElement.clientHeight
 			},
-			aC: {
-				s: x + rect.left,
-				t: y + rect.top,
-				z: rect.width,
-				B: rect.height
+			az: {
+				b: x + rect.left,
+				c: y + rect.top,
+				s: rect.width,
+				t: rect.height
 			}
 		};
 	});
@@ -4294,16 +4294,11 @@ function _Browser_load(url)
 		}
 	}));
 }
-var elm$core$Maybe$Nothing = {$: 1};
-var elm$core$Basics$False = 1;
-var elm$core$Basics$True = 0;
-var elm$core$Result$isOk = function (result) {
-	if (!result.$) {
-		return true;
-	} else {
-		return false;
-	}
-};
+var elm$core$Array$branchFactor = 32;
+var elm$core$Array$Array_elm_builtin = F4(
+	function (a, b, c, d) {
+		return {$: 0, a: a, b: b, c: c, d: d};
+	});
 var elm$core$Basics$EQ = 1;
 var elm$core$Basics$GT = 2;
 var elm$core$Basics$LT = 0;
@@ -4384,11 +4379,6 @@ var elm$core$Array$foldr = F3(
 var elm$core$Array$toList = function (array) {
 	return A3(elm$core$Array$foldr, elm$core$List$cons, _List_Nil, array);
 };
-var elm$core$Array$branchFactor = 32;
-var elm$core$Array$Array_elm_builtin = F4(
-	function (a, b, c, d) {
-		return {$: 0, a: a, b: b, c: c, d: d};
-	});
 var elm$core$Basics$ceiling = _Basics_ceiling;
 var elm$core$Basics$fdiv = _Basics_fdiv;
 var elm$core$Basics$logBase = F2(
@@ -4492,27 +4482,28 @@ var elm$core$Basics$sub = _Basics_sub;
 var elm$core$Elm$JsArray$length = _JsArray_length;
 var elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.c) {
+		if (!builder.f) {
 			return A4(
 				elm$core$Array$Array_elm_builtin,
-				elm$core$Elm$JsArray$length(builder.e),
+				elm$core$Elm$JsArray$length(builder.j),
 				elm$core$Array$shiftStep,
 				elm$core$Elm$JsArray$empty,
-				builder.e);
+				builder.j);
 		} else {
-			var treeLen = builder.c * elm$core$Array$branchFactor;
+			var treeLen = builder.f * elm$core$Array$branchFactor;
 			var depth = elm$core$Basics$floor(
 				A2(elm$core$Basics$logBase, elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? elm$core$List$reverse(builder.f) : builder.f;
-			var tree = A2(elm$core$Array$treeFromBuilder, correctNodeList, builder.c);
+			var correctNodeList = reverseNodeList ? elm$core$List$reverse(builder.k) : builder.k;
+			var tree = A2(elm$core$Array$treeFromBuilder, correctNodeList, builder.f);
 			return A4(
 				elm$core$Array$Array_elm_builtin,
-				elm$core$Elm$JsArray$length(builder.e) + treeLen,
+				elm$core$Elm$JsArray$length(builder.j) + treeLen,
 				A2(elm$core$Basics$max, 5, depth * elm$core$Array$shiftStep),
 				tree,
-				builder.e);
+				builder.j);
 		}
 	});
+var elm$core$Basics$False = 1;
 var elm$core$Basics$idiv = _Basics_idiv;
 var elm$core$Basics$lt = _Utils_lt;
 var elm$core$Elm$JsArray$initialize = _JsArray_initialize;
@@ -4524,7 +4515,7 @@ var elm$core$Array$initializeHelp = F5(
 				return A2(
 					elm$core$Array$builderToArray,
 					false,
-					{f: nodeList, c: (len / elm$core$Array$branchFactor) | 0, e: tail});
+					{k: nodeList, f: (len / elm$core$Array$branchFactor) | 0, j: tail});
 			} else {
 				var leaf = elm$core$Array$Leaf(
 					A3(elm$core$Elm$JsArray$initialize, elm$core$Array$branchFactor, fromIndex, fn));
@@ -4558,11 +4549,20 @@ var elm$core$Array$initialize = F2(
 var elm$core$Maybe$Just = function (a) {
 	return {$: 0, a: a};
 };
+var elm$core$Maybe$Nothing = {$: 1};
 var elm$core$Result$Err = function (a) {
 	return {$: 1, a: a};
 };
 var elm$core$Result$Ok = function (a) {
 	return {$: 0, a: a};
+};
+var elm$core$Basics$True = 0;
+var elm$core$Result$isOk = function (result) {
+	if (!result.$) {
+		return true;
+	} else {
+		return false;
+	}
 };
 var elm$json$Json$Decode$Failure = F2(
 	function (a, b) {
@@ -4769,31 +4769,763 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 			}
 		}
 	});
-var elm$core$Platform$Cmd$batch = _Platform_batch;
-var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
+var elm$json$Json$Encode$null = _Json_encodeNull;
+var author$project$Main$getModel = _Platform_outgoingPort(
+	'getModel',
+	function ($) {
+		return elm$json$Json$Encode$null;
+	});
 var author$project$Main$init = function (flags) {
 	return _Utils_Tuple2(
-		{S: elm$core$Maybe$Nothing, a: _List_Nil},
-		elm$core$Platform$Cmd$none);
+		{L: elm$core$Maybe$Nothing, d: _List_Nil},
+		author$project$Main$getModel(0));
 };
-var elm$core$Platform$Sub$batch = _Platform_batch;
-var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
-var author$project$Main$tabGroupDragSub = function (tabGroup) {
-	var _n0 = tabGroup.g;
-	if (_n0.$ === 1) {
-		return elm$core$Platform$Sub$none;
+var author$project$Main$GotSavedModel = function (a) {
+	return {$: 3, a: a};
+};
+var author$project$Main$GotTabGroup = function (a) {
+	return {$: 1, a: a};
+};
+var author$project$Main$GotTabScreenshot = function (a) {
+	return {$: 2, a: a};
+};
+var author$project$Main$GotTabs = function (a) {
+	return {$: 0, a: a};
+};
+var elm$json$Json$Decode$andThen = _Json_andThen;
+var elm$json$Json$Decode$bool = _Json_decodeBool;
+var elm$json$Json$Decode$field = _Json_decodeField;
+var elm$json$Json$Decode$int = _Json_decodeInt;
+var elm$json$Json$Decode$list = _Json_decodeList;
+var elm$json$Json$Decode$map = _Json_map1;
+var elm$json$Json$Decode$null = _Json_decodeNull;
+var elm$json$Json$Decode$oneOf = _Json_oneOf;
+var elm$json$Json$Decode$string = _Json_decodeString;
+var elm$json$Json$Decode$succeed = _Json_succeed;
+var author$project$Main$savedModel = _Platform_incomingPort(
+	'savedModel',
+	elm$json$Json$Decode$oneOf(
+		_List_fromArray(
+			[
+				elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+				A2(
+				elm$json$Json$Decode$map,
+				elm$core$Maybe$Just,
+				A2(
+					elm$json$Json$Decode$andThen,
+					function (tabGroups) {
+						return A2(
+							elm$json$Json$Decode$andThen,
+							function (tabDrag) {
+								return elm$json$Json$Decode$succeed(
+									{L: tabDrag, d: tabGroups});
+							},
+							A2(
+								elm$json$Json$Decode$field,
+								'tabDrag',
+								elm$json$Json$Decode$oneOf(
+									_List_fromArray(
+										[
+											elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+											A2(
+											elm$json$Json$Decode$map,
+											elm$core$Maybe$Just,
+											A2(
+												elm$json$Json$Decode$andThen,
+												function (url) {
+													return A2(
+														elm$json$Json$Decode$andThen,
+														function (title) {
+															return A2(
+																elm$json$Json$Decode$andThen,
+																function (screenshot) {
+																	return A2(
+																		elm$json$Json$Decode$andThen,
+																		function (id) {
+																			return A2(
+																				elm$json$Json$Decode$andThen,
+																				function (drag) {
+																					return elm$json$Json$Decode$succeed(
+																						{e: drag, a: id, p: screenshot, g: title, v: url});
+																				},
+																				A2(
+																					elm$json$Json$Decode$field,
+																					'drag',
+																					elm$json$Json$Decode$oneOf(
+																						_List_fromArray(
+																							[
+																								elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+																								A2(
+																								elm$json$Json$Decode$map,
+																								elm$core$Maybe$Just,
+																								A2(
+																									elm$json$Json$Decode$andThen,
+																									function (start) {
+																										return A2(
+																											elm$json$Json$Decode$andThen,
+																											function (current) {
+																												return elm$json$Json$Decode$succeed(
+																													{l: current, h: start});
+																											},
+																											A2(
+																												elm$json$Json$Decode$field,
+																												'current',
+																												A2(
+																													elm$json$Json$Decode$andThen,
+																													function (y) {
+																														return A2(
+																															elm$json$Json$Decode$andThen,
+																															function (x) {
+																																return elm$json$Json$Decode$succeed(
+																																	{b: x, c: y});
+																															},
+																															A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																													},
+																													A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+																									},
+																									A2(
+																										elm$json$Json$Decode$field,
+																										'start',
+																										A2(
+																											elm$json$Json$Decode$andThen,
+																											function (y) {
+																												return A2(
+																													elm$json$Json$Decode$andThen,
+																													function (x) {
+																														return elm$json$Json$Decode$succeed(
+																															{b: x, c: y});
+																													},
+																													A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																											},
+																											A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int)))))
+																							]))));
+																		},
+																		A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
+																},
+																A2(
+																	elm$json$Json$Decode$field,
+																	'screenshot',
+																	elm$json$Json$Decode$oneOf(
+																		_List_fromArray(
+																			[
+																				elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+																				A2(elm$json$Json$Decode$map, elm$core$Maybe$Just, elm$json$Json$Decode$string)
+																			]))));
+														},
+														A2(elm$json$Json$Decode$field, 'title', elm$json$Json$Decode$string));
+												},
+												A2(elm$json$Json$Decode$field, 'url', elm$json$Json$Decode$string)))
+										]))));
+					},
+					A2(
+						elm$json$Json$Decode$field,
+						'tabGroups',
+						elm$json$Json$Decode$list(
+							A2(
+								elm$json$Json$Decode$andThen,
+								function (title) {
+									return A2(
+										elm$json$Json$Decode$andThen,
+										function (tabs) {
+											return A2(
+												elm$json$Json$Decode$andThen,
+												function (resize) {
+													return A2(
+														elm$json$Json$Decode$andThen,
+														function (position) {
+															return A2(
+																elm$json$Json$Decode$andThen,
+																function (id) {
+																	return A2(
+																		elm$json$Json$Decode$andThen,
+																		function (drag) {
+																			return A2(
+																				elm$json$Json$Decode$andThen,
+																				function (dimensions) {
+																					return A2(
+																						elm$json$Json$Decode$andThen,
+																						function (changingTitle) {
+																							return elm$json$Json$Decode$succeed(
+																								{y: changingTitle, B: dimensions, e: drag, a: id, F: position, o: resize, r: tabs, g: title});
+																						},
+																						A2(elm$json$Json$Decode$field, 'changingTitle', elm$json$Json$Decode$bool));
+																				},
+																				A2(
+																					elm$json$Json$Decode$field,
+																					'dimensions',
+																					A2(
+																						elm$json$Json$Decode$andThen,
+																						function (width) {
+																							return A2(
+																								elm$json$Json$Decode$andThen,
+																								function (height) {
+																									return elm$json$Json$Decode$succeed(
+																										{t: height, s: width});
+																								},
+																								A2(elm$json$Json$Decode$field, 'height', elm$json$Json$Decode$int));
+																						},
+																						A2(elm$json$Json$Decode$field, 'width', elm$json$Json$Decode$int))));
+																		},
+																		A2(
+																			elm$json$Json$Decode$field,
+																			'drag',
+																			elm$json$Json$Decode$oneOf(
+																				_List_fromArray(
+																					[
+																						elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+																						A2(
+																						elm$json$Json$Decode$map,
+																						elm$core$Maybe$Just,
+																						A2(
+																							elm$json$Json$Decode$andThen,
+																							function (start) {
+																								return A2(
+																									elm$json$Json$Decode$andThen,
+																									function (current) {
+																										return elm$json$Json$Decode$succeed(
+																											{l: current, h: start});
+																									},
+																									A2(
+																										elm$json$Json$Decode$field,
+																										'current',
+																										A2(
+																											elm$json$Json$Decode$andThen,
+																											function (y) {
+																												return A2(
+																													elm$json$Json$Decode$andThen,
+																													function (x) {
+																														return elm$json$Json$Decode$succeed(
+																															{b: x, c: y});
+																													},
+																													A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																											},
+																											A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+																							},
+																							A2(
+																								elm$json$Json$Decode$field,
+																								'start',
+																								A2(
+																									elm$json$Json$Decode$andThen,
+																									function (y) {
+																										return A2(
+																											elm$json$Json$Decode$andThen,
+																											function (x) {
+																												return elm$json$Json$Decode$succeed(
+																													{b: x, c: y});
+																											},
+																											A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																									},
+																									A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int)))))
+																					]))));
+																},
+																A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
+														},
+														A2(
+															elm$json$Json$Decode$field,
+															'position',
+															A2(
+																elm$json$Json$Decode$andThen,
+																function (y) {
+																	return A2(
+																		elm$json$Json$Decode$andThen,
+																		function (x) {
+																			return elm$json$Json$Decode$succeed(
+																				{b: x, c: y});
+																		},
+																		A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																},
+																A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+												},
+												A2(
+													elm$json$Json$Decode$field,
+													'resize',
+													elm$json$Json$Decode$oneOf(
+														_List_fromArray(
+															[
+																elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+																A2(
+																elm$json$Json$Decode$map,
+																elm$core$Maybe$Just,
+																A2(
+																	elm$json$Json$Decode$andThen,
+																	function (start) {
+																		return A2(
+																			elm$json$Json$Decode$andThen,
+																			function (current) {
+																				return elm$json$Json$Decode$succeed(
+																					{l: current, h: start});
+																			},
+																			A2(
+																				elm$json$Json$Decode$field,
+																				'current',
+																				A2(
+																					elm$json$Json$Decode$andThen,
+																					function (y) {
+																						return A2(
+																							elm$json$Json$Decode$andThen,
+																							function (x) {
+																								return elm$json$Json$Decode$succeed(
+																									{b: x, c: y});
+																							},
+																							A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																					},
+																					A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+																	},
+																	A2(
+																		elm$json$Json$Decode$field,
+																		'start',
+																		A2(
+																			elm$json$Json$Decode$andThen,
+																			function (y) {
+																				return A2(
+																					elm$json$Json$Decode$andThen,
+																					function (x) {
+																						return elm$json$Json$Decode$succeed(
+																							{b: x, c: y});
+																					},
+																					A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																			},
+																			A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int)))))
+															]))));
+										},
+										A2(
+											elm$json$Json$Decode$field,
+											'tabs',
+											elm$json$Json$Decode$list(
+												A2(
+													elm$json$Json$Decode$andThen,
+													function (url) {
+														return A2(
+															elm$json$Json$Decode$andThen,
+															function (title) {
+																return A2(
+																	elm$json$Json$Decode$andThen,
+																	function (screenshot) {
+																		return A2(
+																			elm$json$Json$Decode$andThen,
+																			function (id) {
+																				return A2(
+																					elm$json$Json$Decode$andThen,
+																					function (drag) {
+																						return elm$json$Json$Decode$succeed(
+																							{e: drag, a: id, p: screenshot, g: title, v: url});
+																					},
+																					A2(
+																						elm$json$Json$Decode$field,
+																						'drag',
+																						elm$json$Json$Decode$oneOf(
+																							_List_fromArray(
+																								[
+																									elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+																									A2(
+																									elm$json$Json$Decode$map,
+																									elm$core$Maybe$Just,
+																									A2(
+																										elm$json$Json$Decode$andThen,
+																										function (start) {
+																											return A2(
+																												elm$json$Json$Decode$andThen,
+																												function (current) {
+																													return elm$json$Json$Decode$succeed(
+																														{l: current, h: start});
+																												},
+																												A2(
+																													elm$json$Json$Decode$field,
+																													'current',
+																													A2(
+																														elm$json$Json$Decode$andThen,
+																														function (y) {
+																															return A2(
+																																elm$json$Json$Decode$andThen,
+																																function (x) {
+																																	return elm$json$Json$Decode$succeed(
+																																		{b: x, c: y});
+																																},
+																																A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																														},
+																														A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+																										},
+																										A2(
+																											elm$json$Json$Decode$field,
+																											'start',
+																											A2(
+																												elm$json$Json$Decode$andThen,
+																												function (y) {
+																													return A2(
+																														elm$json$Json$Decode$andThen,
+																														function (x) {
+																															return elm$json$Json$Decode$succeed(
+																																{b: x, c: y});
+																														},
+																														A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																												},
+																												A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int)))))
+																								]))));
+																			},
+																			A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
+																	},
+																	A2(
+																		elm$json$Json$Decode$field,
+																		'screenshot',
+																		elm$json$Json$Decode$oneOf(
+																			_List_fromArray(
+																				[
+																					elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+																					A2(elm$json$Json$Decode$map, elm$core$Maybe$Just, elm$json$Json$Decode$string)
+																				]))));
+															},
+															A2(elm$json$Json$Decode$field, 'title', elm$json$Json$Decode$string));
+													},
+													A2(elm$json$Json$Decode$field, 'url', elm$json$Json$Decode$string)))));
+								},
+								A2(elm$json$Json$Decode$field, 'title', elm$json$Json$Decode$string))))))
+			])));
+var author$project$Main$savedTabGroup = _Platform_incomingPort(
+	'savedTabGroup',
+	A2(
+		elm$json$Json$Decode$andThen,
+		function (title) {
+			return A2(
+				elm$json$Json$Decode$andThen,
+				function (tabs) {
+					return A2(
+						elm$json$Json$Decode$andThen,
+						function (resize) {
+							return A2(
+								elm$json$Json$Decode$andThen,
+								function (position) {
+									return A2(
+										elm$json$Json$Decode$andThen,
+										function (id) {
+											return A2(
+												elm$json$Json$Decode$andThen,
+												function (drag) {
+													return A2(
+														elm$json$Json$Decode$andThen,
+														function (dimensions) {
+															return A2(
+																elm$json$Json$Decode$andThen,
+																function (changingTitle) {
+																	return elm$json$Json$Decode$succeed(
+																		{y: changingTitle, B: dimensions, e: drag, a: id, F: position, o: resize, r: tabs, g: title});
+																},
+																A2(elm$json$Json$Decode$field, 'changingTitle', elm$json$Json$Decode$bool));
+														},
+														A2(
+															elm$json$Json$Decode$field,
+															'dimensions',
+															A2(
+																elm$json$Json$Decode$andThen,
+																function (width) {
+																	return A2(
+																		elm$json$Json$Decode$andThen,
+																		function (height) {
+																			return elm$json$Json$Decode$succeed(
+																				{t: height, s: width});
+																		},
+																		A2(elm$json$Json$Decode$field, 'height', elm$json$Json$Decode$int));
+																},
+																A2(elm$json$Json$Decode$field, 'width', elm$json$Json$Decode$int))));
+												},
+												A2(
+													elm$json$Json$Decode$field,
+													'drag',
+													elm$json$Json$Decode$oneOf(
+														_List_fromArray(
+															[
+																elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+																A2(
+																elm$json$Json$Decode$map,
+																elm$core$Maybe$Just,
+																A2(
+																	elm$json$Json$Decode$andThen,
+																	function (start) {
+																		return A2(
+																			elm$json$Json$Decode$andThen,
+																			function (current) {
+																				return elm$json$Json$Decode$succeed(
+																					{l: current, h: start});
+																			},
+																			A2(
+																				elm$json$Json$Decode$field,
+																				'current',
+																				A2(
+																					elm$json$Json$Decode$andThen,
+																					function (y) {
+																						return A2(
+																							elm$json$Json$Decode$andThen,
+																							function (x) {
+																								return elm$json$Json$Decode$succeed(
+																									{b: x, c: y});
+																							},
+																							A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																					},
+																					A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+																	},
+																	A2(
+																		elm$json$Json$Decode$field,
+																		'start',
+																		A2(
+																			elm$json$Json$Decode$andThen,
+																			function (y) {
+																				return A2(
+																					elm$json$Json$Decode$andThen,
+																					function (x) {
+																						return elm$json$Json$Decode$succeed(
+																							{b: x, c: y});
+																					},
+																					A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																			},
+																			A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int)))))
+															]))));
+										},
+										A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
+								},
+								A2(
+									elm$json$Json$Decode$field,
+									'position',
+									A2(
+										elm$json$Json$Decode$andThen,
+										function (y) {
+											return A2(
+												elm$json$Json$Decode$andThen,
+												function (x) {
+													return elm$json$Json$Decode$succeed(
+														{b: x, c: y});
+												},
+												A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+										},
+										A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+						},
+						A2(
+							elm$json$Json$Decode$field,
+							'resize',
+							elm$json$Json$Decode$oneOf(
+								_List_fromArray(
+									[
+										elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+										A2(
+										elm$json$Json$Decode$map,
+										elm$core$Maybe$Just,
+										A2(
+											elm$json$Json$Decode$andThen,
+											function (start) {
+												return A2(
+													elm$json$Json$Decode$andThen,
+													function (current) {
+														return elm$json$Json$Decode$succeed(
+															{l: current, h: start});
+													},
+													A2(
+														elm$json$Json$Decode$field,
+														'current',
+														A2(
+															elm$json$Json$Decode$andThen,
+															function (y) {
+																return A2(
+																	elm$json$Json$Decode$andThen,
+																	function (x) {
+																		return elm$json$Json$Decode$succeed(
+																			{b: x, c: y});
+																	},
+																	A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+															},
+															A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+											},
+											A2(
+												elm$json$Json$Decode$field,
+												'start',
+												A2(
+													elm$json$Json$Decode$andThen,
+													function (y) {
+														return A2(
+															elm$json$Json$Decode$andThen,
+															function (x) {
+																return elm$json$Json$Decode$succeed(
+																	{b: x, c: y});
+															},
+															A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+													},
+													A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int)))))
+									]))));
+				},
+				A2(
+					elm$json$Json$Decode$field,
+					'tabs',
+					elm$json$Json$Decode$list(
+						A2(
+							elm$json$Json$Decode$andThen,
+							function (url) {
+								return A2(
+									elm$json$Json$Decode$andThen,
+									function (title) {
+										return A2(
+											elm$json$Json$Decode$andThen,
+											function (screenshot) {
+												return A2(
+													elm$json$Json$Decode$andThen,
+													function (id) {
+														return A2(
+															elm$json$Json$Decode$andThen,
+															function (drag) {
+																return elm$json$Json$Decode$succeed(
+																	{e: drag, a: id, p: screenshot, g: title, v: url});
+															},
+															A2(
+																elm$json$Json$Decode$field,
+																'drag',
+																elm$json$Json$Decode$oneOf(
+																	_List_fromArray(
+																		[
+																			elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+																			A2(
+																			elm$json$Json$Decode$map,
+																			elm$core$Maybe$Just,
+																			A2(
+																				elm$json$Json$Decode$andThen,
+																				function (start) {
+																					return A2(
+																						elm$json$Json$Decode$andThen,
+																						function (current) {
+																							return elm$json$Json$Decode$succeed(
+																								{l: current, h: start});
+																						},
+																						A2(
+																							elm$json$Json$Decode$field,
+																							'current',
+																							A2(
+																								elm$json$Json$Decode$andThen,
+																								function (y) {
+																									return A2(
+																										elm$json$Json$Decode$andThen,
+																										function (x) {
+																											return elm$json$Json$Decode$succeed(
+																												{b: x, c: y});
+																										},
+																										A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																								},
+																								A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+																				},
+																				A2(
+																					elm$json$Json$Decode$field,
+																					'start',
+																					A2(
+																						elm$json$Json$Decode$andThen,
+																						function (y) {
+																							return A2(
+																								elm$json$Json$Decode$andThen,
+																								function (x) {
+																									return elm$json$Json$Decode$succeed(
+																										{b: x, c: y});
+																								},
+																								A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																						},
+																						A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int)))))
+																		]))));
+													},
+													A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
+											},
+											A2(
+												elm$json$Json$Decode$field,
+												'screenshot',
+												elm$json$Json$Decode$oneOf(
+													_List_fromArray(
+														[
+															elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+															A2(elm$json$Json$Decode$map, elm$core$Maybe$Just, elm$json$Json$Decode$string)
+														]))));
+									},
+									A2(elm$json$Json$Decode$field, 'title', elm$json$Json$Decode$string));
+							},
+							A2(elm$json$Json$Decode$field, 'url', elm$json$Json$Decode$string)))));
+		},
+		A2(elm$json$Json$Decode$field, 'title', elm$json$Json$Decode$string)));
+var author$project$Main$DragAt = function (a) {
+	return {$: 1, a: a};
+};
+var author$project$Main$DragEnd = function (a) {
+	return {$: 2, a: a};
+};
+var author$project$Main$TabGroupDragMsg = function (a) {
+	return {$: 10, a: a};
+};
+var author$project$Main$Position = F2(
+	function (x, y) {
+		return {b: x, c: y};
+	});
+var elm$json$Json$Decode$map2 = _Json_map2;
+var author$project$Main$mousePositionDecoder = A3(
+	elm$json$Json$Decode$map2,
+	author$project$Main$Position,
+	A2(elm$json$Json$Decode$field, 'pageX', elm$json$Json$Decode$int),
+	A2(elm$json$Json$Decode$field, 'pageY', elm$json$Json$Decode$int));
+var elm$browser$Browser$Events$Document = 0;
+var elm$browser$Browser$Events$MySub = F3(
+	function (a, b, c) {
+		return {$: 0, a: a, b: b, c: c};
+	});
+var elm$browser$Browser$Events$State = F2(
+	function (subs, pids) {
+		return {aj: pids, as: subs};
+	});
+var elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
+var elm$core$Dict$empty = elm$core$Dict$RBEmpty_elm_builtin;
+var elm$core$Task$succeed = _Scheduler_succeed;
+var elm$browser$Browser$Events$init = elm$core$Task$succeed(
+	A2(elm$browser$Browser$Events$State, _List_Nil, elm$core$Dict$empty));
+var elm$browser$Browser$Events$nodeToKey = function (node) {
+	if (!node) {
+		return 'd_';
 	} else {
-		return elm$core$Platform$Sub$none;
+		return 'w_';
 	}
 };
-var author$project$Main$tabGroupResizeSub = function (tabGroup) {
-	var _n0 = tabGroup.q;
-	if (_n0.$ === 1) {
-		return elm$core$Platform$Sub$none;
-	} else {
-		return elm$core$Platform$Sub$none;
+var elm$browser$Browser$Events$addKey = function (sub) {
+	var node = sub.a;
+	var name = sub.b;
+	return _Utils_Tuple2(
+		_Utils_ap(
+			elm$browser$Browser$Events$nodeToKey(node),
+			name),
+		sub);
+};
+var elm$browser$Browser$Events$Event = F2(
+	function (key, event) {
+		return {ab: event, ae: key};
+	});
+var elm$core$Platform$sendToSelf = _Platform_sendToSelf;
+var elm$core$Task$andThen = _Scheduler_andThen;
+var elm$core$Task$map = F2(
+	function (func, taskA) {
+		return A2(
+			elm$core$Task$andThen,
+			function (a) {
+				return elm$core$Task$succeed(
+					func(a));
+			},
+			taskA);
+	});
+var elm$browser$Browser$External = function (a) {
+	return {$: 1, a: a};
+};
+var elm$browser$Browser$Internal = function (a) {
+	return {$: 0, a: a};
+};
+var elm$browser$Browser$Dom$NotFound = elm$core$Basics$identity;
+var elm$core$Basics$never = function (_n0) {
+	never:
+	while (true) {
+		var nvr = _n0;
+		var $temp$_n0 = nvr;
+		_n0 = $temp$_n0;
+		continue never;
 	}
 };
+var elm$core$Basics$identity = function (x) {
+	return x;
+};
+var elm$core$Task$Perform = elm$core$Basics$identity;
+var elm$core$Task$init = elm$core$Task$succeed(0);
 var elm$core$List$foldrHelper = F4(
 	function (fn, acc, ctr, ls) {
 		if (!ls.b) {
@@ -4863,914 +5595,6 @@ var elm$core$List$map = F2(
 			_List_Nil,
 			xs);
 	});
-var author$project$Main$subscriptions = function (model) {
-	var resizeSubs = elm$core$Platform$Sub$batch(
-		A2(elm$core$List$map, author$project$Main$tabGroupResizeSub, model.a));
-	var dragSubs = elm$core$Platform$Sub$batch(
-		A2(elm$core$List$map, author$project$Main$tabGroupDragSub, model.a));
-	return elm$core$Platform$Sub$batch(
-		A2(
-			elm$core$List$cons,
-			dragSubs,
-			A2(elm$core$List$cons, resizeSubs, _List_Nil)));
-};
-var author$project$Main$Position = F2(
-	function (x, y) {
-		return {s: x, t: y};
-	});
-var author$project$Main$initTabGroup = F3(
-	function (id, title, tabs) {
-		return {
-			I: false,
-			Q: {B: 300, z: 400},
-			g: elm$core$Maybe$Nothing,
-			b: id,
-			R: A2(author$project$Main$Position, 10, 10),
-			q: elm$core$Maybe$Nothing,
-			x: tabs,
-			k: title
-		};
-	});
-var author$project$Main$blankTabGroup = function (id) {
-	return A3(author$project$Main$initTabGroup, id, 'Add Title Here', _List_Nil);
-};
-var author$project$Main$Drag = F2(
-	function (start, current) {
-		return {T: current, F: start};
-	});
-var elm$core$Basics$neq = _Utils_notEqual;
-var elm$core$Maybe$map = F2(
-	function (f, maybe) {
-		if (!maybe.$) {
-			var value = maybe.a;
-			return elm$core$Maybe$Just(
-				f(value));
-		} else {
-			return elm$core$Maybe$Nothing;
-		}
-	});
-var author$project$Main$dragTab = F3(
-	function (id, msg, item) {
-		if (!_Utils_eq(id, item.b)) {
-			return elm$core$Maybe$Just(item);
-		} else {
-			switch (msg.$) {
-				case 0:
-					var xy = msg.a;
-					return elm$core$Maybe$Just(
-						_Utils_update(
-							item,
-							{
-								g: elm$core$Maybe$Just(
-									A2(author$project$Main$Drag, xy, xy))
-							}));
-				case 1:
-					var xy = msg.a;
-					return elm$core$Maybe$Just(
-						_Utils_update(
-							item,
-							{
-								g: A2(
-									elm$core$Maybe$map,
-									function (_n1) {
-										var start = _n1.F;
-										return A2(author$project$Main$Drag, start, xy);
-									},
-									item.g)
-							}));
-				default:
-					return elm$core$Maybe$Nothing;
-			}
-		}
-	});
-var author$project$Main$getPosition = function (_n0) {
-	var position = _n0.R;
-	var drag = _n0.g;
-	if (drag.$ === 1) {
-		return position;
-	} else {
-		var start = drag.a.F;
-		var current = drag.a.T;
-		return A2(author$project$Main$Position, (position.s + current.s) - start.s, (position.t + current.t) - start.t);
-	}
-};
-var author$project$Main$dragTabGroup = F3(
-	function (id, msg, tabGroup) {
-		if (!_Utils_eq(id, tabGroup.b)) {
-			return tabGroup;
-		} else {
-			switch (msg.$) {
-				case 0:
-					var xy = msg.a;
-					return _Utils_update(
-						tabGroup,
-						{
-							g: elm$core$Maybe$Just(
-								A2(author$project$Main$Drag, xy, xy))
-						});
-				case 1:
-					var xy = msg.a;
-					return _Utils_update(
-						tabGroup,
-						{
-							g: A2(
-								elm$core$Maybe$map,
-								function (_n1) {
-									var start = _n1.F;
-									return A2(author$project$Main$Drag, start, xy);
-								},
-								tabGroup.g)
-						});
-				default:
-					return _Utils_update(
-						tabGroup,
-						{
-							g: elm$core$Maybe$Nothing,
-							R: author$project$Main$getPosition(tabGroup)
-						});
-			}
-		}
-	});
-var author$project$Main$getDimensions = function (_n0) {
-	var dimensions = _n0.Q;
-	var resize = _n0.q;
-	if (resize.$ === 1) {
-		return dimensions;
-	} else {
-		var start = resize.a.F;
-		var current = resize.a.T;
-		return {B: dimensions.B + (current.t - start.t), z: dimensions.z + (current.s - start.s)};
-	}
-};
-var author$project$Main$resizeTabGroup = F3(
-	function (id, msg, tabGroup) {
-		if (!_Utils_eq(id, tabGroup.b)) {
-			return tabGroup;
-		} else {
-			switch (msg.$) {
-				case 0:
-					var xy = msg.a;
-					return _Utils_update(
-						tabGroup,
-						{
-							q: elm$core$Maybe$Just(
-								A2(author$project$Main$Drag, xy, xy))
-						});
-				case 1:
-					var xy = msg.a;
-					return _Utils_update(
-						tabGroup,
-						{
-							q: A2(
-								elm$core$Maybe$map,
-								function (_n1) {
-									var start = _n1.F;
-									return A2(author$project$Main$Drag, start, xy);
-								},
-								tabGroup.q)
-						});
-				default:
-					return _Utils_update(
-						tabGroup,
-						{
-							Q: author$project$Main$getDimensions(tabGroup),
-							q: elm$core$Maybe$Nothing
-						});
-			}
-		}
-	});
-var elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
-var elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return elm$core$Maybe$Just(x);
-	} else {
-		return elm$core$Maybe$Nothing;
-	}
-};
-var elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (!maybe.$) {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
-var author$project$Main$update = F2(
-	function (msg, model) {
-		switch (msg.$) {
-			case 3:
-				if (msg.a.$ === 1) {
-					var _n1 = msg.a;
-					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
-				} else {
-					var newModel = msg.a.a;
-					return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
-				}
-			case 1:
-				var tabGroup = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							a: A2(elm$core$List$cons, tabGroup, model.a)
-						}),
-					elm$core$Platform$Cmd$none);
-			case 0:
-				var tabs = msg.a;
-				var tabGroup = A2(
-					elm$core$Maybe$withDefault,
-					A3(author$project$Main$initTabGroup, 0, 'Main', _List_Nil),
-					elm$core$List$head(model.a));
-				var newTabGroup = _Utils_update(
-					tabGroup,
-					{x: tabs});
-				var newModel = _Utils_update(
-					model,
-					{
-						a: _List_fromArray(
-							[newTabGroup])
-					});
-				return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
-			case 2:
-				var tabscreenshot = msg.a;
-				var tabGroup = A2(
-					elm$core$Maybe$withDefault,
-					A3(author$project$Main$initTabGroup, 0, 'Main', _List_Nil),
-					elm$core$List$head(model.a));
-				var newTabs = A2(
-					elm$core$List$map,
-					function (tab) {
-						return _Utils_eq(tab.b, tabscreenshot.b) ? _Utils_update(
-							tab,
-							{K: tabscreenshot.ag}) : tab;
-					},
-					tabGroup.x);
-				var newTabGroup = _Utils_update(
-					tabGroup,
-					{x: newTabs});
-				var newModel = _Utils_update(
-					model,
-					{
-						a: _List_fromArray(
-							[newTabGroup])
-					});
-				return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
-			case 7:
-				var id = msg.a;
-				var newTabGroups = A2(
-					elm$core$List$filter,
-					function (tg) {
-						return !_Utils_eq(tg.b, id);
-					},
-					model.a);
-				var newModel = _Utils_update(
-					model,
-					{a: newTabGroups});
-				return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
-			case 8:
-				var newTabGroups = A2(
-					elm$core$List$cons,
-					author$project$Main$blankTabGroup(
-						elm$core$List$length(model.a)),
-					model.a);
-				var newModel = _Utils_update(
-					model,
-					{a: newTabGroups});
-				return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
-			case 6:
-				var id = msg.a;
-				var newTitle = msg.b;
-				var newTabGroups = A2(
-					elm$core$List$map,
-					function (tabGroup) {
-						return _Utils_eq(tabGroup.b, id) ? _Utils_update(
-							tabGroup,
-							{k: newTitle}) : tabGroup;
-					},
-					model.a);
-				var newModel = _Utils_update(
-					model,
-					{a: newTabGroups});
-				return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
-			case 5:
-				var id = msg.a;
-				var newTabGroups = A2(
-					elm$core$List$map,
-					function (tabGroup) {
-						return _Utils_eq(tabGroup.b, id) ? _Utils_update(
-							tabGroup,
-							{I: false}) : tabGroup;
-					},
-					model.a);
-				var newModel = _Utils_update(
-					model,
-					{a: newTabGroups});
-				return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
-			case 4:
-				var id = msg.a;
-				var newTabGroups = A2(
-					elm$core$List$map,
-					function (tabGroup) {
-						return _Utils_eq(tabGroup.b, id) ? _Utils_update(
-							tabGroup,
-							{I: true}) : tabGroup;
-					},
-					model.a);
-				var newModel = _Utils_update(
-					model,
-					{a: newTabGroups});
-				return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
-			case 11:
-				var _n2 = msg.a;
-				var groupId = _n2.a;
-				var resizeMsg = _n2.b;
-				var newModel = _Utils_update(
-					model,
-					{
-						a: A2(
-							elm$core$List$map,
-							A2(author$project$Main$resizeTabGroup, groupId, resizeMsg),
-							model.a)
-					});
-				return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
-			case 10:
-				var _n3 = msg.a;
-				var groupId = _n3.a;
-				var dragMsg = _n3.b;
-				var newModel = _Utils_update(
-					model,
-					{
-						a: A2(
-							elm$core$List$map,
-							A2(author$project$Main$dragTabGroup, groupId, dragMsg),
-							model.a)
-					});
-				return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
-			default:
-				var _n4 = msg.a;
-				var tab = _n4.a;
-				var dragMsg = _n4.b;
-				var newModel = _Utils_update(
-					model,
-					{
-						S: A3(author$project$Main$dragTab, tab.b, dragMsg, tab)
-					});
-				return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
-		}
-	});
-var author$project$Main$AddTabGroup = {$: 8};
-var elm$core$Basics$identity = function (x) {
-	return x;
-};
-var elm$json$Json$Decode$map = _Json_map1;
-var elm$json$Json$Decode$map2 = _Json_map2;
-var elm$json$Json$Decode$succeed = _Json_succeed;
-var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
-	switch (handler.$) {
-		case 0:
-			return 0;
-		case 1:
-			return 1;
-		case 2:
-			return 2;
-		default:
-			return 3;
-	}
-};
-var elm$html$Html$button = _VirtualDom_node('button');
-var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
-var elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
-};
-var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			elm$virtual_dom$VirtualDom$on,
-			event,
-			elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		elm$html$Html$Events$on,
-		'click',
-		elm$json$Json$Decode$succeed(msg));
-};
-var author$project$Main$addTabGroupButton = A2(
-	elm$html$Html$button,
-	_List_fromArray(
-		[
-			elm$html$Html$Events$onClick(author$project$Main$AddTabGroup)
-		]),
-	_List_fromArray(
-		[
-			elm$html$Html$text('New Tab Group')
-		]));
-var author$project$Main$px = function (number) {
-	return elm$core$String$fromInt(number) + 'px';
-};
-var elm$html$Html$div = _VirtualDom_node('div');
-var elm$html$Html$img = _VirtualDom_node('img');
-var elm$json$Json$Encode$string = _Json_wrap;
-var elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			elm$json$Json$Encode$string(string));
-	});
-var elm$html$Html$Attributes$src = function (url) {
-	return A2(
-		elm$html$Html$Attributes$stringProperty,
-		'src',
-		_VirtualDom_noJavaScriptOrHtmlUri(url));
-};
-var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
-var elm$core$String$slice = _String_slice;
-var elm$core$String$left = F2(
-	function (n, string) {
-		return (n < 1) ? '' : A3(elm$core$String$slice, 0, n, string);
-	});
-var elm$core$String$length = _String_length;
-var elm_community$string_extra$String$Extra$ellipsisWith = F3(
-	function (howLong, append, string) {
-		return (_Utils_cmp(
-			elm$core$String$length(string),
-			howLong) < 1) ? string : _Utils_ap(
-			A2(
-				elm$core$String$left,
-				howLong - elm$core$String$length(append),
-				string),
-			append);
-	});
-var elm_community$string_extra$String$Extra$ellipsis = F2(
-	function (howLong, string) {
-		return A3(elm_community$string_extra$String$Extra$ellipsisWith, howLong, '...', string);
-	});
-var author$project$Main$viewTab = F2(
-	function (length, tab) {
-		var screenshot = function () {
-			var _n0 = tab.K;
-			if (_n0.$ === 1) {
-				return A2(
-					elm$html$Html$div,
-					_List_fromArray(
-						[
-							function (_n1) {
-							var a = _n1.a;
-							var b = _n1.b;
-							return A2(elm$html$Html$Attributes$style, a, b);
-						}(
-							_Utils_Tuple2('width', '100%')),
-							function (_n2) {
-							var a = _n2.a;
-							var b = _n2.b;
-							return A2(elm$html$Html$Attributes$style, a, b);
-						}(
-							_Utils_Tuple2('height', '100%')),
-							function (_n3) {
-							var a = _n3.a;
-							var b = _n3.b;
-							return A2(elm$html$Html$Attributes$style, a, b);
-						}(
-							_Utils_Tuple2('background-color', 'white'))
-						]),
-					_List_Nil);
-			} else {
-				var screenshotSrc = _n0.a;
-				return A2(
-					elm$html$Html$img,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$src(screenshotSrc),
-							function (_n4) {
-							var a = _n4.a;
-							var b = _n4.b;
-							return A2(elm$html$Html$Attributes$style, a, b);
-						}(
-							_Utils_Tuple2('width', '100%')),
-							function (_n5) {
-							var a = _n5.a;
-							var b = _n5.b;
-							return A2(elm$html$Html$Attributes$style, a, b);
-						}(
-							_Utils_Tuple2('height', '100%'))
-						]),
-					_List_Nil);
-			}
-		}();
-		var margin = 10;
-		var border = 1;
-		var size = ((length - border) - (margin * 2)) - 1;
-		return A2(
-			elm$html$Html$div,
-			_List_fromArray(
-				[
-					A2(elm$html$Html$Attributes$style, 'float', 'left'),
-					A2(
-					elm$html$Html$Attributes$style,
-					'width',
-					author$project$Main$px(size)),
-					A2(
-					elm$html$Html$Attributes$style,
-					'height',
-					author$project$Main$px(size)),
-					A2(
-					elm$html$Html$Attributes$style,
-					'margin',
-					author$project$Main$px(margin)),
-					A2(
-					elm$html$Html$Attributes$style,
-					'border',
-					author$project$Main$px(border) + ' solid black')
-				]),
-			_List_fromArray(
-				[
-					screenshot,
-					A2(
-					elm$html$Html$div,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text(
-							A2(elm_community$string_extra$String$Extra$ellipsis, 20, tab.k))
-						]))
-				]));
-	});
-var elm$html$Html$span = _VirtualDom_node('span');
-var author$project$Main$viewTabDragging = function (maybeTab) {
-	if (maybeTab.$ === 1) {
-		return A2(elm$html$Html$span, _List_Nil, _List_Nil);
-	} else {
-		var tab = maybeTab.a;
-		return A2(author$project$Main$viewTab, 20, tab);
-	}
-};
-var author$project$Main$maxWholeSquares = F3(
-	function (w, h, x) {
-		return elm$core$Basics$floor(w / x) * elm$core$Basics$floor(h / x);
-	});
-var elm$core$Basics$ge = _Utils_ge;
-var author$project$Main$lessEfficientSquareEdge = F4(
-	function (w, h, n, x) {
-		lessEfficientSquareEdge:
-		while (true) {
-			if (_Utils_cmp(
-				A3(author$project$Main$maxWholeSquares, w, h, x),
-				n) > -1) {
-				return x;
-			} else {
-				var $temp$w = w,
-					$temp$h = h,
-					$temp$n = n,
-					$temp$x = x - 1;
-				w = $temp$w;
-				h = $temp$h;
-				n = $temp$n;
-				x = $temp$x;
-				continue lessEfficientSquareEdge;
-			}
-		}
-	});
-var elm$core$Basics$sqrt = _Basics_sqrt;
-var author$project$Main$perfectlyEfficientSquareEdge = F3(
-	function (w, h, n) {
-		return elm$core$Basics$sqrt((w * h) / n);
-	});
-var author$project$Main$bestFit = F3(
-	function (w, h, n) {
-		return A4(
-			author$project$Main$lessEfficientSquareEdge,
-			w,
-			h,
-			n,
-			A3(author$project$Main$perfectlyEfficientSquareEdge, w, h, n));
-	});
-var author$project$Main$viewDraggableCorner = function (tabGroup) {
-	return A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				function (_n0) {
-				var a = _n0.a;
-				var b = _n0.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('background-color', 'darkblue')),
-				function (_n1) {
-				var a = _n1.a;
-				var b = _n1.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('height', '20px')),
-				function (_n2) {
-				var a = _n2.a;
-				var b = _n2.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('width', '20px')),
-				function (_n3) {
-				var a = _n3.a;
-				var b = _n3.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('position', 'absolute')),
-				function (_n4) {
-				var a = _n4.a;
-				var b = _n4.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('bottom', '0px')),
-				function (_n5) {
-				var a = _n5.a;
-				var b = _n5.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('right', '0px')),
-				function (_n6) {
-				var a = _n6.a;
-				var b = _n6.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('cursor', 'nwse-resize'))
-			]),
-		_List_Nil);
-};
-var author$project$Main$DeleteTabGroup = function (a) {
-	return {$: 7, a: a};
-};
-var author$project$Main$viewTabGroupDeleteButton = function (tabGroup) {
-	return A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				elm$html$Html$Events$onClick(
-				author$project$Main$DeleteTabGroup(tabGroup.b)),
-				function (_n0) {
-				var a = _n0.a;
-				var b = _n0.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('float', 'right')),
-				function (_n1) {
-				var a = _n1.a;
-				var b = _n1.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('cursor', 'pointer'))
-			]),
-		_List_fromArray(
-			[
-				elm$html$Html$text('X')
-			]));
-};
-var author$project$Main$ChangeGroupTitle = F2(
-	function (a, b) {
-		return {$: 6, a: a, b: b};
-	});
-var author$project$Main$FinishGroupTitleEdit = function (a) {
-	return {$: 5, a: a};
-};
-var author$project$Main$StartGroupTitleEdit = function (a) {
-	return {$: 4, a: a};
-};
-var elm$html$Html$input = _VirtualDom_node('input');
-var elm$html$Html$Attributes$value = elm$html$Html$Attributes$stringProperty('value');
-var elm$html$Html$Events$onBlur = function (msg) {
-	return A2(
-		elm$html$Html$Events$on,
-		'blur',
-		elm$json$Json$Decode$succeed(msg));
-};
-var elm$html$Html$Events$alwaysStop = function (x) {
-	return _Utils_Tuple2(x, true);
-};
-var elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 1, a: a};
-};
-var elm$html$Html$Events$stopPropagationOn = F2(
-	function (event, decoder) {
-		return A2(
-			elm$virtual_dom$VirtualDom$on,
-			event,
-			elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
-	});
-var elm$json$Json$Decode$field = _Json_decodeField;
-var elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3(elm$core$List$foldr, elm$json$Json$Decode$field, decoder, fields);
-	});
-var elm$json$Json$Decode$string = _Json_decodeString;
-var elm$html$Html$Events$targetValue = A2(
-	elm$json$Json$Decode$at,
-	_List_fromArray(
-		['target', 'value']),
-	elm$json$Json$Decode$string);
-var elm$html$Html$Events$onInput = function (tagger) {
-	return A2(
-		elm$html$Html$Events$stopPropagationOn,
-		'input',
-		A2(
-			elm$json$Json$Decode$map,
-			elm$html$Html$Events$alwaysStop,
-			A2(elm$json$Json$Decode$map, tagger, elm$html$Html$Events$targetValue)));
-};
-var author$project$Main$viewTabGroupTitle = function (tabGroup) {
-	return tabGroup.I ? A2(
-		elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				elm$html$Html$input,
-				_List_fromArray(
-					[
-						elm$html$Html$Events$onInput(
-						author$project$Main$ChangeGroupTitle(tabGroup.b)),
-						elm$html$Html$Events$onBlur(
-						author$project$Main$FinishGroupTitleEdit(tabGroup.b)),
-						elm$html$Html$Attributes$value(tabGroup.k)
-					]),
-				_List_fromArray(
-					[
-						elm$html$Html$text(tabGroup.k)
-					]))
-			])) : A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				elm$html$Html$Events$onClick(
-				author$project$Main$StartGroupTitleEdit(tabGroup.b)),
-				A2(elm$html$Html$Attributes$style, 'cursor', 'pointer')
-			]),
-		_List_fromArray(
-			[
-				elm$html$Html$text(tabGroup.k)
-			]));
-};
-var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
-var author$project$Main$viewTabGroup = function (tabGroup) {
-	var tabCount = elm$core$List$length(tabGroup.x);
-	var realPosition = author$project$Main$getPosition(tabGroup);
-	var realDimensions = author$project$Main$getDimensions(tabGroup);
-	var width = realDimensions.z;
-	var height = realDimensions.B;
-	var tabLength = elm$core$Basics$floor(
-		A3(author$project$Main$bestFit, width, height, tabCount));
-	return A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				elm$html$Html$Attributes$class('tabGroup'),
-				function (_n0) {
-				var a = _n0.a;
-				var b = _n0.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('padding', '10px')),
-				function (_n1) {
-				var a = _n1.a;
-				var b = _n1.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('cursor', 'move')),
-				function (_n2) {
-				var a = _n2.a;
-				var b = _n2.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2(
-					'width',
-					author$project$Main$px(realDimensions.z))),
-				function (_n3) {
-				var a = _n3.a;
-				var b = _n3.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2(
-					'height',
-					author$project$Main$px(realDimensions.B))),
-				function (_n4) {
-				var a = _n4.a;
-				var b = _n4.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('border-radius', '4px')),
-				function (_n5) {
-				var a = _n5.a;
-				var b = _n5.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('position', 'absolute')),
-				function (_n6) {
-				var a = _n6.a;
-				var b = _n6.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2(
-					'left',
-					author$project$Main$px(realPosition.s))),
-				function (_n7) {
-				var a = _n7.a;
-				var b = _n7.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2(
-					'top',
-					author$project$Main$px(realPosition.t))),
-				function (_n8) {
-				var a = _n8.a;
-				var b = _n8.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('background-color', '#F8F8F8')),
-				function (_n9) {
-				var a = _n9.a;
-				var b = _n9.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('color', '#B0B1BB'))
-			]),
-		A2(
-			elm$core$List$cons,
-			author$project$Main$viewTabGroupDeleteButton(tabGroup),
-			A2(
-				elm$core$List$cons,
-				author$project$Main$viewTabGroupTitle(tabGroup),
-				A2(
-					elm$core$List$cons,
-					author$project$Main$viewDraggableCorner(tabGroup),
-					A2(
-						elm$core$List$map,
-						author$project$Main$viewTab(tabLength),
-						tabGroup.x)))));
-};
-var author$project$Main$view = function (model) {
-	return A2(
-		elm$html$Html$div,
-		_List_Nil,
-		A2(
-			elm$core$List$cons,
-			A2(
-				elm$html$Html$div,
-				_List_Nil,
-				_List_fromArray(
-					[
-						elm$html$Html$text('hello world')
-					])),
-			A2(
-				elm$core$List$cons,
-				author$project$Main$addTabGroupButton,
-				A2(
-					elm$core$List$cons,
-					author$project$Main$viewTabDragging(model.S),
-					A2(elm$core$List$map, author$project$Main$viewTabGroup, model.a)))));
-};
-var elm$browser$Browser$External = function (a) {
-	return {$: 1, a: a};
-};
-var elm$browser$Browser$Internal = function (a) {
-	return {$: 0, a: a};
-};
-var elm$browser$Browser$Dom$NotFound = elm$core$Basics$identity;
-var elm$core$Basics$never = function (_n0) {
-	never:
-	while (true) {
-		var nvr = _n0;
-		var $temp$_n0 = nvr;
-		_n0 = $temp$_n0;
-		continue never;
-	}
-};
-var elm$core$Task$Perform = elm$core$Basics$identity;
-var elm$core$Task$succeed = _Scheduler_succeed;
-var elm$core$Task$init = elm$core$Task$succeed(0);
-var elm$core$Task$andThen = _Scheduler_andThen;
-var elm$core$Task$map = F2(
-	function (func, taskA) {
-		return A2(
-			elm$core$Task$andThen,
-			function (a) {
-				return elm$core$Task$succeed(
-					func(a));
-			},
-			taskA);
-	});
 var elm$core$Task$map2 = F3(
 	function (func, taskA, taskB) {
 		return A2(
@@ -5832,6 +5656,20 @@ var elm$core$Task$perform = F2(
 		return elm$core$Task$command(
 			A2(elm$core$Task$map, toMessage, task));
 	});
+var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
+	switch (handler.$) {
+		case 0:
+			return 0;
+		case 1:
+			return 1;
+		case 2:
+			return 2;
+		default:
+			return 3;
+	}
+};
+var elm$core$String$length = _String_length;
+var elm$core$String$slice = _String_slice;
 var elm$core$String$dropLeft = F2(
 	function (n, string) {
 		return (n < 1) ? string : A3(
@@ -5847,11 +5685,15 @@ var elm$core$String$indexes = _String_indexes;
 var elm$core$String$isEmpty = function (string) {
 	return string === '';
 };
+var elm$core$String$left = F2(
+	function (n, string) {
+		return (n < 1) ? '' : A3(elm$core$String$slice, 0, n, string);
+	});
 var elm$core$String$contains = _String_contains;
 var elm$core$String$toInt = _String_toInt;
 var elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {ae: fragment, af: host, al: path, an: port_, aq: protocol, ar: query};
+		return {ac: fragment, ad: host, ai: path, ak: port_, an: protocol, ao: query};
 	});
 var elm$url$Url$chompBeforePath = F5(
 	function (protocol, path, params, frag, str) {
@@ -5955,9 +5797,1786 @@ var elm$url$Url$fromString = function (str) {
 		1,
 		A2(elm$core$String$dropLeft, 8, str)) : elm$core$Maybe$Nothing);
 };
+var elm$browser$Browser$Events$spawn = F3(
+	function (router, key, _n0) {
+		var node = _n0.a;
+		var name = _n0.b;
+		var actualNode = function () {
+			if (!node) {
+				return _Browser_doc;
+			} else {
+				return _Browser_window;
+			}
+		}();
+		return A2(
+			elm$core$Task$map,
+			function (value) {
+				return _Utils_Tuple2(key, value);
+			},
+			A3(
+				_Browser_on,
+				actualNode,
+				name,
+				function (event) {
+					return A2(
+						elm$core$Platform$sendToSelf,
+						router,
+						A2(elm$browser$Browser$Events$Event, key, event));
+				}));
+	});
+var elm$core$Dict$Black = 1;
+var elm$core$Dict$RBNode_elm_builtin = F5(
+	function (a, b, c, d, e) {
+		return {$: -1, a: a, b: b, c: c, d: d, e: e};
+	});
+var elm$core$Basics$compare = _Utils_compare;
+var elm$core$Dict$Red = 0;
+var elm$core$Dict$balance = F5(
+	function (color, key, value, left, right) {
+		if ((right.$ === -1) && (!right.a)) {
+			var _n1 = right.a;
+			var rK = right.b;
+			var rV = right.c;
+			var rLeft = right.d;
+			var rRight = right.e;
+			if ((left.$ === -1) && (!left.a)) {
+				var _n3 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var lLeft = left.d;
+				var lRight = left.e;
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					0,
+					key,
+					value,
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, lK, lV, lLeft, lRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					color,
+					rK,
+					rV,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, key, value, left, rLeft),
+					rRight);
+			}
+		} else {
+			if ((((left.$ === -1) && (!left.a)) && (left.d.$ === -1)) && (!left.d.a)) {
+				var _n5 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var _n6 = left.d;
+				var _n7 = _n6.a;
+				var llK = _n6.b;
+				var llV = _n6.c;
+				var llLeft = _n6.d;
+				var llRight = _n6.e;
+				var lRight = left.e;
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					0,
+					lK,
+					lV,
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, key, value, lRight, right));
+			} else {
+				return A5(elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
+			}
+		}
+	});
+var elm$core$Dict$insertHelp = F3(
+	function (key, value, dict) {
+		if (dict.$ === -2) {
+			return A5(elm$core$Dict$RBNode_elm_builtin, 0, key, value, elm$core$Dict$RBEmpty_elm_builtin, elm$core$Dict$RBEmpty_elm_builtin);
+		} else {
+			var nColor = dict.a;
+			var nKey = dict.b;
+			var nValue = dict.c;
+			var nLeft = dict.d;
+			var nRight = dict.e;
+			var _n1 = A2(elm$core$Basics$compare, key, nKey);
+			switch (_n1) {
+				case 0:
+					return A5(
+						elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						A3(elm$core$Dict$insertHelp, key, value, nLeft),
+						nRight);
+				case 1:
+					return A5(elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
+				default:
+					return A5(
+						elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						nLeft,
+						A3(elm$core$Dict$insertHelp, key, value, nRight));
+			}
+		}
+	});
+var elm$core$Dict$insert = F3(
+	function (key, value, dict) {
+		var _n0 = A3(elm$core$Dict$insertHelp, key, value, dict);
+		if ((_n0.$ === -1) && (!_n0.a)) {
+			var _n1 = _n0.a;
+			var k = _n0.b;
+			var v = _n0.c;
+			var l = _n0.d;
+			var r = _n0.e;
+			return A5(elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+		} else {
+			var x = _n0;
+			return x;
+		}
+	});
+var elm$core$Dict$fromList = function (assocs) {
+	return A3(
+		elm$core$List$foldl,
+		F2(
+			function (_n0, dict) {
+				var key = _n0.a;
+				var value = _n0.b;
+				return A3(elm$core$Dict$insert, key, value, dict);
+			}),
+		elm$core$Dict$empty,
+		assocs);
+};
+var elm$core$Dict$foldl = F3(
+	function (func, acc, dict) {
+		foldl:
+		while (true) {
+			if (dict.$ === -2) {
+				return acc;
+			} else {
+				var key = dict.b;
+				var value = dict.c;
+				var left = dict.d;
+				var right = dict.e;
+				var $temp$func = func,
+					$temp$acc = A3(
+					func,
+					key,
+					value,
+					A3(elm$core$Dict$foldl, func, acc, left)),
+					$temp$dict = right;
+				func = $temp$func;
+				acc = $temp$acc;
+				dict = $temp$dict;
+				continue foldl;
+			}
+		}
+	});
+var elm$core$Dict$merge = F6(
+	function (leftStep, bothStep, rightStep, leftDict, rightDict, initialResult) {
+		var stepState = F3(
+			function (rKey, rValue, _n0) {
+				stepState:
+				while (true) {
+					var list = _n0.a;
+					var result = _n0.b;
+					if (!list.b) {
+						return _Utils_Tuple2(
+							list,
+							A3(rightStep, rKey, rValue, result));
+					} else {
+						var _n2 = list.a;
+						var lKey = _n2.a;
+						var lValue = _n2.b;
+						var rest = list.b;
+						if (_Utils_cmp(lKey, rKey) < 0) {
+							var $temp$rKey = rKey,
+								$temp$rValue = rValue,
+								$temp$_n0 = _Utils_Tuple2(
+								rest,
+								A3(leftStep, lKey, lValue, result));
+							rKey = $temp$rKey;
+							rValue = $temp$rValue;
+							_n0 = $temp$_n0;
+							continue stepState;
+						} else {
+							if (_Utils_cmp(lKey, rKey) > 0) {
+								return _Utils_Tuple2(
+									list,
+									A3(rightStep, rKey, rValue, result));
+							} else {
+								return _Utils_Tuple2(
+									rest,
+									A4(bothStep, lKey, lValue, rValue, result));
+							}
+						}
+					}
+				}
+			});
+		var _n3 = A3(
+			elm$core$Dict$foldl,
+			stepState,
+			_Utils_Tuple2(
+				elm$core$Dict$toList(leftDict),
+				initialResult),
+			rightDict);
+		var leftovers = _n3.a;
+		var intermediateResult = _n3.b;
+		return A3(
+			elm$core$List$foldl,
+			F2(
+				function (_n4, result) {
+					var k = _n4.a;
+					var v = _n4.b;
+					return A3(leftStep, k, v, result);
+				}),
+			intermediateResult,
+			leftovers);
+	});
+var elm$core$Dict$union = F2(
+	function (t1, t2) {
+		return A3(elm$core$Dict$foldl, elm$core$Dict$insert, t2, t1);
+	});
+var elm$core$Process$kill = _Scheduler_kill;
+var elm$browser$Browser$Events$onEffects = F3(
+	function (router, subs, state) {
+		var stepRight = F3(
+			function (key, sub, _n6) {
+				var deads = _n6.a;
+				var lives = _n6.b;
+				var news = _n6.c;
+				return _Utils_Tuple3(
+					deads,
+					lives,
+					A2(
+						elm$core$List$cons,
+						A3(elm$browser$Browser$Events$spawn, router, key, sub),
+						news));
+			});
+		var stepLeft = F3(
+			function (_n4, pid, _n5) {
+				var deads = _n5.a;
+				var lives = _n5.b;
+				var news = _n5.c;
+				return _Utils_Tuple3(
+					A2(elm$core$List$cons, pid, deads),
+					lives,
+					news);
+			});
+		var stepBoth = F4(
+			function (key, pid, _n2, _n3) {
+				var deads = _n3.a;
+				var lives = _n3.b;
+				var news = _n3.c;
+				return _Utils_Tuple3(
+					deads,
+					A3(elm$core$Dict$insert, key, pid, lives),
+					news);
+			});
+		var newSubs = A2(elm$core$List$map, elm$browser$Browser$Events$addKey, subs);
+		var _n0 = A6(
+			elm$core$Dict$merge,
+			stepLeft,
+			stepBoth,
+			stepRight,
+			state.aj,
+			elm$core$Dict$fromList(newSubs),
+			_Utils_Tuple3(_List_Nil, elm$core$Dict$empty, _List_Nil));
+		var deadPids = _n0.a;
+		var livePids = _n0.b;
+		var makeNewPids = _n0.c;
+		return A2(
+			elm$core$Task$andThen,
+			function (pids) {
+				return elm$core$Task$succeed(
+					A2(
+						elm$browser$Browser$Events$State,
+						newSubs,
+						A2(
+							elm$core$Dict$union,
+							livePids,
+							elm$core$Dict$fromList(pids))));
+			},
+			A2(
+				elm$core$Task$andThen,
+				function (_n1) {
+					return elm$core$Task$sequence(makeNewPids);
+				},
+				elm$core$Task$sequence(
+					A2(elm$core$List$map, elm$core$Process$kill, deadPids))));
+	});
+var elm$core$List$maybeCons = F3(
+	function (f, mx, xs) {
+		var _n0 = f(mx);
+		if (!_n0.$) {
+			var x = _n0.a;
+			return A2(elm$core$List$cons, x, xs);
+		} else {
+			return xs;
+		}
+	});
+var elm$core$List$filterMap = F2(
+	function (f, xs) {
+		return A3(
+			elm$core$List$foldr,
+			elm$core$List$maybeCons(f),
+			_List_Nil,
+			xs);
+	});
+var elm$browser$Browser$Events$onSelfMsg = F3(
+	function (router, _n0, state) {
+		var key = _n0.ae;
+		var event = _n0.ab;
+		var toMessage = function (_n2) {
+			var subKey = _n2.a;
+			var _n3 = _n2.b;
+			var node = _n3.a;
+			var name = _n3.b;
+			var decoder = _n3.c;
+			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : elm$core$Maybe$Nothing;
+		};
+		var messages = A2(elm$core$List$filterMap, toMessage, state.as);
+		return A2(
+			elm$core$Task$andThen,
+			function (_n1) {
+				return elm$core$Task$succeed(state);
+			},
+			elm$core$Task$sequence(
+				A2(
+					elm$core$List$map,
+					elm$core$Platform$sendToApp(router),
+					messages)));
+	});
+var elm$browser$Browser$Events$subMap = F2(
+	function (func, _n0) {
+		var node = _n0.a;
+		var name = _n0.b;
+		var decoder = _n0.c;
+		return A3(
+			elm$browser$Browser$Events$MySub,
+			node,
+			name,
+			A2(elm$json$Json$Decode$map, func, decoder));
+	});
+_Platform_effectManagers['Browser.Events'] = _Platform_createManager(elm$browser$Browser$Events$init, elm$browser$Browser$Events$onEffects, elm$browser$Browser$Events$onSelfMsg, 0, elm$browser$Browser$Events$subMap);
+var elm$browser$Browser$Events$subscription = _Platform_leaf('Browser.Events');
+var elm$browser$Browser$Events$on = F3(
+	function (node, name, decoder) {
+		return elm$browser$Browser$Events$subscription(
+			A3(elm$browser$Browser$Events$MySub, node, name, decoder));
+	});
+var elm$browser$Browser$Events$onMouseMove = A2(elm$browser$Browser$Events$on, 0, 'mousemove');
+var author$project$Main$mouseMoves = function (tagger) {
+	return elm$browser$Browser$Events$onMouseMove(
+		A2(elm$json$Json$Decode$map, tagger, author$project$Main$mousePositionDecoder));
+};
+var elm$browser$Browser$Events$onMouseUp = A2(elm$browser$Browser$Events$on, 0, 'mouseup');
+var author$project$Main$mouseUps = function (tagger) {
+	return elm$browser$Browser$Events$onMouseUp(
+		A2(elm$json$Json$Decode$map, tagger, author$project$Main$mousePositionDecoder));
+};
+var elm$core$Platform$Sub$batch = _Platform_batch;
+var elm$core$Platform$Sub$map = _Platform_map;
+var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
+var author$project$Main$tabGroupDragSub = function (tabGroup) {
+	var _n0 = tabGroup.e;
+	if (_n0.$ === 1) {
+		return elm$core$Platform$Sub$none;
+	} else {
+		return elm$core$Platform$Sub$batch(
+			_List_fromArray(
+				[
+					A2(
+					elm$core$Platform$Sub$map,
+					function (msg) {
+						return author$project$Main$TabGroupDragMsg(
+							_Utils_Tuple2(tabGroup.a, msg));
+					},
+					author$project$Main$mouseMoves(author$project$Main$DragAt)),
+					A2(
+					elm$core$Platform$Sub$map,
+					function (msg) {
+						return author$project$Main$TabGroupDragMsg(
+							_Utils_Tuple2(tabGroup.a, msg));
+					},
+					author$project$Main$mouseUps(author$project$Main$DragEnd))
+				]));
+	}
+};
+var author$project$Main$TabGroupResizeMsg = function (a) {
+	return {$: 11, a: a};
+};
+var author$project$Main$tabGroupResizeSub = function (tabGroup) {
+	var _n0 = tabGroup.o;
+	if (_n0.$ === 1) {
+		return elm$core$Platform$Sub$none;
+	} else {
+		return elm$core$Platform$Sub$batch(
+			_List_fromArray(
+				[
+					A2(
+					elm$core$Platform$Sub$map,
+					function (msg) {
+						return author$project$Main$TabGroupResizeMsg(
+							_Utils_Tuple2(tabGroup.a, msg));
+					},
+					author$project$Main$mouseMoves(author$project$Main$DragAt)),
+					A2(
+					elm$core$Platform$Sub$map,
+					function (msg) {
+						return author$project$Main$TabGroupResizeMsg(
+							_Utils_Tuple2(tabGroup.a, msg));
+					},
+					author$project$Main$mouseUps(author$project$Main$DragEnd))
+				]));
+	}
+};
+var author$project$Main$tabScreenshot = _Platform_incomingPort(
+	'tabScreenshot',
+	A2(
+		elm$json$Json$Decode$andThen,
+		function (img) {
+			return A2(
+				elm$json$Json$Decode$andThen,
+				function (id) {
+					return elm$json$Json$Decode$succeed(
+						{a: id, U: img});
+				},
+				A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
+		},
+		A2(
+			elm$json$Json$Decode$field,
+			'img',
+			elm$json$Json$Decode$oneOf(
+				_List_fromArray(
+					[
+						elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+						A2(elm$json$Json$Decode$map, elm$core$Maybe$Just, elm$json$Json$Decode$string)
+					])))));
+var author$project$Main$tabs = _Platform_incomingPort(
+	'tabs',
+	elm$json$Json$Decode$list(
+		A2(
+			elm$json$Json$Decode$andThen,
+			function (url) {
+				return A2(
+					elm$json$Json$Decode$andThen,
+					function (title) {
+						return A2(
+							elm$json$Json$Decode$andThen,
+							function (screenshot) {
+								return A2(
+									elm$json$Json$Decode$andThen,
+									function (id) {
+										return A2(
+											elm$json$Json$Decode$andThen,
+											function (drag) {
+												return elm$json$Json$Decode$succeed(
+													{e: drag, a: id, p: screenshot, g: title, v: url});
+											},
+											A2(
+												elm$json$Json$Decode$field,
+												'drag',
+												elm$json$Json$Decode$oneOf(
+													_List_fromArray(
+														[
+															elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+															A2(
+															elm$json$Json$Decode$map,
+															elm$core$Maybe$Just,
+															A2(
+																elm$json$Json$Decode$andThen,
+																function (start) {
+																	return A2(
+																		elm$json$Json$Decode$andThen,
+																		function (current) {
+																			return elm$json$Json$Decode$succeed(
+																				{l: current, h: start});
+																		},
+																		A2(
+																			elm$json$Json$Decode$field,
+																			'current',
+																			A2(
+																				elm$json$Json$Decode$andThen,
+																				function (y) {
+																					return A2(
+																						elm$json$Json$Decode$andThen,
+																						function (x) {
+																							return elm$json$Json$Decode$succeed(
+																								{b: x, c: y});
+																						},
+																						A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																				},
+																				A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+																},
+																A2(
+																	elm$json$Json$Decode$field,
+																	'start',
+																	A2(
+																		elm$json$Json$Decode$andThen,
+																		function (y) {
+																			return A2(
+																				elm$json$Json$Decode$andThen,
+																				function (x) {
+																					return elm$json$Json$Decode$succeed(
+																						{b: x, c: y});
+																				},
+																				A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																		},
+																		A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int)))))
+														]))));
+									},
+									A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
+							},
+							A2(
+								elm$json$Json$Decode$field,
+								'screenshot',
+								elm$json$Json$Decode$oneOf(
+									_List_fromArray(
+										[
+											elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+											A2(elm$json$Json$Decode$map, elm$core$Maybe$Just, elm$json$Json$Decode$string)
+										]))));
+					},
+					A2(elm$json$Json$Decode$field, 'title', elm$json$Json$Decode$string));
+			},
+			A2(elm$json$Json$Decode$field, 'url', elm$json$Json$Decode$string))));
+var author$project$Main$subscriptions = function (model) {
+	var resizeSubs = elm$core$Platform$Sub$batch(
+		A2(elm$core$List$map, author$project$Main$tabGroupResizeSub, model.d));
+	var dragSubs = elm$core$Platform$Sub$batch(
+		A2(elm$core$List$map, author$project$Main$tabGroupDragSub, model.d));
+	return elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				author$project$Main$savedModel(author$project$Main$GotSavedModel),
+				author$project$Main$savedTabGroup(author$project$Main$GotTabGroup),
+				author$project$Main$tabs(author$project$Main$GotTabs),
+				author$project$Main$tabScreenshot(author$project$Main$GotTabScreenshot),
+				dragSubs,
+				resizeSubs
+			]));
+};
+var author$project$Main$initTabGroup = F3(
+	function (id, title, initialTabs) {
+		return {
+			y: false,
+			B: {t: 300, s: 400},
+			e: elm$core$Maybe$Nothing,
+			a: id,
+			F: A2(author$project$Main$Position, 10, 10),
+			o: elm$core$Maybe$Nothing,
+			r: initialTabs,
+			g: title
+		};
+	});
+var author$project$Main$blankTabGroup = function (id) {
+	return A3(author$project$Main$initTabGroup, id, 'Add Title Here', _List_Nil);
+};
+var author$project$Main$Drag = F2(
+	function (start, current) {
+		return {l: current, h: start};
+	});
+var elm$core$Basics$neq = _Utils_notEqual;
+var elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return elm$core$Maybe$Nothing;
+		}
+	});
+var author$project$Main$dragTab = F3(
+	function (id, msg, item) {
+		if (!_Utils_eq(id, item.a)) {
+			return elm$core$Maybe$Just(item);
+		} else {
+			switch (msg.$) {
+				case 0:
+					var xy = msg.a;
+					return elm$core$Maybe$Just(
+						_Utils_update(
+							item,
+							{
+								e: elm$core$Maybe$Just(
+									A2(author$project$Main$Drag, xy, xy))
+							}));
+				case 1:
+					var xy = msg.a;
+					return elm$core$Maybe$Just(
+						_Utils_update(
+							item,
+							{
+								e: A2(
+									elm$core$Maybe$map,
+									function (_n1) {
+										var start = _n1.h;
+										return A2(author$project$Main$Drag, start, xy);
+									},
+									item.e)
+							}));
+				default:
+					return elm$core$Maybe$Nothing;
+			}
+		}
+	});
+var author$project$Main$getPosition = function (_n0) {
+	var position = _n0.F;
+	var drag = _n0.e;
+	if (drag.$ === 1) {
+		return position;
+	} else {
+		var start = drag.a.h;
+		var current = drag.a.l;
+		return A2(author$project$Main$Position, (position.b + current.b) - start.b, (position.c + current.c) - start.c);
+	}
+};
+var author$project$Main$dragTabGroup = F3(
+	function (id, msg, tabGroup) {
+		if (!_Utils_eq(id, tabGroup.a)) {
+			return tabGroup;
+		} else {
+			switch (msg.$) {
+				case 0:
+					var xy = msg.a;
+					return _Utils_update(
+						tabGroup,
+						{
+							e: elm$core$Maybe$Just(
+								A2(author$project$Main$Drag, xy, xy))
+						});
+				case 1:
+					var xy = msg.a;
+					return _Utils_update(
+						tabGroup,
+						{
+							e: A2(
+								elm$core$Maybe$map,
+								function (_n1) {
+									var start = _n1.h;
+									return A2(author$project$Main$Drag, start, xy);
+								},
+								tabGroup.e)
+						});
+				default:
+					return _Utils_update(
+						tabGroup,
+						{
+							e: elm$core$Maybe$Nothing,
+							F: author$project$Main$getPosition(tabGroup)
+						});
+			}
+		}
+	});
+var author$project$Main$getTabs = _Platform_outgoingPort(
+	'getTabs',
+	function ($) {
+		return elm$json$Json$Encode$null;
+	});
+var author$project$Main$getDimensions = function (_n0) {
+	var dimensions = _n0.B;
+	var resize = _n0.o;
+	if (resize.$ === 1) {
+		return dimensions;
+	} else {
+		var start = resize.a.h;
+		var current = resize.a.l;
+		return {t: dimensions.t + (current.c - start.c), s: dimensions.s + (current.b - start.b)};
+	}
+};
+var author$project$Main$resizeTabGroup = F3(
+	function (id, msg, tabGroup) {
+		if (!_Utils_eq(id, tabGroup.a)) {
+			return tabGroup;
+		} else {
+			switch (msg.$) {
+				case 0:
+					var xy = msg.a;
+					return _Utils_update(
+						tabGroup,
+						{
+							o: elm$core$Maybe$Just(
+								A2(author$project$Main$Drag, xy, xy))
+						});
+				case 1:
+					var xy = msg.a;
+					return _Utils_update(
+						tabGroup,
+						{
+							o: A2(
+								elm$core$Maybe$map,
+								function (_n1) {
+									var start = _n1.h;
+									return A2(author$project$Main$Drag, start, xy);
+								},
+								tabGroup.o)
+						});
+				default:
+					return _Utils_update(
+						tabGroup,
+						{
+							B: author$project$Main$getDimensions(tabGroup),
+							o: elm$core$Maybe$Nothing
+						});
+			}
+		}
+	});
+var elm$core$Maybe$destruct = F3(
+	function (_default, func, maybe) {
+		if (!maybe.$) {
+			var a = maybe.a;
+			return func(a);
+		} else {
+			return _default;
+		}
+	});
+var elm$json$Json$Encode$bool = _Json_wrap;
+var elm$json$Json$Encode$int = _Json_wrap;
+var elm$json$Json$Encode$list = F2(
+	function (func, entries) {
+		return _Json_wrap(
+			A3(
+				elm$core$List$foldl,
+				_Json_addEntry(func),
+				_Json_emptyArray(0),
+				entries));
+	});
+var elm$json$Json$Encode$object = function (pairs) {
+	return _Json_wrap(
+		A3(
+			elm$core$List$foldl,
+			F2(
+				function (_n0, obj) {
+					var k = _n0.a;
+					var v = _n0.b;
+					return A3(_Json_addField, k, v, obj);
+				}),
+			_Json_emptyObject(0),
+			pairs));
+};
+var elm$json$Json$Encode$string = _Json_wrap;
+var author$project$Main$saveModel = _Platform_outgoingPort(
+	'saveModel',
+	function ($) {
+		return elm$json$Json$Encode$object(
+			_List_fromArray(
+				[
+					_Utils_Tuple2(
+					'tabDrag',
+					function ($) {
+						return A3(
+							elm$core$Maybe$destruct,
+							elm$json$Json$Encode$null,
+							function ($) {
+								return elm$json$Json$Encode$object(
+									_List_fromArray(
+										[
+											_Utils_Tuple2(
+											'drag',
+											function ($) {
+												return A3(
+													elm$core$Maybe$destruct,
+													elm$json$Json$Encode$null,
+													function ($) {
+														return elm$json$Json$Encode$object(
+															_List_fromArray(
+																[
+																	_Utils_Tuple2(
+																	'current',
+																	function ($) {
+																		return elm$json$Json$Encode$object(
+																			_List_fromArray(
+																				[
+																					_Utils_Tuple2(
+																					'x',
+																					elm$json$Json$Encode$int($.b)),
+																					_Utils_Tuple2(
+																					'y',
+																					elm$json$Json$Encode$int($.c))
+																				]));
+																	}($.l)),
+																	_Utils_Tuple2(
+																	'start',
+																	function ($) {
+																		return elm$json$Json$Encode$object(
+																			_List_fromArray(
+																				[
+																					_Utils_Tuple2(
+																					'x',
+																					elm$json$Json$Encode$int($.b)),
+																					_Utils_Tuple2(
+																					'y',
+																					elm$json$Json$Encode$int($.c))
+																				]));
+																	}($.h))
+																]));
+													},
+													$);
+											}($.e)),
+											_Utils_Tuple2(
+											'id',
+											elm$json$Json$Encode$int($.a)),
+											_Utils_Tuple2(
+											'screenshot',
+											function ($) {
+												return A3(elm$core$Maybe$destruct, elm$json$Json$Encode$null, elm$json$Json$Encode$string, $);
+											}($.p)),
+											_Utils_Tuple2(
+											'title',
+											elm$json$Json$Encode$string($.g)),
+											_Utils_Tuple2(
+											'url',
+											elm$json$Json$Encode$string($.v))
+										]));
+							},
+							$);
+					}($.L)),
+					_Utils_Tuple2(
+					'tabGroups',
+					elm$json$Json$Encode$list(
+						function ($) {
+							return elm$json$Json$Encode$object(
+								_List_fromArray(
+									[
+										_Utils_Tuple2(
+										'changingTitle',
+										elm$json$Json$Encode$bool($.y)),
+										_Utils_Tuple2(
+										'dimensions',
+										function ($) {
+											return elm$json$Json$Encode$object(
+												_List_fromArray(
+													[
+														_Utils_Tuple2(
+														'height',
+														elm$json$Json$Encode$int($.t)),
+														_Utils_Tuple2(
+														'width',
+														elm$json$Json$Encode$int($.s))
+													]));
+										}($.B)),
+										_Utils_Tuple2(
+										'drag',
+										function ($) {
+											return A3(
+												elm$core$Maybe$destruct,
+												elm$json$Json$Encode$null,
+												function ($) {
+													return elm$json$Json$Encode$object(
+														_List_fromArray(
+															[
+																_Utils_Tuple2(
+																'current',
+																function ($) {
+																	return elm$json$Json$Encode$object(
+																		_List_fromArray(
+																			[
+																				_Utils_Tuple2(
+																				'x',
+																				elm$json$Json$Encode$int($.b)),
+																				_Utils_Tuple2(
+																				'y',
+																				elm$json$Json$Encode$int($.c))
+																			]));
+																}($.l)),
+																_Utils_Tuple2(
+																'start',
+																function ($) {
+																	return elm$json$Json$Encode$object(
+																		_List_fromArray(
+																			[
+																				_Utils_Tuple2(
+																				'x',
+																				elm$json$Json$Encode$int($.b)),
+																				_Utils_Tuple2(
+																				'y',
+																				elm$json$Json$Encode$int($.c))
+																			]));
+																}($.h))
+															]));
+												},
+												$);
+										}($.e)),
+										_Utils_Tuple2(
+										'id',
+										elm$json$Json$Encode$int($.a)),
+										_Utils_Tuple2(
+										'position',
+										function ($) {
+											return elm$json$Json$Encode$object(
+												_List_fromArray(
+													[
+														_Utils_Tuple2(
+														'x',
+														elm$json$Json$Encode$int($.b)),
+														_Utils_Tuple2(
+														'y',
+														elm$json$Json$Encode$int($.c))
+													]));
+										}($.F)),
+										_Utils_Tuple2(
+										'resize',
+										function ($) {
+											return A3(
+												elm$core$Maybe$destruct,
+												elm$json$Json$Encode$null,
+												function ($) {
+													return elm$json$Json$Encode$object(
+														_List_fromArray(
+															[
+																_Utils_Tuple2(
+																'current',
+																function ($) {
+																	return elm$json$Json$Encode$object(
+																		_List_fromArray(
+																			[
+																				_Utils_Tuple2(
+																				'x',
+																				elm$json$Json$Encode$int($.b)),
+																				_Utils_Tuple2(
+																				'y',
+																				elm$json$Json$Encode$int($.c))
+																			]));
+																}($.l)),
+																_Utils_Tuple2(
+																'start',
+																function ($) {
+																	return elm$json$Json$Encode$object(
+																		_List_fromArray(
+																			[
+																				_Utils_Tuple2(
+																				'x',
+																				elm$json$Json$Encode$int($.b)),
+																				_Utils_Tuple2(
+																				'y',
+																				elm$json$Json$Encode$int($.c))
+																			]));
+																}($.h))
+															]));
+												},
+												$);
+										}($.o)),
+										_Utils_Tuple2(
+										'tabs',
+										elm$json$Json$Encode$list(
+											function ($) {
+												return elm$json$Json$Encode$object(
+													_List_fromArray(
+														[
+															_Utils_Tuple2(
+															'drag',
+															function ($) {
+																return A3(
+																	elm$core$Maybe$destruct,
+																	elm$json$Json$Encode$null,
+																	function ($) {
+																		return elm$json$Json$Encode$object(
+																			_List_fromArray(
+																				[
+																					_Utils_Tuple2(
+																					'current',
+																					function ($) {
+																						return elm$json$Json$Encode$object(
+																							_List_fromArray(
+																								[
+																									_Utils_Tuple2(
+																									'x',
+																									elm$json$Json$Encode$int($.b)),
+																									_Utils_Tuple2(
+																									'y',
+																									elm$json$Json$Encode$int($.c))
+																								]));
+																					}($.l)),
+																					_Utils_Tuple2(
+																					'start',
+																					function ($) {
+																						return elm$json$Json$Encode$object(
+																							_List_fromArray(
+																								[
+																									_Utils_Tuple2(
+																									'x',
+																									elm$json$Json$Encode$int($.b)),
+																									_Utils_Tuple2(
+																									'y',
+																									elm$json$Json$Encode$int($.c))
+																								]));
+																					}($.h))
+																				]));
+																	},
+																	$);
+															}($.e)),
+															_Utils_Tuple2(
+															'id',
+															elm$json$Json$Encode$int($.a)),
+															_Utils_Tuple2(
+															'screenshot',
+															function ($) {
+																return A3(elm$core$Maybe$destruct, elm$json$Json$Encode$null, elm$json$Json$Encode$string, $);
+															}($.p)),
+															_Utils_Tuple2(
+															'title',
+															elm$json$Json$Encode$string($.g)),
+															_Utils_Tuple2(
+															'url',
+															elm$json$Json$Encode$string($.v))
+														]));
+											})($.r)),
+										_Utils_Tuple2(
+										'title',
+										elm$json$Json$Encode$string($.g))
+									]));
+						})($.d))
+				]));
+	});
+var elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return elm$core$Maybe$Just(x);
+	} else {
+		return elm$core$Maybe$Nothing;
+	}
+};
+var elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var elm$core$Platform$Cmd$batch = _Platform_batch;
+var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
+var author$project$Main$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 3:
+				if (msg.a.$ === 1) {
+					var _n1 = msg.a;
+					return _Utils_Tuple2(
+						model,
+						author$project$Main$getTabs(0));
+				} else {
+					var newModel = msg.a.a;
+					return _Utils_Tuple2(newModel, elm$core$Platform$Cmd$none);
+				}
+			case 1:
+				var tabGroup = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							d: A2(elm$core$List$cons, tabGroup, model.d)
+						}),
+					elm$core$Platform$Cmd$none);
+			case 0:
+				var gotTabs = msg.a;
+				var tabGroup = A2(
+					elm$core$Maybe$withDefault,
+					A3(author$project$Main$initTabGroup, 0, 'Main', _List_Nil),
+					elm$core$List$head(model.d));
+				var newTabGroup = _Utils_update(
+					tabGroup,
+					{r: gotTabs});
+				var newModel = _Utils_update(
+					model,
+					{
+						d: _List_fromArray(
+							[newTabGroup])
+					});
+				return _Utils_Tuple2(
+					newModel,
+					author$project$Main$saveModel(newModel));
+			case 2:
+				var tabscreenshot = msg.a;
+				var tabGroup = A2(
+					elm$core$Maybe$withDefault,
+					A3(author$project$Main$initTabGroup, 0, 'Main', _List_Nil),
+					elm$core$List$head(model.d));
+				var newTabs = A2(
+					elm$core$List$map,
+					function (tab) {
+						return _Utils_eq(tab.a, tabscreenshot.a) ? _Utils_update(
+							tab,
+							{p: tabscreenshot.U}) : tab;
+					},
+					tabGroup.r);
+				var newTabGroup = _Utils_update(
+					tabGroup,
+					{r: newTabs});
+				var newModel = _Utils_update(
+					model,
+					{
+						d: _List_fromArray(
+							[newTabGroup])
+					});
+				return _Utils_Tuple2(
+					newModel,
+					author$project$Main$saveModel(newModel));
+			case 7:
+				var id = msg.a;
+				var newTabGroups = A2(
+					elm$core$List$filter,
+					function (tg) {
+						return !_Utils_eq(tg.a, id);
+					},
+					model.d);
+				var newModel = _Utils_update(
+					model,
+					{d: newTabGroups});
+				return _Utils_Tuple2(
+					newModel,
+					author$project$Main$saveModel(newModel));
+			case 8:
+				var newTabGroups = A2(
+					elm$core$List$cons,
+					author$project$Main$blankTabGroup(
+						elm$core$List$length(model.d)),
+					model.d);
+				var newModel = _Utils_update(
+					model,
+					{d: newTabGroups});
+				return _Utils_Tuple2(
+					newModel,
+					author$project$Main$saveModel(newModel));
+			case 6:
+				var id = msg.a;
+				var newTitle = msg.b;
+				var newTabGroups = A2(
+					elm$core$List$map,
+					function (tabGroup) {
+						return _Utils_eq(tabGroup.a, id) ? _Utils_update(
+							tabGroup,
+							{g: newTitle}) : tabGroup;
+					},
+					model.d);
+				var newModel = _Utils_update(
+					model,
+					{d: newTabGroups});
+				return _Utils_Tuple2(
+					newModel,
+					author$project$Main$saveModel(newModel));
+			case 5:
+				var id = msg.a;
+				var newTabGroups = A2(
+					elm$core$List$map,
+					function (tabGroup) {
+						return _Utils_eq(tabGroup.a, id) ? _Utils_update(
+							tabGroup,
+							{y: false}) : tabGroup;
+					},
+					model.d);
+				var newModel = _Utils_update(
+					model,
+					{d: newTabGroups});
+				return _Utils_Tuple2(
+					newModel,
+					author$project$Main$saveModel(newModel));
+			case 4:
+				var id = msg.a;
+				var newTabGroups = A2(
+					elm$core$List$map,
+					function (tabGroup) {
+						return _Utils_eq(tabGroup.a, id) ? _Utils_update(
+							tabGroup,
+							{y: true}) : tabGroup;
+					},
+					model.d);
+				var newModel = _Utils_update(
+					model,
+					{d: newTabGroups});
+				return _Utils_Tuple2(
+					newModel,
+					author$project$Main$saveModel(newModel));
+			case 11:
+				var _n2 = msg.a;
+				var groupId = _n2.a;
+				var resizeMsg = _n2.b;
+				var newModel = _Utils_update(
+					model,
+					{
+						d: A2(
+							elm$core$List$map,
+							A2(author$project$Main$resizeTabGroup, groupId, resizeMsg),
+							model.d)
+					});
+				return _Utils_Tuple2(
+					newModel,
+					author$project$Main$saveModel(newModel));
+			case 10:
+				var _n3 = msg.a;
+				var groupId = _n3.a;
+				var dragMsg = _n3.b;
+				var newModel = _Utils_update(
+					model,
+					{
+						d: A2(
+							elm$core$List$map,
+							A2(author$project$Main$dragTabGroup, groupId, dragMsg),
+							model.d)
+					});
+				return _Utils_Tuple2(
+					newModel,
+					author$project$Main$saveModel(newModel));
+			default:
+				var _n4 = msg.a;
+				var tab = _n4.a;
+				var dragMsg = _n4.b;
+				var newModel = _Utils_update(
+					model,
+					{
+						L: A3(author$project$Main$dragTab, tab.a, dragMsg, tab)
+					});
+				return _Utils_Tuple2(
+					newModel,
+					author$project$Main$saveModel(newModel));
+		}
+	});
+var author$project$Main$AddTabGroup = {$: 8};
+var elm$html$Html$button = _VirtualDom_node('button');
+var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
+var elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		elm$html$Html$Events$on,
+		'click',
+		elm$json$Json$Decode$succeed(msg));
+};
+var author$project$Main$addTabGroupButton = A2(
+	elm$html$Html$button,
+	_List_fromArray(
+		[
+			elm$html$Html$Events$onClick(author$project$Main$AddTabGroup)
+		]),
+	_List_fromArray(
+		[
+			elm$html$Html$text('New Tab Group')
+		]));
+var author$project$Main$px = function (number) {
+	return elm$core$String$fromInt(number) + 'px';
+};
+var elm$html$Html$div = _VirtualDom_node('div');
+var elm$html$Html$img = _VirtualDom_node('img');
+var elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			elm$json$Json$Encode$string(string));
+	});
+var elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
+};
+var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
+var elm_community$string_extra$String$Extra$ellipsisWith = F3(
+	function (howLong, append, string) {
+		return (_Utils_cmp(
+			elm$core$String$length(string),
+			howLong) < 1) ? string : _Utils_ap(
+			A2(
+				elm$core$String$left,
+				howLong - elm$core$String$length(append),
+				string),
+			append);
+	});
+var elm_community$string_extra$String$Extra$ellipsis = F2(
+	function (howLong, string) {
+		return A3(elm_community$string_extra$String$Extra$ellipsisWith, howLong, '...', string);
+	});
+var author$project$Main$viewTab = F2(
+	function (length, tab) {
+		var screenshot = function () {
+			var _n0 = tab.p;
+			if (_n0.$ === 1) {
+				return A2(
+					elm$html$Html$div,
+					_List_fromArray(
+						[
+							function (_n1) {
+							var a = _n1.a;
+							var b = _n1.b;
+							return A2(elm$html$Html$Attributes$style, a, b);
+						}(
+							_Utils_Tuple2('width', '100%')),
+							function (_n2) {
+							var a = _n2.a;
+							var b = _n2.b;
+							return A2(elm$html$Html$Attributes$style, a, b);
+						}(
+							_Utils_Tuple2('height', '100%')),
+							function (_n3) {
+							var a = _n3.a;
+							var b = _n3.b;
+							return A2(elm$html$Html$Attributes$style, a, b);
+						}(
+							_Utils_Tuple2('background-color', 'white'))
+						]),
+					_List_Nil);
+			} else {
+				var screenshotSrc = _n0.a;
+				return A2(
+					elm$html$Html$img,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$src(screenshotSrc),
+							function (_n4) {
+							var a = _n4.a;
+							var b = _n4.b;
+							return A2(elm$html$Html$Attributes$style, a, b);
+						}(
+							_Utils_Tuple2('width', '100%')),
+							function (_n5) {
+							var a = _n5.a;
+							var b = _n5.b;
+							return A2(elm$html$Html$Attributes$style, a, b);
+						}(
+							_Utils_Tuple2('height', '100%'))
+						]),
+					_List_Nil);
+			}
+		}();
+		var margin = 10;
+		var border = 1;
+		var size = ((length - border) - (margin * 2)) - 1;
+		return A2(
+			elm$html$Html$div,
+			_List_fromArray(
+				[
+					A2(elm$html$Html$Attributes$style, 'float', 'left'),
+					A2(
+					elm$html$Html$Attributes$style,
+					'width',
+					author$project$Main$px(size)),
+					A2(
+					elm$html$Html$Attributes$style,
+					'height',
+					author$project$Main$px(size)),
+					A2(
+					elm$html$Html$Attributes$style,
+					'margin',
+					author$project$Main$px(margin)),
+					A2(
+					elm$html$Html$Attributes$style,
+					'border',
+					author$project$Main$px(border) + ' solid black')
+				]),
+			_List_fromArray(
+				[
+					screenshot,
+					A2(
+					elm$html$Html$div,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text(
+							A2(elm_community$string_extra$String$Extra$ellipsis, 20, tab.g))
+						]))
+				]));
+	});
+var elm$html$Html$span = _VirtualDom_node('span');
+var author$project$Main$viewTabDragging = function (maybeTab) {
+	if (maybeTab.$ === 1) {
+		return A2(elm$html$Html$span, _List_Nil, _List_Nil);
+	} else {
+		var tab = maybeTab.a;
+		return A2(author$project$Main$viewTab, 20, tab);
+	}
+};
+var author$project$Main$maxWholeSquares = F3(
+	function (w, h, x) {
+		return elm$core$Basics$floor(w / x) * elm$core$Basics$floor(h / x);
+	});
+var elm$core$Basics$ge = _Utils_ge;
+var author$project$Main$lessEfficientSquareEdge = F4(
+	function (w, h, n, x) {
+		lessEfficientSquareEdge:
+		while (true) {
+			if (_Utils_cmp(
+				A3(author$project$Main$maxWholeSquares, w, h, x),
+				n) > -1) {
+				return x;
+			} else {
+				var $temp$w = w,
+					$temp$h = h,
+					$temp$n = n,
+					$temp$x = x - 1;
+				w = $temp$w;
+				h = $temp$h;
+				n = $temp$n;
+				x = $temp$x;
+				continue lessEfficientSquareEdge;
+			}
+		}
+	});
+var elm$core$Basics$sqrt = _Basics_sqrt;
+var author$project$Main$perfectlyEfficientSquareEdge = F3(
+	function (w, h, n) {
+		return elm$core$Basics$sqrt((w * h) / n);
+	});
+var author$project$Main$bestFit = F3(
+	function (w, h, n) {
+		return A4(
+			author$project$Main$lessEfficientSquareEdge,
+			w,
+			h,
+			n,
+			A3(author$project$Main$perfectlyEfficientSquareEdge, w, h, n));
+	});
+var author$project$Main$DragStart = function (a) {
+	return {$: 0, a: a};
+};
+var author$project$Main$dragOnMouseDown = function (tabGroup) {
+	return A2(
+		elm$html$Html$Events$on,
+		'mousedown',
+		A2(
+			elm$json$Json$Decode$map,
+			function (pos) {
+				return author$project$Main$TabGroupDragMsg(
+					_Utils_Tuple2(
+						tabGroup.a,
+						author$project$Main$DragStart(pos)));
+			},
+			author$project$Main$mousePositionDecoder));
+};
+var elm$virtual_dom$VirtualDom$Custom = function (a) {
+	return {$: 3, a: a};
+};
+var elm$html$Html$Events$custom = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$Custom(decoder));
+	});
+var author$project$Main$resizeOnMouseDown = function (tabGroup) {
+	return A2(
+		elm$html$Html$Events$custom,
+		'mousedown',
+		A2(
+			elm$json$Json$Decode$map,
+			function (pos) {
+				return {
+					aH: author$project$Main$TabGroupResizeMsg(
+						_Utils_Tuple2(
+							tabGroup.a,
+							author$project$Main$DragStart(pos))),
+					aN: true,
+					aP: true
+				};
+			},
+			author$project$Main$mousePositionDecoder));
+};
+var author$project$Main$viewDraggableCorner = function (tabGroup) {
+	return A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				author$project$Main$resizeOnMouseDown(tabGroup),
+				function (_n0) {
+				var a = _n0.a;
+				var b = _n0.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('background-color', 'darkblue')),
+				function (_n1) {
+				var a = _n1.a;
+				var b = _n1.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('height', '20px')),
+				function (_n2) {
+				var a = _n2.a;
+				var b = _n2.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('width', '20px')),
+				function (_n3) {
+				var a = _n3.a;
+				var b = _n3.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('position', 'absolute')),
+				function (_n4) {
+				var a = _n4.a;
+				var b = _n4.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('bottom', '0px')),
+				function (_n5) {
+				var a = _n5.a;
+				var b = _n5.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('right', '0px')),
+				function (_n6) {
+				var a = _n6.a;
+				var b = _n6.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('cursor', 'nwse-resize'))
+			]),
+		_List_Nil);
+};
+var author$project$Main$DeleteTabGroup = function (a) {
+	return {$: 7, a: a};
+};
+var author$project$Main$viewTabGroupDeleteButton = function (tabGroup) {
+	return A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				elm$html$Html$Events$onClick(
+				author$project$Main$DeleteTabGroup(tabGroup.a)),
+				function (_n0) {
+				var a = _n0.a;
+				var b = _n0.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('float', 'right')),
+				function (_n1) {
+				var a = _n1.a;
+				var b = _n1.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('cursor', 'pointer'))
+			]),
+		_List_fromArray(
+			[
+				elm$html$Html$text('X')
+			]));
+};
+var author$project$Main$ChangeGroupTitle = F2(
+	function (a, b) {
+		return {$: 6, a: a, b: b};
+	});
+var author$project$Main$FinishGroupTitleEdit = function (a) {
+	return {$: 5, a: a};
+};
+var author$project$Main$StartGroupTitleEdit = function (a) {
+	return {$: 4, a: a};
+};
+var elm$html$Html$input = _VirtualDom_node('input');
+var elm$html$Html$Attributes$value = elm$html$Html$Attributes$stringProperty('value');
+var elm$html$Html$Events$onBlur = function (msg) {
+	return A2(
+		elm$html$Html$Events$on,
+		'blur',
+		elm$json$Json$Decode$succeed(msg));
+};
+var elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 1, a: a};
+};
+var elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3(elm$core$List$foldr, elm$json$Json$Decode$field, decoder, fields);
+	});
+var elm$html$Html$Events$targetValue = A2(
+	elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	elm$json$Json$Decode$string);
+var elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			elm$json$Json$Decode$map,
+			elm$html$Html$Events$alwaysStop,
+			A2(elm$json$Json$Decode$map, tagger, elm$html$Html$Events$targetValue)));
+};
+var author$project$Main$viewTabGroupTitle = function (tabGroup) {
+	return tabGroup.y ? A2(
+		elm$html$Html$div,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$input,
+				_List_fromArray(
+					[
+						elm$html$Html$Events$onInput(
+						author$project$Main$ChangeGroupTitle(tabGroup.a)),
+						elm$html$Html$Events$onBlur(
+						author$project$Main$FinishGroupTitleEdit(tabGroup.a)),
+						elm$html$Html$Attributes$value(tabGroup.g)
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text(tabGroup.g)
+					]))
+			])) : A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				elm$html$Html$Events$onClick(
+				author$project$Main$StartGroupTitleEdit(tabGroup.a)),
+				A2(elm$html$Html$Attributes$style, 'cursor', 'pointer')
+			]),
+		_List_fromArray(
+			[
+				elm$html$Html$text(tabGroup.g)
+			]));
+};
+var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
+var author$project$Main$viewTabGroup = function (tabGroup) {
+	var tabCount = elm$core$List$length(tabGroup.r);
+	var realPosition = author$project$Main$getPosition(tabGroup);
+	var realDimensions = author$project$Main$getDimensions(tabGroup);
+	var width = realDimensions.s;
+	var height = realDimensions.t;
+	var tabLength = elm$core$Basics$floor(
+		A3(author$project$Main$bestFit, width, height, tabCount));
+	return A2(
+		elm$html$Html$div,
+		_List_fromArray(
+			[
+				author$project$Main$dragOnMouseDown(tabGroup),
+				elm$html$Html$Attributes$class('tabGroup'),
+				function (_n0) {
+				var a = _n0.a;
+				var b = _n0.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('padding', '10px')),
+				function (_n1) {
+				var a = _n1.a;
+				var b = _n1.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('cursor', 'move')),
+				function (_n2) {
+				var a = _n2.a;
+				var b = _n2.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2(
+					'width',
+					author$project$Main$px(realDimensions.s))),
+				function (_n3) {
+				var a = _n3.a;
+				var b = _n3.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2(
+					'height',
+					author$project$Main$px(realDimensions.t))),
+				function (_n4) {
+				var a = _n4.a;
+				var b = _n4.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('border-radius', '4px')),
+				function (_n5) {
+				var a = _n5.a;
+				var b = _n5.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('position', 'absolute')),
+				function (_n6) {
+				var a = _n6.a;
+				var b = _n6.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2(
+					'left',
+					author$project$Main$px(realPosition.b))),
+				function (_n7) {
+				var a = _n7.a;
+				var b = _n7.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2(
+					'top',
+					author$project$Main$px(realPosition.c))),
+				function (_n8) {
+				var a = _n8.a;
+				var b = _n8.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('background-color', '#F8F8F8')),
+				function (_n9) {
+				var a = _n9.a;
+				var b = _n9.b;
+				return A2(elm$html$Html$Attributes$style, a, b);
+			}(
+				_Utils_Tuple2('color', '#B0B1BB'))
+			]),
+		A2(
+			elm$core$List$cons,
+			author$project$Main$viewTabGroupDeleteButton(tabGroup),
+			A2(
+				elm$core$List$cons,
+				author$project$Main$viewTabGroupTitle(tabGroup),
+				A2(
+					elm$core$List$cons,
+					author$project$Main$viewDraggableCorner(tabGroup),
+					A2(
+						elm$core$List$map,
+						author$project$Main$viewTab(tabLength),
+						tabGroup.r)))));
+};
+var author$project$Main$view = function (model) {
+	return A2(
+		elm$html$Html$div,
+		_List_Nil,
+		A2(
+			elm$core$List$cons,
+			A2(
+				elm$html$Html$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						elm$html$Html$text('hello world')
+					])),
+			A2(
+				elm$core$List$cons,
+				author$project$Main$addTabGroupButton,
+				A2(
+					elm$core$List$cons,
+					author$project$Main$viewTabDragging(model.L),
+					A2(elm$core$List$map, author$project$Main$viewTabGroup, model.d)))));
+};
 var elm$browser$Browser$element = _Browser_element;
 var author$project$Main$main = elm$browser$Browser$element(
-	{aI: author$project$Main$init, aR: author$project$Main$subscriptions, aS: author$project$Main$update, aT: author$project$Main$view});
+	{aF: author$project$Main$init, aR: author$project$Main$subscriptions, aS: author$project$Main$update, aT: author$project$Main$view});
 _Platform_export({'Main':{'init':author$project$Main$main(
 	elm$json$Json$Decode$succeed(
 		{}))(0)}});}(this));

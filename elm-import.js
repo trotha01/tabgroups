@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     model = JSON.parse(model);
     for (var id in model.tabGroups) {
       console.log("sending tabGroup", model.tabGroups[id]);
-      app.ports.tabGroup.send(model.tabGroups[id]);
+      app.ports.savedTabGroup.send(model.tabGroups[id]);
     }
   });
 
