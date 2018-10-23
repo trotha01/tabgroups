@@ -434,16 +434,16 @@ viewTabGroup tabGroup =
     div
         [ dragOnMouseDown tabGroup
         , class "tabGroup"
-        , (\( a, b ) -> style a b) ( "padding", "10px" )
-        , (\( a, b ) -> style a b) ( "cursor", "move" )
-        , (\( a, b ) -> style a b) ( "width", px realDimensions.width )
-        , (\( a, b ) -> style a b) ( "height", px realDimensions.height )
-        , (\( a, b ) -> style a b) ( "border-radius", "4px" )
-        , (\( a, b ) -> style a b) ( "position", "absolute" )
-        , (\( a, b ) -> style a b) ( "left", px realPosition.x )
-        , (\( a, b ) -> style a b) ( "top", px realPosition.y )
-        , (\( a, b ) -> style a b) ( "background-color", "#F8F8F8" )
-        , (\( a, b ) -> style a b) ( "color", "#B0B1BB" )
+        , style "padding" "10px"
+        , style "cursor" "move"
+        , style "width" <| px realDimensions.width
+        , style "height" <| px realDimensions.height
+        , style "border-radius" "4px"
+        , style "position" "absolute"
+        , style "left" <| px realPosition.x
+        , style "top" <| px realPosition.y
+        , style "background-color" "#F8F8F8"
+        , style "color" "#B0B1BB"
         ]
         (viewTabGroupDeleteButton tabGroup
             :: viewTabGroupTitle tabGroup
@@ -490,13 +490,13 @@ viewDraggableCorner : TabGroup -> Html Msg
 viewDraggableCorner tabGroup =
     div
         [ resizeOnMouseDown tabGroup
-        , (\( a, b ) -> style a b) ( "background-color", "darkblue" )
-        , (\( a, b ) -> style a b) ( "height", "20px" )
-        , (\( a, b ) -> style a b) ( "width", "20px" )
-        , (\( a, b ) -> style a b) ( "position", "absolute" )
-        , (\( a, b ) -> style a b) ( "bottom", "0px" )
-        , (\( a, b ) -> style a b) ( "right", "0px" )
-        , (\( a, b ) -> style a b) ( "cursor", "nwse-resize" )
+        , style "background-color" "darkblue"
+        , style "height" "20px"
+        , style "width" "20px"
+        , style "position" "absolute"
+        , style "bottom" "0px"
+        , style "right" "0px"
+        , style "cursor" "nwse-resize"
         ]
         []
 
@@ -527,8 +527,8 @@ viewTabGroupDeleteButton : TabGroup -> Html Msg
 viewTabGroupDeleteButton tabGroup =
     div
         [ Html.Events.onClick (DeleteTabGroup tabGroup.id)
-        , (\( a, b ) -> style a b) ( "float", "right" )
-        , (\( a, b ) -> style a b) ( "cursor", "pointer" )
+        , style "float" "right"
+        , style "cursor" "pointer"
         ]
         [ text "X" ]
 
@@ -596,17 +596,17 @@ viewTab length tab =
             case tab.screenshot of
                 Nothing ->
                     div
-                        [ (\( a, b ) -> style a b) ( "width", "100%" )
-                        , (\( a, b ) -> style a b) ( "height", "100%" )
-                        , (\( a, b ) -> style a b) ( "background-color", "white" )
+                        [ style "width" "100%"
+                        , style "height" "100%"
+                        , style "background-color" "white"
                         ]
                         []
 
                 Just screenshotSrc ->
                     img
                         [ src screenshotSrc
-                        , (\( a, b ) -> style a b) ( "width", "100%" )
-                        , (\( a, b ) -> style a b) ( "height", "100%" )
+                        , style "width" "100%"
+                        , style "height" "100%"
                         ]
                         []
     in

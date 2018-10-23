@@ -7119,24 +7119,9 @@ var author$project$Main$viewTab = F2(
 					elm$html$Html$div,
 					_List_fromArray(
 						[
-							function (_n1) {
-							var a = _n1.a;
-							var b = _n1.b;
-							return A2(elm$html$Html$Attributes$style, a, b);
-						}(
-							_Utils_Tuple2('width', '100%')),
-							function (_n2) {
-							var a = _n2.a;
-							var b = _n2.b;
-							return A2(elm$html$Html$Attributes$style, a, b);
-						}(
-							_Utils_Tuple2('height', '100%')),
-							function (_n3) {
-							var a = _n3.a;
-							var b = _n3.b;
-							return A2(elm$html$Html$Attributes$style, a, b);
-						}(
-							_Utils_Tuple2('background-color', 'white'))
+							A2(elm$html$Html$Attributes$style, 'width', '100%'),
+							A2(elm$html$Html$Attributes$style, 'height', '100%'),
+							A2(elm$html$Html$Attributes$style, 'background-color', 'white')
 						]),
 					_List_Nil);
 			} else {
@@ -7146,18 +7131,8 @@ var author$project$Main$viewTab = F2(
 					_List_fromArray(
 						[
 							elm$html$Html$Attributes$src(screenshotSrc),
-							function (_n4) {
-							var a = _n4.a;
-							var b = _n4.b;
-							return A2(elm$html$Html$Attributes$style, a, b);
-						}(
-							_Utils_Tuple2('width', '100%')),
-							function (_n5) {
-							var a = _n5.a;
-							var b = _n5.b;
-							return A2(elm$html$Html$Attributes$style, a, b);
-						}(
-							_Utils_Tuple2('height', '100%'))
+							A2(elm$html$Html$Attributes$style, 'width', '100%'),
+							A2(elm$html$Html$Attributes$style, 'height', '100%')
 						]),
 					_List_Nil);
 			}
@@ -7300,48 +7275,13 @@ var author$project$Main$viewDraggableCorner = function (tabGroup) {
 		_List_fromArray(
 			[
 				author$project$Main$resizeOnMouseDown(tabGroup),
-				function (_n0) {
-				var a = _n0.a;
-				var b = _n0.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('background-color', 'darkblue')),
-				function (_n1) {
-				var a = _n1.a;
-				var b = _n1.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('height', '20px')),
-				function (_n2) {
-				var a = _n2.a;
-				var b = _n2.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('width', '20px')),
-				function (_n3) {
-				var a = _n3.a;
-				var b = _n3.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('position', 'absolute')),
-				function (_n4) {
-				var a = _n4.a;
-				var b = _n4.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('bottom', '0px')),
-				function (_n5) {
-				var a = _n5.a;
-				var b = _n5.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('right', '0px')),
-				function (_n6) {
-				var a = _n6.a;
-				var b = _n6.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('cursor', 'nwse-resize'))
+				A2(elm$html$Html$Attributes$style, 'background-color', 'darkblue'),
+				A2(elm$html$Html$Attributes$style, 'height', '20px'),
+				A2(elm$html$Html$Attributes$style, 'width', '20px'),
+				A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
+				A2(elm$html$Html$Attributes$style, 'bottom', '0px'),
+				A2(elm$html$Html$Attributes$style, 'right', '0px'),
+				A2(elm$html$Html$Attributes$style, 'cursor', 'nwse-resize')
 			]),
 		_List_Nil);
 };
@@ -7355,18 +7295,8 @@ var author$project$Main$viewTabGroupDeleteButton = function (tabGroup) {
 			[
 				elm$html$Html$Events$onClick(
 				author$project$Main$DeleteTabGroup(tabGroup.a)),
-				function (_n0) {
-				var a = _n0.a;
-				var b = _n0.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('float', 'right')),
-				function (_n1) {
-				var a = _n1.a;
-				var b = _n1.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('cursor', 'pointer'))
+				A2(elm$html$Html$Attributes$style, 'float', 'right'),
+				A2(elm$html$Html$Attributes$style, 'cursor', 'pointer')
 			]),
 		_List_fromArray(
 			[
@@ -7470,74 +7400,28 @@ var author$project$Main$viewTabGroup = function (tabGroup) {
 			[
 				author$project$Main$dragOnMouseDown(tabGroup),
 				elm$html$Html$Attributes$class('tabGroup'),
-				function (_n0) {
-				var a = _n0.a;
-				var b = _n0.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('padding', '10px')),
-				function (_n1) {
-				var a = _n1.a;
-				var b = _n1.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('cursor', 'move')),
-				function (_n2) {
-				var a = _n2.a;
-				var b = _n2.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2(
-					'width',
-					author$project$Main$px(realDimensions.s))),
-				function (_n3) {
-				var a = _n3.a;
-				var b = _n3.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2(
-					'height',
-					author$project$Main$px(realDimensions.t))),
-				function (_n4) {
-				var a = _n4.a;
-				var b = _n4.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('border-radius', '4px')),
-				function (_n5) {
-				var a = _n5.a;
-				var b = _n5.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('position', 'absolute')),
-				function (_n6) {
-				var a = _n6.a;
-				var b = _n6.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2(
-					'left',
-					author$project$Main$px(realPosition.b))),
-				function (_n7) {
-				var a = _n7.a;
-				var b = _n7.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2(
-					'top',
-					author$project$Main$px(realPosition.c))),
-				function (_n8) {
-				var a = _n8.a;
-				var b = _n8.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('background-color', '#F8F8F8')),
-				function (_n9) {
-				var a = _n9.a;
-				var b = _n9.b;
-				return A2(elm$html$Html$Attributes$style, a, b);
-			}(
-				_Utils_Tuple2('color', '#B0B1BB'))
+				A2(elm$html$Html$Attributes$style, 'padding', '10px'),
+				A2(elm$html$Html$Attributes$style, 'cursor', 'move'),
+				A2(
+				elm$html$Html$Attributes$style,
+				'width',
+				author$project$Main$px(realDimensions.s)),
+				A2(
+				elm$html$Html$Attributes$style,
+				'height',
+				author$project$Main$px(realDimensions.t)),
+				A2(elm$html$Html$Attributes$style, 'border-radius', '4px'),
+				A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
+				A2(
+				elm$html$Html$Attributes$style,
+				'left',
+				author$project$Main$px(realPosition.b)),
+				A2(
+				elm$html$Html$Attributes$style,
+				'top',
+				author$project$Main$px(realPosition.c)),
+				A2(elm$html$Html$Attributes$style, 'background-color', '#F8F8F8'),
+				A2(elm$html$Html$Attributes$style, 'color', '#B0B1BB')
 			]),
 		A2(
 			elm$core$List$cons,
