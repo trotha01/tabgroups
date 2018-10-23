@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Subscribe to Elm getTabs port
   app.ports.getTabs.subscribe(function() {
-    console.log("getting tabs");
     getAllTabs();
   });
 
@@ -53,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // TODO: get screenshot for each tab
   queryChromeForTabs = function() {
     chrome.tabs.query({}, function(tabs) {
-      console.log(tabs);
 
       // append empty screenshot to each tab
       var newTabs = tabs.map(function(tab) {
@@ -76,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
     model = localStorage.getItem('model');
 
     if (!model) {
-      console.log("could not find saved model");
       app.ports.savedModel.send(null);
       return;
     }
