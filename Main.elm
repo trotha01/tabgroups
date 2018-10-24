@@ -2,10 +2,13 @@ port module Main exposing (main)
 
 import Browser
 import Browser.Events exposing (..)
+import Dict exposing (Dict)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Json.Decode as Decode
+import Json.Decode as Decode exposing (Decoder)
+import Json.Decode.Extra as Decode
+import Json.Encode as Encode
 import String.Extra exposing (ellipsis)
 
 
@@ -34,8 +37,29 @@ main =
 
 type alias Model =
     { tabGroups : List TabGroup
+    , tabs : Dict Int Tab
     , tabDrag : Maybe Tab
+    , error : Maybe String
     }
+
+
+modelEncode : Model -> Encode.Value
+modelEncode model =
+    Encode.object
+        [ ( "tabGroups", Encode.list tabGroupEncode model.tabGroups )
+        , ( "tabs", Encode.dict String.fromInt tabEncode model.tabs )
+        , ( "tabDrag", maybeEncode model.tabDrag tabEncode )
+        , ( "error", maybeEncode model.error Encode.string )
+        ]
+
+
+modelDecoder : Decoder Model
+modelDecoder =
+    Decode.map4 Model
+        (Decode.field "tabGroups" <| Decode.list tabGroupDecoder)
+        (Decode.field "tabs" <| Decode.dict2 Decode.int tabDecoder)
+        (Decode.field "tabDrag" <| Decode.nullable <| tabDecoder)
+        (Decode.field "error" <| Decode.maybe <| Decode.string)
 
 
 type alias TabGroup =
@@ -50,6 +74,43 @@ type alias TabGroup =
     }
 
 
+tabGroupEncode : TabGroup -> Encode.Value
+tabGroupEncode tabGroup =
+    Encode.object
+        [ ( "id", Encode.int tabGroup.id )
+        , ( "title", Encode.string tabGroup.title )
+        , ( "tabs", Encode.list tabEncode tabGroup.tabs )
+        , ( "position", positionEncode tabGroup.position )
+        , ( "drag", maybeEncode tabGroup.drag dragEncode )
+        , ( "changingTitle", Encode.bool tabGroup.changingTitle )
+        , ( "dimensions", dimensionsEncode tabGroup.dimensions )
+        , ( "resize", maybeEncode tabGroup.resize dragEncode )
+        ]
+
+
+tabGroupDecoder : Decoder TabGroup
+tabGroupDecoder =
+    Decode.map8 TabGroup
+        (Decode.field "id" Decode.int)
+        (Decode.field "title" Decode.string)
+        (Decode.field "tabs" <| Decode.list tabDecoder)
+        (Decode.field "position" positionDecoder)
+        (Decode.field "drag" <| Decode.nullable <| dragDecoder)
+        (Decode.field "changingTitle" Decode.bool)
+        (Decode.field "dimensions" dimensionsDecoder)
+        (Decode.field "resize" <| Decode.nullable <| dragDecoder)
+
+
+maybeEncode : Maybe a -> (a -> Encode.Value) -> Encode.Value
+maybeEncode value encoder =
+    case value of
+        Nothing ->
+            Encode.null
+
+        Just j ->
+            encoder j
+
+
 type alias GroupTitle =
     String
 
@@ -60,16 +121,61 @@ type alias Dimensions =
     }
 
 
+dimensionsDecoder : Decoder Dimensions
+dimensionsDecoder =
+    Decode.map2 Dimensions
+        (Decode.field "height" Decode.int)
+        (Decode.field "width" Decode.int)
+
+
+dimensionsEncode : Dimensions -> Encode.Value
+dimensionsEncode dimensions =
+    Encode.object
+        [ ( "height", Encode.int dimensions.height )
+        , ( "width", Encode.int dimensions.width )
+        ]
+
+
 type alias Position =
     { x : Int
     , y : Int
     }
 
 
+positionEncode : Position -> Encode.Value
+positionEncode position =
+    Encode.object
+        [ ( "x", Encode.int position.x )
+        , ( "y", Encode.int position.y )
+        ]
+
+
+positionDecoder : Decoder Position
+positionDecoder =
+    Decode.map2 Position
+        (Decode.field "x" Decode.int)
+        (Decode.field "y" Decode.int)
+
+
 type alias Drag =
     { start : Position
     , current : Position
     }
+
+
+dragEncode : Drag -> Encode.Value
+dragEncode drag =
+    Encode.object
+        [ ( "start", positionEncode drag.start )
+        , ( "current", positionEncode drag.current )
+        ]
+
+
+dragDecoder : Decoder Drag
+dragDecoder =
+    Decode.map2 Drag
+        (Decode.field "start" positionDecoder)
+        (Decode.field "current" positionDecoder)
 
 
 initTabGroup : Int -> String -> List Tab -> TabGroup
@@ -99,6 +205,27 @@ type alias Tab =
     }
 
 
+tabEncode : Tab -> Encode.Value
+tabEncode tab =
+    Encode.object
+        [ ( "id", Encode.int tab.id )
+        , ( "title", Encode.string tab.title )
+        , ( "url", Encode.string tab.url )
+        , ( "screenshot", maybeEncode tab.screenshot Encode.string )
+        , ( "drag", maybeEncode tab.drag dragEncode )
+        ]
+
+
+tabDecoder : Decoder Tab
+tabDecoder =
+    Decode.map5 Tab
+        (Decode.field "id" Decode.int)
+        (Decode.field "title" Decode.string)
+        (Decode.field "url" Decode.string)
+        (Decode.field "screenshot" <| Decode.nullable <| Decode.string)
+        (Decode.field "drag" <| Decode.nullable <| dragDecoder)
+
+
 type alias TabScreenshot =
     { id : Int
     , img : Maybe String
@@ -111,7 +238,13 @@ type alias Flags =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( { tabGroups = [], tabDrag = Nothing }, getModel () )
+    ( { tabGroups = []
+      , tabs = Dict.empty
+      , tabDrag = Nothing
+      , error = Nothing
+      }
+    , getModel ()
+    )
 
 
 sampleTabs : List TabGroup
@@ -142,7 +275,7 @@ type Msg
     = GotTabs (List Tab)
     | GotTabGroup TabGroup
     | GotTabScreenshot TabScreenshot
-    | GotSavedModel (Maybe Model)
+    | GotSavedModel (Maybe Decode.Value)
     | StartGroupTitleEdit Int
     | FinishGroupTitleEdit Int
     | ChangeGroupTitle Int String
@@ -165,12 +298,21 @@ update msg model =
         GotSavedModel Nothing ->
             ( model, getTabs () )
 
-        GotSavedModel (Just newSavedModel) ->
-            if List.length newSavedModel.tabGroups == 0 then
-                ( model, getTabs () )
+        GotSavedModel (Just newEncodedSavedModel) ->
+            let
+                modelDecodeResult =
+                    Decode.decodeValue modelDecoder newEncodedSavedModel
+            in
+            case modelDecodeResult of
+                Err error ->
+                    ( { model | error = Just (Decode.errorToString error) }, Cmd.none )
 
-            else
-                ( newSavedModel, Cmd.none )
+                Ok newSavedModel ->
+                    if List.length newSavedModel.tabGroups == 0 then
+                        ( model, getTabs () )
+
+                    else
+                        ( newSavedModel, Cmd.none )
 
         GotTabGroup tabGroup ->
             ( { model | tabGroups = tabGroup :: model.tabGroups }, Cmd.none )
@@ -187,7 +329,7 @@ update msg model =
                 newModel =
                     { model | tabGroups = [ newTabGroup ] }
             in
-            ( newModel, saveModel newModel )
+            ( newModel, saveModel <| modelEncode newModel )
 
         GotTabScreenshot tabscreenshot ->
             let
@@ -212,7 +354,7 @@ update msg model =
                 newModel =
                     { model | tabGroups = [ newTabGroup ] }
             in
-            ( newModel, saveModel newModel )
+            ( newModel, saveModel <| modelEncode newModel )
 
         DeleteTabGroup id ->
             let
@@ -222,7 +364,7 @@ update msg model =
                 newModel =
                     { model | tabGroups = newTabGroups }
             in
-            ( newModel, saveModel newModel )
+            ( newModel, saveModel <| modelEncode newModel )
 
         AddTabGroup ->
             let
@@ -233,7 +375,7 @@ update msg model =
                 newModel =
                     { model | tabGroups = newTabGroups }
             in
-            ( newModel, saveModel newModel )
+            ( newModel, saveModel <| modelEncode newModel )
 
         ChangeGroupTitle id newTitle ->
             let
@@ -251,7 +393,7 @@ update msg model =
                 newModel =
                     { model | tabGroups = newTabGroups }
             in
-            ( newModel, saveModel newModel )
+            ( newModel, saveModel <| modelEncode newModel )
 
         FinishGroupTitleEdit id ->
             let
@@ -269,7 +411,7 @@ update msg model =
                 newModel =
                     { model | tabGroups = newTabGroups }
             in
-            ( newModel, saveModel newModel )
+            ( newModel, saveModel <| modelEncode newModel )
 
         StartGroupTitleEdit id ->
             let
@@ -287,7 +429,7 @@ update msg model =
                 newModel =
                     { model | tabGroups = newTabGroups }
             in
-            ( newModel, saveModel newModel )
+            ( newModel, saveModel <| modelEncode newModel )
 
         TabGroupResizeMsg ( groupId, resizeMsg ) ->
             let
@@ -297,7 +439,7 @@ update msg model =
                             List.map (resizeTabGroup groupId resizeMsg) model.tabGroups
                     }
             in
-            ( newModel, saveModel newModel )
+            ( newModel, saveModel <| modelEncode newModel )
 
         TabGroupDragMsg ( groupId, dragMsg ) ->
             let
@@ -307,7 +449,7 @@ update msg model =
                             List.map (dragTabGroup groupId dragMsg) model.tabGroups
                     }
             in
-            ( newModel, saveModel newModel )
+            ( newModel, saveModel <| modelEncode newModel )
 
         TabDragMsg ( tab, dragMsg ) ->
             let
@@ -316,7 +458,7 @@ update msg model =
 
                 -- TODO: fix tab final position, add to new tab group, remove from old tabgroup
             in
-            ( newModel, saveModel newModel )
+            ( newModel, saveModel <| modelEncode newModel )
 
 
 type alias Draggable a =
@@ -392,12 +534,22 @@ getDimensions { dimensions, resize } =
 
 view : Model -> Html Msg
 view model =
-    div []
-        (div [] [ text "hello world" ]
-            :: addTabGroupButton
-            :: viewTabDragging model.tabDrag
-            :: List.map viewTabGroup model.tabGroups
-        )
+    case model.error of
+        Just err ->
+            div []
+                (div [] [ text err ]
+                    :: addTabGroupButton
+                    :: viewTabDragging model.tabDrag
+                    :: List.map viewTabGroup model.tabGroups
+                )
+
+        Nothing ->
+            div []
+                (div [] [ text "hello world" ]
+                    :: addTabGroupButton
+                    :: viewTabDragging model.tabDrag
+                    :: List.map viewTabGroup model.tabGroups
+                )
 
 
 viewTabDragging : Maybe Tab -> Html Msg
@@ -718,10 +870,10 @@ port tabScreenshot : (TabScreenshot -> msg) -> Sub msg
 {- LOCAL STORAGE PORTS -}
 
 
-port saveModel : Model -> Cmd msg
+port saveModel : Encode.Value -> Cmd msg
 
 
 port getModel : () -> Cmd msg
 
 
-port savedModel : (Maybe Model -> msg) -> Sub msg
+port savedModel : (Maybe Decode.Value -> msg) -> Sub msg
