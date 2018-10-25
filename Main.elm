@@ -36,8 +36,9 @@ main =
 
 
 type alias Model =
-    { tabGroups : Dict TabGroupID TabGroup
-    , tabs : Dict TabID Tab
+    { tabGroups : TabGroups
+    , tabs : Tabs
+    , activeTabGroupID : TabGroupID
     , tabDrag : Maybe TabID
     , error : Maybe String
     }
@@ -53,6 +54,62 @@ tabsInTabGroup tabDict tabgroup =
         tabgroup.tabs
 
 
+insertTabGroup : TabGroup -> TabGroups -> TabGroups
+insertTabGroup newTabGroup tabGroups =
+    Dict.insert (Dict.size tabGroups) newTabGroup tabGroups
+
+
+updateTabGroupAt : TabGroupID -> (TabGroup -> TabGroup) -> TabGroups -> TabGroups
+updateTabGroupAt id f tabGroups =
+    Dict.update id (Maybe.map f) tabGroups
+
+
+updateTabAt : TabID -> (Tab -> Tab) -> Tabs -> Tabs
+updateTabAt id f tabs =
+    Dict.update id (Maybe.map f) tabs
+
+
+mapScreenshot : Maybe String -> Tab -> Tab
+mapScreenshot screenshot tab =
+    { tab | screenshot = screenshot }
+
+
+mapTitle : String -> TabGroup -> TabGroup
+mapTitle title tabGroup =
+    { tabGroup | title = title }
+
+
+mapChangingTitle : Bool -> TabGroup -> TabGroup
+mapChangingTitle changingTitle tabGroup =
+    { tabGroup | changingTitle = changingTitle }
+
+
+removeTabGroup : TabGroupID -> TabGroups -> TabGroups
+removeTabGroup id tabGroups =
+    Dict.remove id tabGroups
+
+
+activeTabGroup : Model -> TabGroup
+activeTabGroup model =
+    Dict.get model.activeTabGroupID model.tabGroups
+        |> Maybe.withDefault (initTabGroup "Main" [])
+
+
+tabsFromList : List Tab -> Dict TabID Tab
+tabsFromList newTabs =
+    newTabs
+        |> List.indexedMap Tuple.pair
+        |> Dict.fromList
+
+
+type alias TabGroups =
+    Dict TabGroupID TabGroup
+
+
+type alias Tabs =
+    Dict TabID Tab
+
+
 type alias TabGroupID =
     Int
 
@@ -66,6 +123,7 @@ modelEncode model =
     Encode.object
         [ ( "tabGroups", Encode.dict String.fromInt tabGroupEncode model.tabGroups )
         , ( "tabs", Encode.dict String.fromInt tabEncode model.tabs )
+        , ( "activeTabGroupID", Encode.int model.activeTabGroupID )
         , ( "tabDrag", maybeEncode model.tabDrag Encode.int )
         , ( "error", maybeEncode model.error Encode.string )
         ]
@@ -73,9 +131,10 @@ modelEncode model =
 
 modelDecoder : Decoder Model
 modelDecoder =
-    Decode.map4 Model
+    Decode.map5 Model
         (Decode.field "tabGroups" <| Decode.dict2 Decode.int tabGroupDecoder)
         (Decode.field "tabs" <| Decode.dict2 Decode.int tabDecoder)
+        (Decode.field "activeTabGroupID" <| Decode.int)
         (Decode.field "tabDrag" <| Decode.maybe <| Decode.int)
         (Decode.field "error" <| Decode.maybe <| Decode.string)
 
@@ -251,6 +310,7 @@ init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( { tabGroups = Dict.empty
       , tabs = Dict.empty
+      , activeTabGroupID = 0
       , tabDrag = Nothing
       , error = Nothing
       }
@@ -283,6 +343,16 @@ type DragMsg
     | DragEnd Position
 
 
+mapTabGroups : (TabGroups -> TabGroups) -> Model -> Model
+mapTabGroups f model =
+    { model | tabGroups = f model.tabGroups }
+
+
+mapTabs : (Tabs -> Tabs) -> Model -> Model
+mapTabs f model =
+    { model | tabs = f model.tabs }
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -306,144 +376,64 @@ update msg model =
                         ( newSavedModel, Cmd.none )
 
         GotTabGroup tabGroup ->
-            let
-                tabGroupID =
-                    Dict.size model.tabGroups
-            in
-            ( { model | tabGroups = Dict.insert tabGroupID tabGroup model.tabGroups }, Cmd.none )
+            ( mapTabGroups (insertTabGroup tabGroup) model, Cmd.none )
 
         GotTabs gotTabs ->
             let
-                tabGroup =
-                    Dict.get 0 model.tabGroups
-                        |> Maybe.withDefault (initTabGroup "Main" [])
-
                 newTabs =
-                    gotTabs
-                        |> List.indexedMap Tuple.pair
-                        |> List.foldl (\( id, tab ) d -> Dict.insert id tab d) Dict.empty
-
-                newTabIDs =
-                    Dict.keys newTabs
+                    tabsFromList gotTabs
 
                 newTabGroup =
-                    { tabGroup | tabs = newTabIDs }
-
-                newTabGroupID =
-                    Dict.size model.tabGroups
-
-                newModel =
-                    { model
-                        | tabs = newTabs
-                        , tabGroups = Dict.insert newTabGroupID newTabGroup model.tabGroups
-                    }
+                    activeTabGroup model
+                        |> (\tabGroup -> { tabGroup | tabs = Dict.keys newTabs })
             in
-            ( newModel, saveModel <| modelEncode newModel )
+            model
+                |> mapTabs (always newTabs)
+                |> mapTabGroups (insertTabGroup newTabGroup)
+                |> (\newModel -> ( newModel, saveModel <| modelEncode newModel ))
 
         GotTabScreenshot tabscreenshot ->
-            let
-                newTabs =
-                    Dict.map
-                        (\tabID tab ->
-                            if tabID == tabscreenshot.id then
-                                { tab | screenshot = tabscreenshot.img }
-
-                            else
-                                tab
-                        )
-                        model.tabs
-
-                newModel =
-                    { model | tabs = newTabs }
-            in
-            ( newModel, saveModel <| modelEncode newModel )
+            model
+                |> mapTabs (updateTabAt tabscreenshot.id (mapScreenshot tabscreenshot.img))
+                |> (\newModel -> ( newModel, saveModel <| modelEncode newModel ))
 
         DeleteTabGroup id ->
-            let
-                newTabGroups =
-                    Dict.filter (\tabGroupID _ -> tabGroupID /= id) model.tabGroups
-
-                newModel =
-                    { model | tabGroups = newTabGroups }
-            in
-            ( newModel, saveModel <| modelEncode newModel )
+            model
+                |> mapTabGroups (removeTabGroup id)
+                |> (\newModel -> ( newModel, saveModel <| modelEncode newModel ))
 
         AddTabGroup ->
-            let
-                newTabGroups =
-                    Dict.insert
-                        (Dict.size model.tabGroups)
-                        blankTabGroup
-                        model.tabGroups
-
-                newModel =
-                    { model | tabGroups = newTabGroups }
-            in
-            ( newModel, saveModel <| modelEncode newModel )
+            model
+                |> mapTabGroups (insertTabGroup blankTabGroup)
+                |> (\newModel -> ( newModel, saveModel <| modelEncode newModel ))
 
         ChangeGroupTitle id newTitle ->
-            let
-                newTabGroups =
-                    model.tabGroups
-                        |> Dict.map
-                            (\tabGroupID tabGroup ->
-                                if tabGroupID == id then
-                                    { tabGroup | title = newTitle }
-
-                                else
-                                    tabGroup
-                            )
-
-                newModel =
-                    { model | tabGroups = newTabGroups }
-            in
-            ( newModel, saveModel <| modelEncode newModel )
+            model
+                |> mapTabGroups (updateTabGroupAt id (mapTitle newTitle))
+                |> (\newModel ->
+                        ( newModel, saveModel <| modelEncode newModel )
+                   )
 
         FinishGroupTitleEdit id ->
-            let
-                newTabGroups =
-                    model.tabGroups
-                        |> Dict.map
-                            (\tabGroupID tabGroup ->
-                                if tabGroupID == id then
-                                    { tabGroup | changingTitle = False }
-
-                                else
-                                    tabGroup
-                            )
-
-                newModel =
-                    { model | tabGroups = newTabGroups }
-            in
-            ( newModel, saveModel <| modelEncode newModel )
+            model
+                |> mapTabGroups (updateTabGroupAt id (mapChangingTitle False))
+                |> (\newModel ->
+                        ( newModel, saveModel <| modelEncode newModel )
+                   )
 
         StartGroupTitleEdit id ->
-            let
-                newTabGroups =
-                    model.tabGroups
-                        |> Dict.map
-                            (\tabGroupID tabGroup ->
-                                if tabGroupID == id then
-                                    { tabGroup | changingTitle = True }
+            model
+                |> mapTabGroups (updateTabGroupAt id (mapChangingTitle True))
+                |> (\newModel ->
+                        ( newModel, saveModel <| modelEncode newModel )
+                   )
 
-                                else
-                                    tabGroup
-                            )
-
-                newModel =
-                    { model | tabGroups = newTabGroups }
-            in
-            ( newModel, saveModel <| modelEncode newModel )
-
-        TabGroupResizeMsg ( groupId, resizeMsg ) ->
-            let
-                newModel =
-                    { model
-                        | tabGroups =
-                            Dict.map (resizeTabGroup groupId resizeMsg) model.tabGroups
-                    }
-            in
-            ( newModel, saveModel <| modelEncode newModel )
+        TabGroupResizeMsg ( groupID, resizeMsg ) ->
+            model
+                |> mapTabGroups (updateTabGroupAt groupID (resizeTabGroup groupID resizeMsg))
+                |> (\newModel ->
+                        ( newModel, saveModel <| modelEncode newModel )
+                   )
 
         TabGroupDragMsg ( groupId, dragMsg ) ->
             let
@@ -510,21 +500,17 @@ dragTabGroup targetID msg tabGroupID tabGroup =
                 { tabGroup | position = getPosition tabGroup, drag = Nothing }
 
 
-resizeTabGroup : Int -> DragMsg -> TabGroupID -> TabGroup -> TabGroup
-resizeTabGroup targetGroupID msg tabGroupID tabGroup =
-    if targetGroupID /= tabGroupID then
-        tabGroup
+resizeTabGroup : TabGroupID -> DragMsg -> TabGroup -> TabGroup
+resizeTabGroup tabGroupID msg tabGroup =
+    case msg of
+        DragStart xy ->
+            { tabGroup | resize = Just (Drag xy xy) }
 
-    else
-        case msg of
-            DragStart xy ->
-                { tabGroup | resize = Just (Drag xy xy) }
+        DragAt xy ->
+            { tabGroup | resize = Maybe.map (\{ start } -> Drag start xy) tabGroup.resize }
 
-            DragAt xy ->
-                { tabGroup | resize = Maybe.map (\{ start } -> Drag start xy) tabGroup.resize }
-
-            DragEnd _ ->
-                { tabGroup | dimensions = getDimensions tabGroup, resize = Nothing }
+        DragEnd _ ->
+            { tabGroup | dimensions = getDimensions tabGroup, resize = Nothing }
 
 
 getDimensions : TabGroup -> Dimensions
@@ -808,7 +794,10 @@ subscriptions model =
     in
     Sub.batch
         [ savedModel GotSavedModel
-        , tabs GotTabs
+
+        -- tabs is called when a tab is added, removed, or we queried
+        -- for all the tabs from elm
+        , updatedTabList GotTabs
         , tabScreenshot GotTabScreenshot
         , dragSubs
         , resizeSubs
@@ -877,7 +866,7 @@ port getTabs : () -> Cmd msg
 
 {-| tabs returns a list of opened tabs
 -}
-port tabs : (List Tab -> msg) -> Sub msg
+port updatedTabList : (List Tab -> msg) -> Sub msg
 
 
 port tabScreenshot : (TabScreenshot -> msg) -> Sub msg

@@ -770,11 +770,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.C.O === region.ah.O)
+	if (region.C.O === region.ai.O)
 	{
 		return 'on line ' + region.C.O;
 	}
-	return 'on lines ' + region.C.O + ' through ' + region.ah.O;
+	return 'on lines ' + region.C.O + ' through ' + region.ai.O;
 }
 
 
@@ -1841,9 +1841,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aZ,
+		impl.a_,
+		impl.bc,
 		impl.bb,
-		impl.ba,
 		function() { return function() {} }
 	);
 });
@@ -2643,9 +2643,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		a0: func(record.a0),
-		a8: record.a8,
-		a6: record.a6
+		a1: func(record.a1),
+		a9: record.a9,
+		a7: record.a7
 	}
 });
 
@@ -2913,11 +2913,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.a0;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.a8;
+		var message = !tag ? value : tag < 3 ? value.a : value.a1;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.a9;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.a6) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.a7) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3867,11 +3867,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aZ,
+		impl.a_,
+		impl.bc,
 		impl.bb,
-		impl.ba,
 		function(sendToApp, initialModel) {
-			var view = impl.bc;
+			var view = impl.bd;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3903,12 +3903,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aZ,
+		impl.a_,
+		impl.bc,
 		impl.bb,
-		impl.ba,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.R && impl.R(sendToApp)
-			var view = impl.bc;
+			var view = impl.bd;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3916,7 +3916,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aQ);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aR);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
@@ -3977,8 +3977,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.a3;
-	var onUrlRequest = impl.a4;
+	var onUrlChange = impl.a4;
+	var onUrlRequest = impl.a5;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -3998,9 +3998,9 @@ function _Browser_application(impl)
 					var next = elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aB === next.aB
-							&& curr.an === next.an
-							&& curr.ax.a === next.ax.a
+							&& curr.aC === next.aC
+							&& curr.ao === next.ao
+							&& curr.ay.a === next.ay.a
 						)
 							? elm$browser$Browser$Internal(next)
 							: elm$browser$Browser$External(href)
@@ -4008,13 +4008,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aZ: function(flags)
+		a_: function(flags)
 		{
-			return A3(impl.aZ, flags, _Browser_getUrl(), key);
+			return A3(impl.a_, flags, _Browser_getUrl(), key);
 		},
+		bd: impl.bd,
 		bc: impl.bc,
-		bb: impl.bb,
-		ba: impl.ba
+		bb: impl.bb
 	});
 }
 
@@ -4080,17 +4080,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aW: 'hidden', aR: 'visibilitychange' }
+		? { aX: 'hidden', aS: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aW: 'mozHidden', aR: 'mozvisibilitychange' }
+		? { aX: 'mozHidden', aS: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aW: 'msHidden', aR: 'msvisibilitychange' }
+		? { aX: 'msHidden', aS: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aW: 'webkitHidden', aR: 'webkitvisibilitychange' }
-		: { aW: 'hidden', aR: 'visibilitychange' };
+		? { aX: 'webkitHidden', aS: 'webkitvisibilitychange' }
+		: { aX: 'hidden', aS: 'visibilitychange' };
 }
 
 
@@ -4171,8 +4171,8 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aH: _Browser_getScene(),
-		aN: {
+		aI: _Browser_getScene(),
+		aO: {
 			o: _Browser_window.pageXOffset,
 			p: _Browser_window.pageYOffset,
 			x: _Browser_doc.documentElement.clientWidth,
@@ -4210,11 +4210,11 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aH: {
+			aI: {
 				x: node.scrollWidth,
 				z: node.scrollHeight
 			},
-			aN: {
+			aO: {
 				o: node.scrollLeft,
 				p: node.scrollTop,
 				x: node.clientWidth,
@@ -4248,14 +4248,14 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aH: _Browser_getScene(),
-			aN: {
+			aI: _Browser_getScene(),
+			aO: {
 				o: x,
 				p: y,
 				x: _Browser_doc.documentElement.clientWidth,
 				z: _Browser_doc.documentElement.clientHeight
 			},
-			aT: {
+			aU: {
 				o: x + rect.left,
 				p: y + rect.top,
 				x: rect.width,
@@ -4482,25 +4482,25 @@ var elm$core$Basics$sub = _Basics_sub;
 var elm$core$Elm$JsArray$length = _JsArray_length;
 var elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.f) {
+		if (!builder.e) {
 			return A4(
 				elm$core$Array$Array_elm_builtin,
-				elm$core$Elm$JsArray$length(builder.h),
+				elm$core$Elm$JsArray$length(builder.g),
 				elm$core$Array$shiftStep,
 				elm$core$Elm$JsArray$empty,
-				builder.h);
+				builder.g);
 		} else {
-			var treeLen = builder.f * elm$core$Array$branchFactor;
+			var treeLen = builder.e * elm$core$Array$branchFactor;
 			var depth = elm$core$Basics$floor(
 				A2(elm$core$Basics$logBase, elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? elm$core$List$reverse(builder.i) : builder.i;
-			var tree = A2(elm$core$Array$treeFromBuilder, correctNodeList, builder.f);
+			var correctNodeList = reverseNodeList ? elm$core$List$reverse(builder.h) : builder.h;
+			var tree = A2(elm$core$Array$treeFromBuilder, correctNodeList, builder.e);
 			return A4(
 				elm$core$Array$Array_elm_builtin,
-				elm$core$Elm$JsArray$length(builder.h) + treeLen,
+				elm$core$Elm$JsArray$length(builder.g) + treeLen,
 				A2(elm$core$Basics$max, 5, depth * elm$core$Array$shiftStep),
 				tree,
-				builder.h);
+				builder.g);
 		}
 	});
 var elm$core$Basics$False = 1;
@@ -4515,7 +4515,7 @@ var elm$core$Array$initializeHelp = F5(
 				return A2(
 					elm$core$Array$builderToArray,
 					false,
-					{i: nodeList, f: (len / elm$core$Array$branchFactor) | 0, h: tail});
+					{h: nodeList, e: (len / elm$core$Array$branchFactor) | 0, g: tail});
 			} else {
 				var leaf = elm$core$Array$Leaf(
 					A3(elm$core$Elm$JsArray$initialize, elm$core$Array$branchFactor, fromIndex, fn));
@@ -4779,7 +4779,7 @@ var elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var elm$core$Dict$empty = elm$core$Dict$RBEmpty_elm_builtin;
 var author$project$Main$init = function (flags) {
 	return _Utils_Tuple2(
-		{N: elm$core$Maybe$Nothing, _: elm$core$Maybe$Nothing, d: elm$core$Dict$empty, j: elm$core$Dict$empty},
+		{W: 0, N: elm$core$Maybe$Nothing, aa: elm$core$Maybe$Nothing, j: elm$core$Dict$empty, k: elm$core$Dict$empty},
 		author$project$Main$getModel(0));
 };
 var author$project$Main$GotSavedModel = function (a) {
@@ -4831,7 +4831,7 @@ var elm$browser$Browser$Events$MySub = F3(
 	});
 var elm$browser$Browser$Events$State = F2(
 	function (subs, pids) {
-		return {aw: pids, aK: subs};
+		return {ax: pids, aL: subs};
 	});
 var elm$core$Task$succeed = _Scheduler_succeed;
 var elm$browser$Browser$Events$init = elm$core$Task$succeed(
@@ -4854,7 +4854,7 @@ var elm$browser$Browser$Events$addKey = function (sub) {
 };
 var elm$browser$Browser$Events$Event = F2(
 	function (key, event) {
-		return {ai: event, ar: key};
+		return {aj: event, as: key};
 	});
 var elm$core$Platform$sendToSelf = _Platform_sendToSelf;
 var elm$core$Task$andThen = _Scheduler_andThen;
@@ -5057,7 +5057,7 @@ var elm$core$String$contains = _String_contains;
 var elm$core$String$toInt = _String_toInt;
 var elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {al: fragment, an: host, av: path, ax: port_, aB: protocol, aC: query};
+		return {am: fragment, ao: host, aw: path, ay: port_, aC: protocol, aD: query};
 	});
 var elm$url$Url$chompBeforePath = F5(
 	function (protocol, path, params, frag, str) {
@@ -5441,7 +5441,7 @@ var elm$browser$Browser$Events$onEffects = F3(
 			stepLeft,
 			stepBoth,
 			stepRight,
-			state.aw,
+			state.ax,
 			elm$core$Dict$fromList(newSubs),
 			_Utils_Tuple3(_List_Nil, elm$core$Dict$empty, _List_Nil));
 		var deadPids = _n0.a;
@@ -5487,8 +5487,8 @@ var elm$core$List$filterMap = F2(
 	});
 var elm$browser$Browser$Events$onSelfMsg = F3(
 	function (router, _n0, state) {
-		var key = _n0.ar;
-		var event = _n0.ai;
+		var key = _n0.as;
+		var event = _n0.aj;
 		var toMessage = function (_n2) {
 			var subKey = _n2.a;
 			var _n3 = _n2.b;
@@ -5497,7 +5497,7 @@ var elm$browser$Browser$Events$onSelfMsg = F3(
 			var decoder = _n3.c;
 			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : elm$core$Maybe$Nothing;
 		};
-		var messages = A2(elm$core$List$filterMap, toMessage, state.aK);
+		var messages = A2(elm$core$List$filterMap, toMessage, state.aL);
 		return A2(
 			elm$core$Task$andThen,
 			function (_n1) {
@@ -5606,7 +5606,7 @@ var author$project$Main$tabScreenshot = _Platform_incomingPort(
 				elm$json$Json$Decode$andThen,
 				function (id) {
 					return elm$json$Json$Decode$succeed(
-						{W: id, X: img});
+						{X: id, Y: img});
 				},
 				A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
 		},
@@ -5620,8 +5620,8 @@ var author$project$Main$tabScreenshot = _Platform_incomingPort(
 						A2(elm$json$Json$Decode$map, elm$core$Maybe$Just, elm$json$Json$Decode$string)
 					])))));
 var elm$json$Json$Decode$list = _Json_decodeList;
-var author$project$Main$tabs = _Platform_incomingPort(
-	'tabs',
+var author$project$Main$updatedTabList = _Platform_incomingPort(
+	'updatedTabList',
 	elm$json$Json$Decode$list(
 		A2(
 			elm$json$Json$Decode$andThen,
@@ -5636,7 +5636,7 @@ var author$project$Main$tabs = _Platform_incomingPort(
 									elm$json$Json$Decode$andThen,
 									function (drag) {
 										return elm$json$Json$Decode$succeed(
-											{l: drag, Q: screenshot, n: title, aa: url});
+											{l: drag, Q: screenshot, n: title, ab: url});
 									},
 									A2(
 										elm$json$Json$Decode$field,
@@ -5735,15 +5735,15 @@ var elm$core$Dict$values = function (dict) {
 var author$project$Main$subscriptions = function (model) {
 	var resizeSubs = elm$core$Platform$Sub$batch(
 		elm$core$Dict$values(
-			A2(elm$core$Dict$map, author$project$Main$tabGroupResizeSub, model.d)));
+			A2(elm$core$Dict$map, author$project$Main$tabGroupResizeSub, model.j)));
 	var dragSubs = elm$core$Platform$Sub$batch(
 		elm$core$Dict$values(
-			A2(elm$core$Dict$map, author$project$Main$tabGroupDragSub, model.d)));
+			A2(elm$core$Dict$map, author$project$Main$tabGroupDragSub, model.j)));
 	return elm$core$Platform$Sub$batch(
 		_List_fromArray(
 			[
 				author$project$Main$savedModel(author$project$Main$GotSavedModel),
-				author$project$Main$tabs(author$project$Main$GotTabs),
+				author$project$Main$updatedTabList(author$project$Main$GotTabs),
 				author$project$Main$tabScreenshot(author$project$Main$GotTabScreenshot),
 				dragSubs,
 				resizeSubs
@@ -5752,15 +5752,61 @@ var author$project$Main$subscriptions = function (model) {
 var author$project$Main$initTabGroup = F2(
 	function (title, initialTabs) {
 		return {
-			E: false,
+			K: false,
 			M: {z: 300, x: 400},
 			l: elm$core$Maybe$Nothing,
 			P: A2(author$project$Main$Position, 10, 10),
 			s: elm$core$Maybe$Nothing,
-			j: initialTabs,
+			k: initialTabs,
 			n: title
 		};
 	});
+var elm$core$Dict$get = F2(
+	function (targetKey, dict) {
+		get:
+		while (true) {
+			if (dict.$ === -2) {
+				return elm$core$Maybe$Nothing;
+			} else {
+				var key = dict.b;
+				var value = dict.c;
+				var left = dict.d;
+				var right = dict.e;
+				var _n1 = A2(elm$core$Basics$compare, targetKey, key);
+				switch (_n1) {
+					case 0:
+						var $temp$targetKey = targetKey,
+							$temp$dict = left;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+					case 1:
+						return elm$core$Maybe$Just(value);
+					default:
+						var $temp$targetKey = targetKey,
+							$temp$dict = right;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+				}
+			}
+		}
+	});
+var elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var author$project$Main$activeTabGroup = function (model) {
+	return A2(
+		elm$core$Maybe$withDefault,
+		A2(author$project$Main$initTabGroup, 'Main', _List_Nil),
+		A2(elm$core$Dict$get, model.W, model.j));
+};
 var author$project$Main$blankTabGroup = A2(author$project$Main$initTabGroup, 'Add Title Here', _List_Nil);
 var author$project$Main$Drag = F2(
 	function (start, current) {
@@ -5830,13 +5876,75 @@ var author$project$Main$getTabs = _Platform_outgoingPort(
 	function ($) {
 		return elm$json$Json$Encode$null;
 	});
-var author$project$Main$Model = F4(
-	function (tabGroups, tabs, tabDrag, error) {
-		return {N: error, _: tabDrag, d: tabGroups, j: tabs};
+var elm$core$Dict$sizeHelp = F2(
+	function (n, dict) {
+		sizeHelp:
+		while (true) {
+			if (dict.$ === -2) {
+				return n;
+			} else {
+				var left = dict.d;
+				var right = dict.e;
+				var $temp$n = A2(elm$core$Dict$sizeHelp, n + 1, right),
+					$temp$dict = left;
+				n = $temp$n;
+				dict = $temp$dict;
+				continue sizeHelp;
+			}
+		}
+	});
+var elm$core$Dict$size = function (dict) {
+	return A2(elm$core$Dict$sizeHelp, 0, dict);
+};
+var author$project$Main$insertTabGroup = F2(
+	function (newTabGroup, tabGroups) {
+		return A3(
+			elm$core$Dict$insert,
+			elm$core$Dict$size(tabGroups),
+			newTabGroup,
+			tabGroups);
+	});
+var author$project$Main$mapChangingTitle = F2(
+	function (changingTitle, tabGroup) {
+		return _Utils_update(
+			tabGroup,
+			{K: changingTitle});
+	});
+var author$project$Main$mapScreenshot = F2(
+	function (screenshot, tab) {
+		return _Utils_update(
+			tab,
+			{Q: screenshot});
+	});
+var author$project$Main$mapTabGroups = F2(
+	function (f, model) {
+		return _Utils_update(
+			model,
+			{
+				j: f(model.j)
+			});
+	});
+var author$project$Main$mapTabs = F2(
+	function (f, model) {
+		return _Utils_update(
+			model,
+			{
+				k: f(model.k)
+			});
+	});
+var author$project$Main$mapTitle = F2(
+	function (title, tabGroup) {
+		return _Utils_update(
+			tabGroup,
+			{n: title});
+	});
+var author$project$Main$Model = F5(
+	function (tabGroups, tabs, activeTabGroupID, tabDrag, error) {
+		return {W: activeTabGroupID, N: error, aa: tabDrag, j: tabGroups, k: tabs};
 	});
 var author$project$Main$Tab = F4(
 	function (title, url, screenshot, drag) {
-		return {l: drag, Q: screenshot, n: title, aa: url};
+		return {l: drag, Q: screenshot, n: title, ab: url};
 	});
 var author$project$Main$positionDecoder = A3(
 	elm$json$Json$Decode$map2,
@@ -5872,7 +5980,7 @@ var author$project$Main$tabDecoder = A5(
 		elm$json$Json$Decode$nullable(author$project$Main$dragDecoder)));
 var author$project$Main$TabGroup = F7(
 	function (title, tabs, position, drag, changingTitle, dimensions, resize) {
-		return {E: changingTitle, M: dimensions, l: drag, P: position, s: resize, j: tabs, n: title};
+		return {K: changingTitle, M: dimensions, l: drag, P: position, s: resize, k: tabs, n: title};
 	});
 var author$project$Main$Dimensions = F2(
 	function (height, width) {
@@ -5904,6 +6012,7 @@ var author$project$Main$tabGroupDecoder = A8(
 		elm$json$Json$Decode$field,
 		'resize',
 		elm$json$Json$Decode$nullable(author$project$Main$dragDecoder)));
+var elm$json$Json$Decode$map5 = _Json_map5;
 var elm$json$Json$Decode$maybe = function (decoder) {
 	return elm$json$Json$Decode$oneOf(
 		_List_fromArray(
@@ -5953,8 +6062,8 @@ var elm_community$json_extra$Json$Decode$Extra$dict2 = F2(
 			elm_community$json_extra$Json$Decode$Extra$decodeDictFromTuples(keyDecoder),
 			elm$json$Json$Decode$keyValuePairs(valueDecoder));
 	});
-var author$project$Main$modelDecoder = A5(
-	elm$json$Json$Decode$map4,
+var author$project$Main$modelDecoder = A6(
+	elm$json$Json$Decode$map5,
 	author$project$Main$Model,
 	A2(
 		elm$json$Json$Decode$field,
@@ -5964,6 +6073,7 @@ var author$project$Main$modelDecoder = A5(
 		elm$json$Json$Decode$field,
 		'tabs',
 		A2(elm_community$json_extra$Json$Decode$Extra$dict2, elm$json$Json$Decode$int, author$project$Main$tabDecoder)),
+	A2(elm$json$Json$Decode$field, 'activeTabGroupID', elm$json$Json$Decode$int),
 	A2(
 		elm$json$Json$Decode$field,
 		'tabDrag',
@@ -6029,7 +6139,7 @@ var author$project$Main$tabEncode = function (tab) {
 				elm$json$Json$Encode$string(tab.n)),
 				_Utils_Tuple2(
 				'url',
-				elm$json$Json$Encode$string(tab.aa)),
+				elm$json$Json$Encode$string(tab.ab)),
 				_Utils_Tuple2(
 				'screenshot',
 				A2(author$project$Main$maybeEncode, tab.Q, elm$json$Json$Encode$string)),
@@ -6069,7 +6179,7 @@ var author$project$Main$tabGroupEncode = function (tabGroup) {
 				elm$json$Json$Encode$string(tabGroup.n)),
 				_Utils_Tuple2(
 				'tabs',
-				A2(elm$json$Json$Encode$list, elm$json$Json$Encode$int, tabGroup.j)),
+				A2(elm$json$Json$Encode$list, elm$json$Json$Encode$int, tabGroup.k)),
 				_Utils_Tuple2(
 				'position',
 				author$project$Main$positionEncode(tabGroup.P)),
@@ -6078,7 +6188,7 @@ var author$project$Main$tabGroupEncode = function (tabGroup) {
 				A2(author$project$Main$maybeEncode, tabGroup.l, author$project$Main$dragEncode)),
 				_Utils_Tuple2(
 				'changingTitle',
-				elm$json$Json$Encode$bool(tabGroup.E)),
+				elm$json$Json$Encode$bool(tabGroup.K)),
 				_Utils_Tuple2(
 				'dimensions',
 				author$project$Main$dimensionsEncode(tabGroup.M)),
@@ -6109,18 +6219,387 @@ var author$project$Main$modelEncode = function (model) {
 			[
 				_Utils_Tuple2(
 				'tabGroups',
-				A3(elm$json$Json$Encode$dict, elm$core$String$fromInt, author$project$Main$tabGroupEncode, model.d)),
+				A3(elm$json$Json$Encode$dict, elm$core$String$fromInt, author$project$Main$tabGroupEncode, model.j)),
 				_Utils_Tuple2(
 				'tabs',
-				A3(elm$json$Json$Encode$dict, elm$core$String$fromInt, author$project$Main$tabEncode, model.j)),
+				A3(elm$json$Json$Encode$dict, elm$core$String$fromInt, author$project$Main$tabEncode, model.k)),
+				_Utils_Tuple2(
+				'activeTabGroupID',
+				elm$json$Json$Encode$int(model.W)),
 				_Utils_Tuple2(
 				'tabDrag',
-				A2(author$project$Main$maybeEncode, model._, elm$json$Json$Encode$int)),
+				A2(author$project$Main$maybeEncode, model.aa, elm$json$Json$Encode$int)),
 				_Utils_Tuple2(
 				'error',
 				A2(author$project$Main$maybeEncode, model.N, elm$json$Json$Encode$string))
 			]));
 };
+var elm$core$Dict$getMin = function (dict) {
+	getMin:
+	while (true) {
+		if ((dict.$ === -1) && (dict.d.$ === -1)) {
+			var left = dict.d;
+			var $temp$dict = left;
+			dict = $temp$dict;
+			continue getMin;
+		} else {
+			return dict;
+		}
+	}
+};
+var elm$core$Dict$moveRedLeft = function (dict) {
+	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
+		if ((dict.e.d.$ === -1) && (!dict.e.d.a)) {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _n1 = dict.d;
+			var lClr = _n1.a;
+			var lK = _n1.b;
+			var lV = _n1.c;
+			var lLeft = _n1.d;
+			var lRight = _n1.e;
+			var _n2 = dict.e;
+			var rClr = _n2.a;
+			var rK = _n2.b;
+			var rV = _n2.c;
+			var rLeft = _n2.d;
+			var _n3 = rLeft.a;
+			var rlK = rLeft.b;
+			var rlV = rLeft.c;
+			var rlL = rLeft.d;
+			var rlR = rLeft.e;
+			var rRight = _n2.e;
+			return A5(
+				elm$core$Dict$RBNode_elm_builtin,
+				0,
+				rlK,
+				rlV,
+				A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					rlL),
+				A5(elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rlR, rRight));
+		} else {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _n4 = dict.d;
+			var lClr = _n4.a;
+			var lK = _n4.b;
+			var lV = _n4.c;
+			var lLeft = _n4.d;
+			var lRight = _n4.e;
+			var _n5 = dict.e;
+			var rClr = _n5.a;
+			var rK = _n5.b;
+			var rV = _n5.c;
+			var rLeft = _n5.d;
+			var rRight = _n5.e;
+			if (clr === 1) {
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			}
+		}
+	} else {
+		return dict;
+	}
+};
+var elm$core$Dict$moveRedRight = function (dict) {
+	if (((dict.$ === -1) && (dict.d.$ === -1)) && (dict.e.$ === -1)) {
+		if ((dict.d.d.$ === -1) && (!dict.d.d.a)) {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _n1 = dict.d;
+			var lClr = _n1.a;
+			var lK = _n1.b;
+			var lV = _n1.c;
+			var _n2 = _n1.d;
+			var _n3 = _n2.a;
+			var llK = _n2.b;
+			var llV = _n2.c;
+			var llLeft = _n2.d;
+			var llRight = _n2.e;
+			var lRight = _n1.e;
+			var _n4 = dict.e;
+			var rClr = _n4.a;
+			var rK = _n4.b;
+			var rV = _n4.c;
+			var rLeft = _n4.d;
+			var rRight = _n4.e;
+			return A5(
+				elm$core$Dict$RBNode_elm_builtin,
+				0,
+				lK,
+				lV,
+				A5(elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+				A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					lRight,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight)));
+		} else {
+			var clr = dict.a;
+			var k = dict.b;
+			var v = dict.c;
+			var _n5 = dict.d;
+			var lClr = _n5.a;
+			var lK = _n5.b;
+			var lV = _n5.c;
+			var lLeft = _n5.d;
+			var lRight = _n5.e;
+			var _n6 = dict.e;
+			var rClr = _n6.a;
+			var rK = _n6.b;
+			var rV = _n6.c;
+			var rLeft = _n6.d;
+			var rRight = _n6.e;
+			if (clr === 1) {
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					1,
+					k,
+					v,
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, lK, lV, lLeft, lRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, rK, rV, rLeft, rRight));
+			}
+		}
+	} else {
+		return dict;
+	}
+};
+var elm$core$Dict$removeHelpPrepEQGT = F7(
+	function (targetKey, dict, color, key, value, left, right) {
+		if ((left.$ === -1) && (!left.a)) {
+			var _n1 = left.a;
+			var lK = left.b;
+			var lV = left.c;
+			var lLeft = left.d;
+			var lRight = left.e;
+			return A5(
+				elm$core$Dict$RBNode_elm_builtin,
+				color,
+				lK,
+				lV,
+				lLeft,
+				A5(elm$core$Dict$RBNode_elm_builtin, 0, key, value, lRight, right));
+		} else {
+			_n2$2:
+			while (true) {
+				if ((right.$ === -1) && (right.a === 1)) {
+					if (right.d.$ === -1) {
+						if (right.d.a === 1) {
+							var _n3 = right.a;
+							var _n4 = right.d;
+							var _n5 = _n4.a;
+							return elm$core$Dict$moveRedRight(dict);
+						} else {
+							break _n2$2;
+						}
+					} else {
+						var _n6 = right.a;
+						var _n7 = right.d;
+						return elm$core$Dict$moveRedRight(dict);
+					}
+				} else {
+					break _n2$2;
+				}
+			}
+			return dict;
+		}
+	});
+var elm$core$Dict$removeMin = function (dict) {
+	if ((dict.$ === -1) && (dict.d.$ === -1)) {
+		var color = dict.a;
+		var key = dict.b;
+		var value = dict.c;
+		var left = dict.d;
+		var lColor = left.a;
+		var lLeft = left.d;
+		var right = dict.e;
+		if (lColor === 1) {
+			if ((lLeft.$ === -1) && (!lLeft.a)) {
+				var _n3 = lLeft.a;
+				return A5(
+					elm$core$Dict$RBNode_elm_builtin,
+					color,
+					key,
+					value,
+					elm$core$Dict$removeMin(left),
+					right);
+			} else {
+				var _n4 = elm$core$Dict$moveRedLeft(dict);
+				if (_n4.$ === -1) {
+					var nColor = _n4.a;
+					var nKey = _n4.b;
+					var nValue = _n4.c;
+					var nLeft = _n4.d;
+					var nRight = _n4.e;
+					return A5(
+						elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						elm$core$Dict$removeMin(nLeft),
+						nRight);
+				} else {
+					return elm$core$Dict$RBEmpty_elm_builtin;
+				}
+			}
+		} else {
+			return A5(
+				elm$core$Dict$RBNode_elm_builtin,
+				color,
+				key,
+				value,
+				elm$core$Dict$removeMin(left),
+				right);
+		}
+	} else {
+		return elm$core$Dict$RBEmpty_elm_builtin;
+	}
+};
+var elm$core$Dict$removeHelp = F2(
+	function (targetKey, dict) {
+		if (dict.$ === -2) {
+			return elm$core$Dict$RBEmpty_elm_builtin;
+		} else {
+			var color = dict.a;
+			var key = dict.b;
+			var value = dict.c;
+			var left = dict.d;
+			var right = dict.e;
+			if (_Utils_cmp(targetKey, key) < 0) {
+				if ((left.$ === -1) && (left.a === 1)) {
+					var _n4 = left.a;
+					var lLeft = left.d;
+					if ((lLeft.$ === -1) && (!lLeft.a)) {
+						var _n6 = lLeft.a;
+						return A5(
+							elm$core$Dict$RBNode_elm_builtin,
+							color,
+							key,
+							value,
+							A2(elm$core$Dict$removeHelp, targetKey, left),
+							right);
+					} else {
+						var _n7 = elm$core$Dict$moveRedLeft(dict);
+						if (_n7.$ === -1) {
+							var nColor = _n7.a;
+							var nKey = _n7.b;
+							var nValue = _n7.c;
+							var nLeft = _n7.d;
+							var nRight = _n7.e;
+							return A5(
+								elm$core$Dict$balance,
+								nColor,
+								nKey,
+								nValue,
+								A2(elm$core$Dict$removeHelp, targetKey, nLeft),
+								nRight);
+						} else {
+							return elm$core$Dict$RBEmpty_elm_builtin;
+						}
+					}
+				} else {
+					return A5(
+						elm$core$Dict$RBNode_elm_builtin,
+						color,
+						key,
+						value,
+						A2(elm$core$Dict$removeHelp, targetKey, left),
+						right);
+				}
+			} else {
+				return A2(
+					elm$core$Dict$removeHelpEQGT,
+					targetKey,
+					A7(elm$core$Dict$removeHelpPrepEQGT, targetKey, dict, color, key, value, left, right));
+			}
+		}
+	});
+var elm$core$Dict$removeHelpEQGT = F2(
+	function (targetKey, dict) {
+		if (dict.$ === -1) {
+			var color = dict.a;
+			var key = dict.b;
+			var value = dict.c;
+			var left = dict.d;
+			var right = dict.e;
+			if (_Utils_eq(targetKey, key)) {
+				var _n1 = elm$core$Dict$getMin(right);
+				if (_n1.$ === -1) {
+					var minKey = _n1.b;
+					var minValue = _n1.c;
+					return A5(
+						elm$core$Dict$balance,
+						color,
+						minKey,
+						minValue,
+						left,
+						elm$core$Dict$removeMin(right));
+				} else {
+					return elm$core$Dict$RBEmpty_elm_builtin;
+				}
+			} else {
+				return A5(
+					elm$core$Dict$balance,
+					color,
+					key,
+					value,
+					left,
+					A2(elm$core$Dict$removeHelp, targetKey, right));
+			}
+		} else {
+			return elm$core$Dict$RBEmpty_elm_builtin;
+		}
+	});
+var elm$core$Dict$remove = F2(
+	function (key, dict) {
+		var _n0 = A2(elm$core$Dict$removeHelp, key, dict);
+		if ((_n0.$ === -1) && (!_n0.a)) {
+			var _n1 = _n0.a;
+			var k = _n0.b;
+			var v = _n0.c;
+			var l = _n0.d;
+			var r = _n0.e;
+			return A5(elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+		} else {
+			var x = _n0;
+			return x;
+		}
+	});
+var author$project$Main$removeTabGroup = F2(
+	function (id, tabGroups) {
+		return A2(elm$core$Dict$remove, id, tabGroups);
+	});
 var author$project$Main$getDimensions = function (_n0) {
 	var dimensions = _n0.M;
 	var resize = _n0.s;
@@ -6132,121 +6611,81 @@ var author$project$Main$getDimensions = function (_n0) {
 		return {z: dimensions.z + (current.p - start.p), x: dimensions.x + (current.o - start.o)};
 	}
 };
-var author$project$Main$resizeTabGroup = F4(
-	function (targetGroupID, msg, tabGroupID, tabGroup) {
-		if (!_Utils_eq(targetGroupID, tabGroupID)) {
-			return tabGroup;
-		} else {
-			switch (msg.$) {
-				case 0:
-					var xy = msg.a;
-					return _Utils_update(
-						tabGroup,
-						{
-							s: elm$core$Maybe$Just(
-								A2(author$project$Main$Drag, xy, xy))
-						});
-				case 1:
-					var xy = msg.a;
-					return _Utils_update(
-						tabGroup,
-						{
-							s: A2(
-								elm$core$Maybe$map,
-								function (_n1) {
-									var start = _n1.C;
-									return A2(author$project$Main$Drag, start, xy);
-								},
-								tabGroup.s)
-						});
-				default:
-					return _Utils_update(
-						tabGroup,
-						{
-							M: author$project$Main$getDimensions(tabGroup),
-							s: elm$core$Maybe$Nothing
-						});
-			}
+var author$project$Main$resizeTabGroup = F3(
+	function (tabGroupID, msg, tabGroup) {
+		switch (msg.$) {
+			case 0:
+				var xy = msg.a;
+				return _Utils_update(
+					tabGroup,
+					{
+						s: elm$core$Maybe$Just(
+							A2(author$project$Main$Drag, xy, xy))
+					});
+			case 1:
+				var xy = msg.a;
+				return _Utils_update(
+					tabGroup,
+					{
+						s: A2(
+							elm$core$Maybe$map,
+							function (_n1) {
+								var start = _n1.C;
+								return A2(author$project$Main$Drag, start, xy);
+							},
+							tabGroup.s)
+					});
+			default:
+				return _Utils_update(
+					tabGroup,
+					{
+						M: author$project$Main$getDimensions(tabGroup),
+						s: elm$core$Maybe$Nothing
+					});
 		}
 	});
 var author$project$Main$saveModel = _Platform_outgoingPort('saveModel', elm$core$Basics$identity);
-var elm$core$Dict$filter = F2(
-	function (isGood, dict) {
-		return A3(
-			elm$core$Dict$foldl,
-			F3(
-				function (k, v, d) {
-					return A2(isGood, k, v) ? A3(elm$core$Dict$insert, k, v, d) : d;
-				}),
-			elm$core$Dict$empty,
-			dict);
-	});
-var elm$core$Dict$get = F2(
-	function (targetKey, dict) {
-		get:
-		while (true) {
-			if (dict.$ === -2) {
-				return elm$core$Maybe$Nothing;
-			} else {
-				var key = dict.b;
-				var value = dict.c;
-				var left = dict.d;
-				var right = dict.e;
-				var _n1 = A2(elm$core$Basics$compare, targetKey, key);
-				switch (_n1) {
-					case 0:
-						var $temp$targetKey = targetKey,
-							$temp$dict = left;
-						targetKey = $temp$targetKey;
-						dict = $temp$dict;
-						continue get;
-					case 1:
-						return elm$core$Maybe$Just(value);
-					default:
-						var $temp$targetKey = targetKey,
-							$temp$dict = right;
-						targetKey = $temp$targetKey;
-						dict = $temp$dict;
-						continue get;
-				}
-			}
-		}
-	});
-var elm$core$Dict$sizeHelp = F2(
-	function (n, dict) {
-		sizeHelp:
-		while (true) {
-			if (dict.$ === -2) {
-				return n;
-			} else {
-				var left = dict.d;
-				var right = dict.e;
-				var $temp$n = A2(elm$core$Dict$sizeHelp, n + 1, right),
-					$temp$dict = left;
-				n = $temp$n;
-				dict = $temp$dict;
-				continue sizeHelp;
-			}
-		}
-	});
-var elm$core$Dict$size = function (dict) {
-	return A2(elm$core$Dict$sizeHelp, 0, dict);
-};
-var elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (!maybe.$) {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
-var elm$core$Platform$Cmd$batch = _Platform_batch;
-var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var elm$core$Tuple$pair = F2(
 	function (a, b) {
 		return _Utils_Tuple2(a, b);
 	});
+var author$project$Main$tabsFromList = function (newTabs) {
+	return elm$core$Dict$fromList(
+		A2(elm$core$List$indexedMap, elm$core$Tuple$pair, newTabs));
+};
+var elm$core$Dict$update = F3(
+	function (targetKey, alter, dictionary) {
+		var _n0 = alter(
+			A2(elm$core$Dict$get, targetKey, dictionary));
+		if (!_n0.$) {
+			var value = _n0.a;
+			return A3(elm$core$Dict$insert, targetKey, value, dictionary);
+		} else {
+			return A2(elm$core$Dict$remove, targetKey, dictionary);
+		}
+	});
+var author$project$Main$updateTabAt = F3(
+	function (id, f, tabs) {
+		return A3(
+			elm$core$Dict$update,
+			id,
+			elm$core$Maybe$map(f),
+			tabs);
+	});
+var author$project$Main$updateTabGroupAt = F3(
+	function (id, f, tabGroups) {
+		return A3(
+			elm$core$Dict$update,
+			id,
+			elm$core$Maybe$map(f),
+			tabGroups);
+	});
+var elm$core$Basics$always = F2(
+	function (a, _n0) {
+		return a;
+	});
+var elm$core$Platform$Cmd$batch = _Platform_batch;
+var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
 var elm$json$Json$Decode$decodeValue = _Json_run;
 var author$project$Main$update = F2(
 	function (msg, model) {
@@ -6272,181 +6711,155 @@ var author$project$Main$update = F2(
 							author$project$Main$getTabs(0));
 					} else {
 						var newSavedModel = modelDecodeResult.a;
-						return (!elm$core$Dict$size(newSavedModel.d)) ? _Utils_Tuple2(
+						return (!elm$core$Dict$size(newSavedModel.j)) ? _Utils_Tuple2(
 							model,
 							author$project$Main$getTabs(0)) : _Utils_Tuple2(newSavedModel, elm$core$Platform$Cmd$none);
 					}
 				}
 			case 1:
 				var tabGroup = msg.a;
-				var tabGroupID = elm$core$Dict$size(model.d);
 				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							d: A3(elm$core$Dict$insert, tabGroupID, tabGroup, model.d)
-						}),
+					A2(
+						author$project$Main$mapTabGroups,
+						author$project$Main$insertTabGroup(tabGroup),
+						model),
 					elm$core$Platform$Cmd$none);
 			case 0:
 				var gotTabs = msg.a;
-				var tabGroup = A2(
-					elm$core$Maybe$withDefault,
-					A2(author$project$Main$initTabGroup, 'Main', _List_Nil),
-					A2(elm$core$Dict$get, 0, model.d));
-				var newTabs = A3(
-					elm$core$List$foldl,
-					F2(
-						function (_n3, d) {
-							var id = _n3.a;
-							var tab = _n3.b;
-							return A3(elm$core$Dict$insert, id, tab, d);
-						}),
-					elm$core$Dict$empty,
-					A2(elm$core$List$indexedMap, elm$core$Tuple$pair, gotTabs));
-				var newTabIDs = elm$core$Dict$keys(newTabs);
-				var newTabGroupID = elm$core$Dict$size(model.d);
-				var newTabGroup = _Utils_update(
-					tabGroup,
-					{j: newTabIDs});
-				var newModel = _Utils_update(
-					model,
-					{
-						d: A3(elm$core$Dict$insert, newTabGroupID, newTabGroup, model.d),
-						j: newTabs
-					});
-				return _Utils_Tuple2(
-					newModel,
-					author$project$Main$saveModel(
-						author$project$Main$modelEncode(newModel)));
+				var newTabs = author$project$Main$tabsFromList(gotTabs);
+				var newTabGroup = function (tabGroup) {
+					return _Utils_update(
+						tabGroup,
+						{
+							k: elm$core$Dict$keys(newTabs)
+						});
+				}(
+					author$project$Main$activeTabGroup(model));
+				return function (newModel) {
+					return _Utils_Tuple2(
+						newModel,
+						author$project$Main$saveModel(
+							author$project$Main$modelEncode(newModel)));
+				}(
+					A2(
+						author$project$Main$mapTabGroups,
+						author$project$Main$insertTabGroup(newTabGroup),
+						A2(
+							author$project$Main$mapTabs,
+							elm$core$Basics$always(newTabs),
+							model)));
 			case 2:
 				var tabscreenshot = msg.a;
-				var newTabs = A2(
-					elm$core$Dict$map,
-					F2(
-						function (tabID, tab) {
-							return _Utils_eq(tabID, tabscreenshot.W) ? _Utils_update(
-								tab,
-								{Q: tabscreenshot.X}) : tab;
-						}),
-					model.j);
-				var newModel = _Utils_update(
-					model,
-					{j: newTabs});
-				return _Utils_Tuple2(
-					newModel,
-					author$project$Main$saveModel(
-						author$project$Main$modelEncode(newModel)));
+				return function (newModel) {
+					return _Utils_Tuple2(
+						newModel,
+						author$project$Main$saveModel(
+							author$project$Main$modelEncode(newModel)));
+				}(
+					A2(
+						author$project$Main$mapTabs,
+						A2(
+							author$project$Main$updateTabAt,
+							tabscreenshot.X,
+							author$project$Main$mapScreenshot(tabscreenshot.Y)),
+						model));
 			case 7:
 				var id = msg.a;
-				var newTabGroups = A2(
-					elm$core$Dict$filter,
-					F2(
-						function (tabGroupID, _n4) {
-							return !_Utils_eq(tabGroupID, id);
-						}),
-					model.d);
-				var newModel = _Utils_update(
-					model,
-					{d: newTabGroups});
-				return _Utils_Tuple2(
-					newModel,
-					author$project$Main$saveModel(
-						author$project$Main$modelEncode(newModel)));
+				return function (newModel) {
+					return _Utils_Tuple2(
+						newModel,
+						author$project$Main$saveModel(
+							author$project$Main$modelEncode(newModel)));
+				}(
+					A2(
+						author$project$Main$mapTabGroups,
+						author$project$Main$removeTabGroup(id),
+						model));
 			case 8:
-				var newTabGroups = A3(
-					elm$core$Dict$insert,
-					elm$core$Dict$size(model.d),
-					author$project$Main$blankTabGroup,
-					model.d);
-				var newModel = _Utils_update(
-					model,
-					{d: newTabGroups});
-				return _Utils_Tuple2(
-					newModel,
-					author$project$Main$saveModel(
-						author$project$Main$modelEncode(newModel)));
+				return function (newModel) {
+					return _Utils_Tuple2(
+						newModel,
+						author$project$Main$saveModel(
+							author$project$Main$modelEncode(newModel)));
+				}(
+					A2(
+						author$project$Main$mapTabGroups,
+						author$project$Main$insertTabGroup(author$project$Main$blankTabGroup),
+						model));
 			case 6:
 				var id = msg.a;
 				var newTitle = msg.b;
-				var newTabGroups = A2(
-					elm$core$Dict$map,
-					F2(
-						function (tabGroupID, tabGroup) {
-							return _Utils_eq(tabGroupID, id) ? _Utils_update(
-								tabGroup,
-								{n: newTitle}) : tabGroup;
-						}),
-					model.d);
-				var newModel = _Utils_update(
-					model,
-					{d: newTabGroups});
-				return _Utils_Tuple2(
-					newModel,
-					author$project$Main$saveModel(
-						author$project$Main$modelEncode(newModel)));
+				return function (newModel) {
+					return _Utils_Tuple2(
+						newModel,
+						author$project$Main$saveModel(
+							author$project$Main$modelEncode(newModel)));
+				}(
+					A2(
+						author$project$Main$mapTabGroups,
+						A2(
+							author$project$Main$updateTabGroupAt,
+							id,
+							author$project$Main$mapTitle(newTitle)),
+						model));
 			case 5:
 				var id = msg.a;
-				var newTabGroups = A2(
-					elm$core$Dict$map,
-					F2(
-						function (tabGroupID, tabGroup) {
-							return _Utils_eq(tabGroupID, id) ? _Utils_update(
-								tabGroup,
-								{E: false}) : tabGroup;
-						}),
-					model.d);
-				var newModel = _Utils_update(
-					model,
-					{d: newTabGroups});
-				return _Utils_Tuple2(
-					newModel,
-					author$project$Main$saveModel(
-						author$project$Main$modelEncode(newModel)));
+				return function (newModel) {
+					return _Utils_Tuple2(
+						newModel,
+						author$project$Main$saveModel(
+							author$project$Main$modelEncode(newModel)));
+				}(
+					A2(
+						author$project$Main$mapTabGroups,
+						A2(
+							author$project$Main$updateTabGroupAt,
+							id,
+							author$project$Main$mapChangingTitle(false)),
+						model));
 			case 4:
 				var id = msg.a;
-				var newTabGroups = A2(
-					elm$core$Dict$map,
-					F2(
-						function (tabGroupID, tabGroup) {
-							return _Utils_eq(tabGroupID, id) ? _Utils_update(
-								tabGroup,
-								{E: true}) : tabGroup;
-						}),
-					model.d);
-				var newModel = _Utils_update(
-					model,
-					{d: newTabGroups});
-				return _Utils_Tuple2(
-					newModel,
-					author$project$Main$saveModel(
-						author$project$Main$modelEncode(newModel)));
+				return function (newModel) {
+					return _Utils_Tuple2(
+						newModel,
+						author$project$Main$saveModel(
+							author$project$Main$modelEncode(newModel)));
+				}(
+					A2(
+						author$project$Main$mapTabGroups,
+						A2(
+							author$project$Main$updateTabGroupAt,
+							id,
+							author$project$Main$mapChangingTitle(true)),
+						model));
 			case 10:
-				var _n5 = msg.a;
-				var groupId = _n5.a;
-				var resizeMsg = _n5.b;
-				var newModel = _Utils_update(
-					model,
-					{
-						d: A2(
-							elm$core$Dict$map,
-							A2(author$project$Main$resizeTabGroup, groupId, resizeMsg),
-							model.d)
-					});
-				return _Utils_Tuple2(
-					newModel,
-					author$project$Main$saveModel(
-						author$project$Main$modelEncode(newModel)));
+				var _n3 = msg.a;
+				var groupID = _n3.a;
+				var resizeMsg = _n3.b;
+				return function (newModel) {
+					return _Utils_Tuple2(
+						newModel,
+						author$project$Main$saveModel(
+							author$project$Main$modelEncode(newModel)));
+				}(
+					A2(
+						author$project$Main$mapTabGroups,
+						A2(
+							author$project$Main$updateTabGroupAt,
+							groupID,
+							A2(author$project$Main$resizeTabGroup, groupID, resizeMsg)),
+						model));
 			default:
-				var _n6 = msg.a;
-				var groupId = _n6.a;
-				var dragMsg = _n6.b;
+				var _n4 = msg.a;
+				var groupId = _n4.a;
+				var dragMsg = _n4.b;
 				var newModel = _Utils_update(
 					model,
 					{
-						d: A2(
+						j: A2(
 							elm$core$Dict$map,
 							A2(author$project$Main$dragTabGroup, groupId, dragMsg),
-							model.d)
+							model.j)
 					});
 				return _Utils_Tuple2(
 					newModel,
@@ -6557,7 +6970,7 @@ var author$project$Main$tabsInTabGroup = F2(
 					},
 					A2(elm$core$Dict$get, tabID, tabDict));
 			},
-			tabgroup.j);
+			tabgroup.k);
 	});
 var elm$virtual_dom$VirtualDom$Custom = function (a) {
 	return {$: 3, a: a};
@@ -6577,12 +6990,12 @@ var author$project$Main$resizeOnMouseDown = function (tabGroupID) {
 			elm$json$Json$Decode$map,
 			function (pos) {
 				return {
-					a0: author$project$Main$TabGroupResizeMsg(
+					a1: author$project$Main$TabGroupResizeMsg(
 						_Utils_Tuple2(
 							tabGroupID,
 							author$project$Main$DragStart(pos))),
-					a6: true,
-					a8: true
+					a7: true,
+					a9: true
 				};
 			},
 			author$project$Main$mousePositionDecoder));
@@ -6773,7 +7186,7 @@ var elm$html$Html$Events$onInput = function (tagger) {
 };
 var author$project$Main$viewTabGroupTitle = F2(
 	function (tabGroupID, tabGroup) {
-		return tabGroup.E ? A2(
+		return tabGroup.K ? A2(
 			elm$html$Html$div,
 			_List_Nil,
 			_List_fromArray(
@@ -6808,7 +7221,7 @@ var author$project$Main$viewTabGroupTitle = F2(
 var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
 var author$project$Main$viewTabGroup = F3(
 	function (tabDict, tabGroupID, tabGroup) {
-		var tabCount = elm$core$List$length(tabGroup.j);
+		var tabCount = elm$core$List$length(tabGroup.k);
 		var realPosition = author$project$Main$getPosition(tabGroup);
 		var realDimensions = author$project$Main$getDimensions(tabGroup);
 		var width = realDimensions.x;
@@ -6880,8 +7293,8 @@ var author$project$Main$view = function (model) {
 					elm$core$Dict$values(
 						A2(
 							elm$core$Dict$map,
-							author$project$Main$viewTabGroup(model.j),
-							model.d)))));
+							author$project$Main$viewTabGroup(model.k),
+							model.j)))));
 	} else {
 		return A2(
 			elm$html$Html$div,
@@ -6901,13 +7314,13 @@ var author$project$Main$view = function (model) {
 					elm$core$Dict$values(
 						A2(
 							elm$core$Dict$map,
-							author$project$Main$viewTabGroup(model.j),
-							model.d)))));
+							author$project$Main$viewTabGroup(model.k),
+							model.j)))));
 	}
 };
 var elm$browser$Browser$element = _Browser_element;
 var author$project$Main$main = elm$browser$Browser$element(
-	{aZ: author$project$Main$init, ba: author$project$Main$subscriptions, bb: author$project$Main$update, bc: author$project$Main$view});
+	{a_: author$project$Main$init, bb: author$project$Main$subscriptions, bc: author$project$Main$update, bd: author$project$Main$view});
 _Platform_export({'Main':{'init':author$project$Main$main(
 	elm$json$Json$Decode$succeed(
 		{}))(0)}});}(this));
