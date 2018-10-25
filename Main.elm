@@ -36,19 +36,37 @@ main =
 
 
 type alias Model =
-    { tabGroups : List TabGroup
-    , tabs : Dict Int Tab
-    , tabDrag : Maybe Tab
+    { tabGroups : Dict TabGroupID TabGroup
+    , tabs : Dict TabID Tab
+    , tabDrag : Maybe TabID
     , error : Maybe String
     }
+
+
+tabsInTabGroup : Dict TabID Tab -> TabGroup -> List ( TabID, Tab )
+tabsInTabGroup tabDict tabgroup =
+    List.filterMap
+        (\tabID ->
+            Dict.get tabID tabDict
+                |> Maybe.map (\tab -> ( tabID, tab ))
+        )
+        tabgroup.tabs
+
+
+type alias TabGroupID =
+    Int
+
+
+type alias TabID =
+    Int
 
 
 modelEncode : Model -> Encode.Value
 modelEncode model =
     Encode.object
-        [ ( "tabGroups", Encode.list tabGroupEncode model.tabGroups )
+        [ ( "tabGroups", Encode.dict String.fromInt tabGroupEncode model.tabGroups )
         , ( "tabs", Encode.dict String.fromInt tabEncode model.tabs )
-        , ( "tabDrag", maybeEncode model.tabDrag tabEncode )
+        , ( "tabDrag", maybeEncode model.tabDrag Encode.int )
         , ( "error", maybeEncode model.error Encode.string )
         ]
 
@@ -56,16 +74,15 @@ modelEncode model =
 modelDecoder : Decoder Model
 modelDecoder =
     Decode.map4 Model
-        (Decode.field "tabGroups" <| Decode.list tabGroupDecoder)
+        (Decode.field "tabGroups" <| Decode.dict2 Decode.int tabGroupDecoder)
         (Decode.field "tabs" <| Decode.dict2 Decode.int tabDecoder)
-        (Decode.field "tabDrag" <| Decode.nullable <| tabDecoder)
+        (Decode.field "tabDrag" <| Decode.maybe <| Decode.int)
         (Decode.field "error" <| Decode.maybe <| Decode.string)
 
 
 type alias TabGroup =
-    { id : Int
-    , title : GroupTitle
-    , tabs : List Tab
+    { title : GroupTitle
+    , tabs : List TabID
     , position : Position
     , drag : Maybe Drag
     , changingTitle : Bool
@@ -77,9 +94,8 @@ type alias TabGroup =
 tabGroupEncode : TabGroup -> Encode.Value
 tabGroupEncode tabGroup =
     Encode.object
-        [ ( "id", Encode.int tabGroup.id )
-        , ( "title", Encode.string tabGroup.title )
-        , ( "tabs", Encode.list tabEncode tabGroup.tabs )
+        [ ( "title", Encode.string tabGroup.title )
+        , ( "tabs", Encode.list Encode.int tabGroup.tabs )
         , ( "position", positionEncode tabGroup.position )
         , ( "drag", maybeEncode tabGroup.drag dragEncode )
         , ( "changingTitle", Encode.bool tabGroup.changingTitle )
@@ -90,10 +106,9 @@ tabGroupEncode tabGroup =
 
 tabGroupDecoder : Decoder TabGroup
 tabGroupDecoder =
-    Decode.map8 TabGroup
-        (Decode.field "id" Decode.int)
+    Decode.map7 TabGroup
         (Decode.field "title" Decode.string)
-        (Decode.field "tabs" <| Decode.list tabDecoder)
+        (Decode.field "tabs" <| Decode.list Decode.int)
         (Decode.field "position" positionDecoder)
         (Decode.field "drag" <| Decode.nullable <| dragDecoder)
         (Decode.field "changingTitle" Decode.bool)
@@ -178,10 +193,9 @@ dragDecoder =
         (Decode.field "current" positionDecoder)
 
 
-initTabGroup : Int -> String -> List Tab -> TabGroup
-initTabGroup id title initialTabs =
-    { id = id
-    , title = title
+initTabGroup : GroupTitle -> List TabID -> TabGroup
+initTabGroup title initialTabs =
+    { title = title
     , tabs = initialTabs
     , position = Position 10 10
     , drag = Nothing
@@ -191,14 +205,13 @@ initTabGroup id title initialTabs =
     }
 
 
-blankTabGroup : Int -> TabGroup
-blankTabGroup id =
-    initTabGroup id "Add Title Here" []
+blankTabGroup : TabGroup
+blankTabGroup =
+    initTabGroup "Add Title Here" []
 
 
 type alias Tab =
-    { id : Int
-    , title : String
+    { title : String
     , url : String
     , screenshot : Maybe String
     , drag : Maybe Drag
@@ -208,8 +221,7 @@ type alias Tab =
 tabEncode : Tab -> Encode.Value
 tabEncode tab =
     Encode.object
-        [ ( "id", Encode.int tab.id )
-        , ( "title", Encode.string tab.title )
+        [ ( "title", Encode.string tab.title )
         , ( "url", Encode.string tab.url )
         , ( "screenshot", maybeEncode tab.screenshot Encode.string )
         , ( "drag", maybeEncode tab.drag dragEncode )
@@ -218,8 +230,7 @@ tabEncode tab =
 
 tabDecoder : Decoder Tab
 tabDecoder =
-    Decode.map5 Tab
-        (Decode.field "id" Decode.int)
+    Decode.map4 Tab
         (Decode.field "title" Decode.string)
         (Decode.field "url" Decode.string)
         (Decode.field "screenshot" <| Decode.nullable <| Decode.string)
@@ -238,33 +249,13 @@ type alias Flags =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( { tabGroups = []
+    ( { tabGroups = Dict.empty
       , tabs = Dict.empty
       , tabDrag = Nothing
       , error = Nothing
       }
     , getModel ()
     )
-
-
-sampleTabs : List TabGroup
-sampleTabs =
-    [ initTabGroup 1
-        "Group 1"
-        [ { id = 1
-          , title = "tab1"
-          , url = "www.tab1.com"
-          , screenshot = Nothing
-          , drag = Nothing
-          }
-        , { id = 2
-          , title = "tab2"
-          , url = "www.tab2.com"
-          , screenshot = Nothing
-          , drag = Nothing
-          }
-        ]
-    ]
 
 
 
@@ -276,14 +267,14 @@ type Msg
     | GotTabGroup TabGroup
     | GotTabScreenshot TabScreenshot
     | GotSavedModel (Maybe Decode.Value)
-    | StartGroupTitleEdit Int
-    | FinishGroupTitleEdit Int
-    | ChangeGroupTitle Int String
-    | DeleteTabGroup Int
+    | StartGroupTitleEdit TabGroupID
+    | FinishGroupTitleEdit TabGroupID
+    | ChangeGroupTitle TabGroupID String
+    | DeleteTabGroup TabGroupID
     | AddTabGroup
-    | TabDragMsg ( Tab, DragMsg )
-    | TabGroupDragMsg ( Int, DragMsg )
-    | TabGroupResizeMsg ( Int, DragMsg )
+      -- | TabDragMsg ( Tab, DragMsg )
+    | TabGroupDragMsg ( TabGroupID, DragMsg )
+    | TabGroupResizeMsg ( TabGroupID, DragMsg )
 
 
 type DragMsg
@@ -305,61 +296,72 @@ update msg model =
             in
             case modelDecodeResult of
                 Err error ->
-                    ( { model | error = Just (Decode.errorToString error) }, Cmd.none )
+                    ( { model | error = Just (Decode.errorToString error) }, getTabs () )
 
                 Ok newSavedModel ->
-                    if List.length newSavedModel.tabGroups == 0 then
+                    if Dict.size newSavedModel.tabGroups == 0 then
                         ( model, getTabs () )
 
                     else
                         ( newSavedModel, Cmd.none )
 
         GotTabGroup tabGroup ->
-            ( { model | tabGroups = tabGroup :: model.tabGroups }, Cmd.none )
+            let
+                tabGroupID =
+                    Dict.size model.tabGroups
+            in
+            ( { model | tabGroups = Dict.insert tabGroupID tabGroup model.tabGroups }, Cmd.none )
 
         GotTabs gotTabs ->
             let
                 tabGroup =
-                    List.head model.tabGroups
-                        |> Maybe.withDefault (initTabGroup 0 "Main" [])
+                    Dict.get 0 model.tabGroups
+                        |> Maybe.withDefault (initTabGroup "Main" [])
+
+                newTabs =
+                    gotTabs
+                        |> List.indexedMap Tuple.pair
+                        |> List.foldl (\( id, tab ) d -> Dict.insert id tab d) Dict.empty
+
+                newTabIDs =
+                    Dict.keys newTabs
 
                 newTabGroup =
-                    { tabGroup | tabs = gotTabs }
+                    { tabGroup | tabs = newTabIDs }
+
+                newTabGroupID =
+                    Dict.size model.tabGroups
 
                 newModel =
-                    { model | tabGroups = [ newTabGroup ] }
+                    { model
+                        | tabs = newTabs
+                        , tabGroups = Dict.insert newTabGroupID newTabGroup model.tabGroups
+                    }
             in
             ( newModel, saveModel <| modelEncode newModel )
 
         GotTabScreenshot tabscreenshot ->
             let
-                tabGroup =
-                    List.head model.tabGroups
-                        |> Maybe.withDefault (initTabGroup 0 "Main" [])
-
                 newTabs =
-                    List.map
-                        (\tab ->
-                            if tab.id == tabscreenshot.id then
+                    Dict.map
+                        (\tabID tab ->
+                            if tabID == tabscreenshot.id then
                                 { tab | screenshot = tabscreenshot.img }
 
                             else
                                 tab
                         )
-                        tabGroup.tabs
-
-                newTabGroup =
-                    { tabGroup | tabs = newTabs }
+                        model.tabs
 
                 newModel =
-                    { model | tabGroups = [ newTabGroup ] }
+                    { model | tabs = newTabs }
             in
             ( newModel, saveModel <| modelEncode newModel )
 
         DeleteTabGroup id ->
             let
                 newTabGroups =
-                    List.filter (\tg -> tg.id /= id) model.tabGroups
+                    Dict.filter (\tabGroupID _ -> tabGroupID /= id) model.tabGroups
 
                 newModel =
                     { model | tabGroups = newTabGroups }
@@ -369,8 +371,10 @@ update msg model =
         AddTabGroup ->
             let
                 newTabGroups =
-                    blankTabGroup (List.length model.tabGroups)
-                        :: model.tabGroups
+                    Dict.insert
+                        (Dict.size model.tabGroups)
+                        blankTabGroup
+                        model.tabGroups
 
                 newModel =
                     { model | tabGroups = newTabGroups }
@@ -381,9 +385,9 @@ update msg model =
             let
                 newTabGroups =
                     model.tabGroups
-                        |> List.map
-                            (\tabGroup ->
-                                if tabGroup.id == id then
+                        |> Dict.map
+                            (\tabGroupID tabGroup ->
+                                if tabGroupID == id then
                                     { tabGroup | title = newTitle }
 
                                 else
@@ -399,9 +403,9 @@ update msg model =
             let
                 newTabGroups =
                     model.tabGroups
-                        |> List.map
-                            (\tabGroup ->
-                                if tabGroup.id == id then
+                        |> Dict.map
+                            (\tabGroupID tabGroup ->
+                                if tabGroupID == id then
                                     { tabGroup | changingTitle = False }
 
                                 else
@@ -417,9 +421,9 @@ update msg model =
             let
                 newTabGroups =
                     model.tabGroups
-                        |> List.map
-                            (\tabGroup ->
-                                if tabGroup.id == id then
+                        |> Dict.map
+                            (\tabGroupID tabGroup ->
+                                if tabGroupID == id then
                                     { tabGroup | changingTitle = True }
 
                                 else
@@ -436,7 +440,7 @@ update msg model =
                 newModel =
                     { model
                         | tabGroups =
-                            List.map (resizeTabGroup groupId resizeMsg) model.tabGroups
+                            Dict.map (resizeTabGroup groupId resizeMsg) model.tabGroups
                     }
             in
             ( newModel, saveModel <| modelEncode newModel )
@@ -446,11 +450,14 @@ update msg model =
                 newModel =
                     { model
                         | tabGroups =
-                            List.map (dragTabGroup groupId dragMsg) model.tabGroups
+                            Dict.map (dragTabGroup groupId dragMsg) model.tabGroups
                     }
             in
             ( newModel, saveModel <| modelEncode newModel )
 
+
+
+{--
         TabDragMsg ( tab, dragMsg ) ->
             let
                 newModel =
@@ -459,12 +466,15 @@ update msg model =
                 -- TODO: fix tab final position, add to new tab group, remove from old tabgroup
             in
             ( newModel, saveModel <| modelEncode newModel )
+            --}
 
 
 type alias Draggable a =
-    { a | id : Int, drag : Maybe Drag, position : Position }
+    { a | drag : Maybe Drag, position : Position }
 
 
+
+{--
 dragTab : Int -> DragMsg -> Tab -> Maybe Tab
 dragTab id msg item =
     if id /= item.id then
@@ -480,11 +490,12 @@ dragTab id msg item =
 
             DragEnd _ ->
                 Nothing
+                --}
 
 
-dragTabGroup : Int -> DragMsg -> TabGroup -> TabGroup
-dragTabGroup id msg tabGroup =
-    if id /= tabGroup.id then
+dragTabGroup : Int -> DragMsg -> TabGroupID -> TabGroup -> TabGroup
+dragTabGroup targetID msg tabGroupID tabGroup =
+    if targetID /= tabGroupID then
         tabGroup
 
     else
@@ -499,9 +510,9 @@ dragTabGroup id msg tabGroup =
                 { tabGroup | position = getPosition tabGroup, drag = Nothing }
 
 
-resizeTabGroup : Int -> DragMsg -> TabGroup -> TabGroup
-resizeTabGroup id msg tabGroup =
-    if id /= tabGroup.id then
+resizeTabGroup : Int -> DragMsg -> TabGroupID -> TabGroup -> TabGroup
+resizeTabGroup targetGroupID msg tabGroupID tabGroup =
+    if targetGroupID /= tabGroupID then
         tabGroup
 
     else
@@ -539,19 +550,21 @@ view model =
             div []
                 (div [] [ text err ]
                     :: addTabGroupButton
-                    :: viewTabDragging model.tabDrag
-                    :: List.map viewTabGroup model.tabGroups
+                    -- :: viewTabDragging model.tabDrag
+                    :: (Dict.values <| Dict.map (viewTabGroup model.tabs) model.tabGroups)
                 )
 
         Nothing ->
             div []
                 (div [] [ text "hello world" ]
                     :: addTabGroupButton
-                    :: viewTabDragging model.tabDrag
-                    :: List.map viewTabGroup model.tabGroups
+                    -- :: viewTabDragging model.tabDrag
+                    :: (Dict.values <| Dict.map (viewTabGroup model.tabs) model.tabGroups)
                 )
 
 
+
+{--
 viewTabDragging : Maybe Tab -> Html Msg
 viewTabDragging maybeTab =
     case maybeTab of
@@ -560,6 +573,7 @@ viewTabDragging maybeTab =
 
         Just tab ->
             viewTab 20 tab
+            --}
 
 
 addTabGroupButton : Html Msg
@@ -567,8 +581,8 @@ addTabGroupButton =
     button [ Html.Events.onClick AddTabGroup ] [ text "New Tab Group" ]
 
 
-viewTabGroup : TabGroup -> Html Msg
-viewTabGroup tabGroup =
+viewTabGroup : Dict TabID Tab -> TabGroupID -> TabGroup -> Html Msg
+viewTabGroup tabDict tabGroupID tabGroup =
     let
         realPosition =
             getPosition tabGroup
@@ -589,7 +603,7 @@ viewTabGroup tabGroup =
             floor <| bestFit width height tabCount
     in
     div
-        [ dragOnMouseDown tabGroup
+        [ dragOnMouseDown tabGroupID
         , class "tabGroup"
         , style "padding" "10px"
         , style "cursor" "move"
@@ -602,10 +616,10 @@ viewTabGroup tabGroup =
         , style "background-color" "#F8F8F8"
         , style "color" "#B0B1BB"
         ]
-        (viewTabGroupDeleteButton tabGroup
-            :: viewTabGroupTitle tabGroup
-            :: viewDraggableCorner tabGroup
-            :: List.map (viewTab tabLength) tabGroup.tabs
+        (viewTabGroupDeleteButton tabGroupID tabGroup
+            :: viewTabGroupTitle tabGroupID tabGroup
+            :: viewDraggableCorner tabGroupID tabGroup
+            :: List.map (viewTab tabLength) (tabsInTabGroup tabDict tabGroup)
         )
 
 
@@ -643,10 +657,10 @@ bestFit w h n =
     lessEfficientSquareEdge w h n (perfectlyEfficientSquareEdge w h n)
 
 
-viewDraggableCorner : TabGroup -> Html Msg
-viewDraggableCorner tabGroup =
+viewDraggableCorner : TabGroupID -> TabGroup -> Html Msg
+viewDraggableCorner tabGroupID tabGroup =
     div
-        [ resizeOnMouseDown tabGroup
+        [ resizeOnMouseDown tabGroupID
         , style "background-color" "darkblue"
         , style "height" "20px"
         , style "width" "20px"
@@ -658,15 +672,15 @@ viewDraggableCorner tabGroup =
         []
 
 
-viewTabGroupTitle : TabGroup -> Html Msg
-viewTabGroupTitle tabGroup =
+viewTabGroupTitle : TabGroupID -> TabGroup -> Html Msg
+viewTabGroupTitle tabGroupID tabGroup =
     if tabGroup.changingTitle then
         div []
             [ input
-                [ onInput (ChangeGroupTitle tabGroup.id)
+                [ onInput (ChangeGroupTitle tabGroupID)
 
                 -- , onEnter (FinishGroupTitleEdit tabGroup.id)
-                , onBlur (FinishGroupTitleEdit tabGroup.id)
+                , onBlur (FinishGroupTitleEdit tabGroupID)
                 , value tabGroup.title
                 ]
                 [ text tabGroup.title ]
@@ -674,16 +688,16 @@ viewTabGroupTitle tabGroup =
 
     else
         div
-            [ Html.Events.onClick (StartGroupTitleEdit tabGroup.id)
+            [ Html.Events.onClick (StartGroupTitleEdit tabGroupID)
             , style "cursor" "pointer"
             ]
             [ text tabGroup.title ]
 
 
-viewTabGroupDeleteButton : TabGroup -> Html Msg
-viewTabGroupDeleteButton tabGroup =
+viewTabGroupDeleteButton : TabGroupID -> TabGroup -> Html Msg
+viewTabGroupDeleteButton tabGroupID tabGroup =
     div
-        [ Html.Events.onClick (DeleteTabGroup tabGroup.id)
+        [ Html.Events.onClick (DeleteTabGroup tabGroupID)
         , style "float" "right"
         , style "cursor" "pointer"
         ]
@@ -707,21 +721,21 @@ getPosition { position, drag } =
                 (position.y + current.y - start.y)
 
 
-dragOnMouseDown : TabGroup -> Attribute Msg
-dragOnMouseDown tabGroup =
+dragOnMouseDown : TabGroupID -> Attribute Msg
+dragOnMouseDown tabGroupID =
     on "mousedown"
         (Decode.map
-            (\pos -> TabGroupDragMsg ( tabGroup.id, DragStart pos ))
+            (\pos -> TabGroupDragMsg ( tabGroupID, DragStart pos ))
             mousePositionDecoder
         )
 
 
-resizeOnMouseDown : TabGroup -> Attribute Msg
-resizeOnMouseDown tabGroup =
+resizeOnMouseDown : TabGroupID -> Attribute Msg
+resizeOnMouseDown tabGroupID =
     custom "mousedown"
         (Decode.map
             (\pos ->
-                { message = TabGroupResizeMsg ( tabGroup.id, DragStart pos )
+                { message = TabGroupResizeMsg ( tabGroupID, DragStart pos )
                 , stopPropagation = True
                 , preventDefault = True
                 }
@@ -737,8 +751,8 @@ mousePositionDecoder =
         (Decode.field "pageY" Decode.int)
 
 
-viewTab : Int -> Tab -> Html Msg
-viewTab length tab =
+viewTab : Int -> ( TabID, Tab ) -> Html Msg
+viewTab length ( tabID, tab ) =
     let
         border =
             1
@@ -787,10 +801,10 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     let
         dragSubs =
-            Sub.batch <| List.map tabGroupDragSub model.tabGroups
+            Sub.batch <| Dict.values <| Dict.map tabGroupDragSub model.tabGroups
 
         resizeSubs =
-            Sub.batch <| List.map tabGroupResizeSub model.tabGroups
+            Sub.batch <| Dict.values <| Dict.map tabGroupResizeSub model.tabGroups
     in
     Sub.batch
         [ savedModel GotSavedModel
@@ -801,6 +815,8 @@ subscriptions model =
         ]
 
 
+
+{--
 tabDragSub : Tab -> Sub Msg
 tabDragSub tab =
     case tab.drag of
@@ -812,6 +828,7 @@ tabDragSub tab =
                 [ Sub.map (\msg -> TabDragMsg ( tab, msg )) (mouseMoves DragAt)
                 , Sub.map (\msg -> TabDragMsg ( tab, msg )) (mouseUps DragEnd)
                 ]
+                --}
 
 
 mouseMoves : (Position -> msg) -> Sub msg
@@ -824,29 +841,29 @@ mouseUps tagger =
     Browser.Events.onMouseUp (Decode.map tagger mousePositionDecoder)
 
 
-tabGroupDragSub : TabGroup -> Sub Msg
-tabGroupDragSub tabGroup =
+tabGroupDragSub : TabGroupID -> TabGroup -> Sub Msg
+tabGroupDragSub tabGroupID tabGroup =
     case tabGroup.drag of
         Nothing ->
             Sub.none
 
         Just _ ->
             Sub.batch
-                [ Sub.map (\msg -> TabGroupDragMsg ( tabGroup.id, msg )) (mouseMoves DragAt)
-                , Sub.map (\msg -> TabGroupDragMsg ( tabGroup.id, msg )) (mouseUps DragEnd)
+                [ Sub.map (\msg -> TabGroupDragMsg ( tabGroupID, msg )) (mouseMoves DragAt)
+                , Sub.map (\msg -> TabGroupDragMsg ( tabGroupID, msg )) (mouseUps DragEnd)
                 ]
 
 
-tabGroupResizeSub : TabGroup -> Sub Msg
-tabGroupResizeSub tabGroup =
+tabGroupResizeSub : TabGroupID -> TabGroup -> Sub Msg
+tabGroupResizeSub tabGroupID tabGroup =
     case tabGroup.resize of
         Nothing ->
             Sub.none
 
         Just _ ->
             Sub.batch
-                [ Sub.map (\msg -> TabGroupResizeMsg ( tabGroup.id, msg )) (mouseMoves DragAt)
-                , Sub.map (\msg -> TabGroupResizeMsg ( tabGroup.id, msg )) (mouseUps DragEnd)
+                [ Sub.map (\msg -> TabGroupResizeMsg ( tabGroupID, msg )) (mouseMoves DragAt)
+                , Sub.map (\msg -> TabGroupResizeMsg ( tabGroupID, msg )) (mouseUps DragEnd)
                 ]
 
 

@@ -770,11 +770,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.x.R === region.ah.R)
+	if (region.C.O === region.ah.O)
 	{
-		return 'on line ' + region.x.R;
+		return 'on line ' + region.C.O;
 	}
-	return 'on lines ' + region.x.R + ' through ' + region.ah.R;
+	return 'on lines ' + region.C.O + ' through ' + region.ah.O;
 }
 
 
@@ -3907,7 +3907,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		impl.bb,
 		impl.ba,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.T && impl.T(sendToApp)
+			var divertHrefToApp = impl.R && impl.R(sendToApp)
 			var view = impl.bc;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
@@ -3921,7 +3921,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.m) && (_VirtualDom_doc.title = title = doc.m);
+				(title !== doc.n) && (_VirtualDom_doc.title = title = doc.n);
 			});
 		}
 	);
@@ -3982,7 +3982,7 @@ function _Browser_application(impl)
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		T: function(sendToApp)
+		R: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4173,10 +4173,10 @@ function _Browser_getViewport()
 	return {
 		aH: _Browser_getScene(),
 		aN: {
-			p: _Browser_window.pageXOffset,
-			q: _Browser_window.pageYOffset,
-			z: _Browser_doc.documentElement.clientWidth,
-			B: _Browser_doc.documentElement.clientHeight
+			o: _Browser_window.pageXOffset,
+			p: _Browser_window.pageYOffset,
+			x: _Browser_doc.documentElement.clientWidth,
+			z: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4186,8 +4186,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		z: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		B: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		x: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		z: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4211,14 +4211,14 @@ function _Browser_getViewportOf(id)
 	{
 		return {
 			aH: {
-				z: node.scrollWidth,
-				B: node.scrollHeight
+				x: node.scrollWidth,
+				z: node.scrollHeight
 			},
 			aN: {
-				p: node.scrollLeft,
-				q: node.scrollTop,
-				z: node.clientWidth,
-				B: node.clientHeight
+				o: node.scrollLeft,
+				p: node.scrollTop,
+				x: node.clientWidth,
+				z: node.clientHeight
 			}
 		};
 	});
@@ -4250,16 +4250,16 @@ function _Browser_getElement(id)
 		return {
 			aH: _Browser_getScene(),
 			aN: {
-				p: x,
-				q: y,
-				z: _Browser_doc.documentElement.clientWidth,
-				B: _Browser_doc.documentElement.clientHeight
+				o: x,
+				p: y,
+				x: _Browser_doc.documentElement.clientWidth,
+				z: _Browser_doc.documentElement.clientHeight
 			},
 			aT: {
-				p: x + rect.left,
-				q: y + rect.top,
-				z: rect.width,
-				B: rect.height
+				o: x + rect.left,
+				p: y + rect.top,
+				x: rect.width,
+				z: rect.height
 			}
 		};
 	});
@@ -4482,25 +4482,25 @@ var elm$core$Basics$sub = _Basics_sub;
 var elm$core$Elm$JsArray$length = _JsArray_length;
 var elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.g) {
+		if (!builder.f) {
 			return A4(
 				elm$core$Array$Array_elm_builtin,
-				elm$core$Elm$JsArray$length(builder.j),
+				elm$core$Elm$JsArray$length(builder.h),
 				elm$core$Array$shiftStep,
 				elm$core$Elm$JsArray$empty,
-				builder.j);
+				builder.h);
 		} else {
-			var treeLen = builder.g * elm$core$Array$branchFactor;
+			var treeLen = builder.f * elm$core$Array$branchFactor;
 			var depth = elm$core$Basics$floor(
 				A2(elm$core$Basics$logBase, elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? elm$core$List$reverse(builder.k) : builder.k;
-			var tree = A2(elm$core$Array$treeFromBuilder, correctNodeList, builder.g);
+			var correctNodeList = reverseNodeList ? elm$core$List$reverse(builder.i) : builder.i;
+			var tree = A2(elm$core$Array$treeFromBuilder, correctNodeList, builder.f);
 			return A4(
 				elm$core$Array$Array_elm_builtin,
-				elm$core$Elm$JsArray$length(builder.j) + treeLen,
+				elm$core$Elm$JsArray$length(builder.h) + treeLen,
 				A2(elm$core$Basics$max, 5, depth * elm$core$Array$shiftStep),
 				tree,
-				builder.j);
+				builder.h);
 		}
 	});
 var elm$core$Basics$False = 1;
@@ -4515,7 +4515,7 @@ var elm$core$Array$initializeHelp = F5(
 				return A2(
 					elm$core$Array$builderToArray,
 					false,
-					{k: nodeList, g: (len / elm$core$Array$branchFactor) | 0, j: tail});
+					{i: nodeList, f: (len / elm$core$Array$branchFactor) | 0, h: tail});
 			} else {
 				var leaf = elm$core$Array$Leaf(
 					A3(elm$core$Elm$JsArray$initialize, elm$core$Array$branchFactor, fromIndex, fn));
@@ -4779,7 +4779,7 @@ var elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var elm$core$Dict$empty = elm$core$Dict$RBEmpty_elm_builtin;
 var author$project$Main$init = function (flags) {
 	return _Utils_Tuple2(
-		{Q: elm$core$Maybe$Nothing, L: elm$core$Maybe$Nothing, e: _List_Nil, o: elm$core$Dict$empty},
+		{N: elm$core$Maybe$Nothing, _: elm$core$Maybe$Nothing, d: elm$core$Dict$empty, j: elm$core$Dict$empty},
 		author$project$Main$getModel(0));
 };
 var author$project$Main$GotSavedModel = function (a) {
@@ -4810,11 +4810,11 @@ var author$project$Main$DragEnd = function (a) {
 	return {$: 2, a: a};
 };
 var author$project$Main$TabGroupDragMsg = function (a) {
-	return {$: 10, a: a};
+	return {$: 9, a: a};
 };
 var author$project$Main$Position = F2(
 	function (x, y) {
-		return {p: x, q: y};
+		return {o: x, p: y};
 	});
 var elm$json$Json$Decode$field = _Json_decodeField;
 var elm$json$Json$Decode$int = _Json_decodeInt;
@@ -5540,59 +5540,61 @@ var author$project$Main$mouseUps = function (tagger) {
 var elm$core$Platform$Sub$batch = _Platform_batch;
 var elm$core$Platform$Sub$map = _Platform_map;
 var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
-var author$project$Main$tabGroupDragSub = function (tabGroup) {
-	var _n0 = tabGroup.h;
-	if (_n0.$ === 1) {
-		return elm$core$Platform$Sub$none;
-	} else {
-		return elm$core$Platform$Sub$batch(
-			_List_fromArray(
-				[
-					A2(
-					elm$core$Platform$Sub$map,
-					function (msg) {
-						return author$project$Main$TabGroupDragMsg(
-							_Utils_Tuple2(tabGroup.d, msg));
-					},
-					author$project$Main$mouseMoves(author$project$Main$DragAt)),
-					A2(
-					elm$core$Platform$Sub$map,
-					function (msg) {
-						return author$project$Main$TabGroupDragMsg(
-							_Utils_Tuple2(tabGroup.d, msg));
-					},
-					author$project$Main$mouseUps(author$project$Main$DragEnd))
-				]));
-	}
-};
+var author$project$Main$tabGroupDragSub = F2(
+	function (tabGroupID, tabGroup) {
+		var _n0 = tabGroup.l;
+		if (_n0.$ === 1) {
+			return elm$core$Platform$Sub$none;
+		} else {
+			return elm$core$Platform$Sub$batch(
+				_List_fromArray(
+					[
+						A2(
+						elm$core$Platform$Sub$map,
+						function (msg) {
+							return author$project$Main$TabGroupDragMsg(
+								_Utils_Tuple2(tabGroupID, msg));
+						},
+						author$project$Main$mouseMoves(author$project$Main$DragAt)),
+						A2(
+						elm$core$Platform$Sub$map,
+						function (msg) {
+							return author$project$Main$TabGroupDragMsg(
+								_Utils_Tuple2(tabGroupID, msg));
+						},
+						author$project$Main$mouseUps(author$project$Main$DragEnd))
+					]));
+		}
+	});
 var author$project$Main$TabGroupResizeMsg = function (a) {
-	return {$: 11, a: a};
+	return {$: 10, a: a};
 };
-var author$project$Main$tabGroupResizeSub = function (tabGroup) {
-	var _n0 = tabGroup.t;
-	if (_n0.$ === 1) {
-		return elm$core$Platform$Sub$none;
-	} else {
-		return elm$core$Platform$Sub$batch(
-			_List_fromArray(
-				[
-					A2(
-					elm$core$Platform$Sub$map,
-					function (msg) {
-						return author$project$Main$TabGroupResizeMsg(
-							_Utils_Tuple2(tabGroup.d, msg));
-					},
-					author$project$Main$mouseMoves(author$project$Main$DragAt)),
-					A2(
-					elm$core$Platform$Sub$map,
-					function (msg) {
-						return author$project$Main$TabGroupResizeMsg(
-							_Utils_Tuple2(tabGroup.d, msg));
-					},
-					author$project$Main$mouseUps(author$project$Main$DragEnd))
-				]));
-	}
-};
+var author$project$Main$tabGroupResizeSub = F2(
+	function (tabGroupID, tabGroup) {
+		var _n0 = tabGroup.s;
+		if (_n0.$ === 1) {
+			return elm$core$Platform$Sub$none;
+		} else {
+			return elm$core$Platform$Sub$batch(
+				_List_fromArray(
+					[
+						A2(
+						elm$core$Platform$Sub$map,
+						function (msg) {
+							return author$project$Main$TabGroupResizeMsg(
+								_Utils_Tuple2(tabGroupID, msg));
+						},
+						author$project$Main$mouseMoves(author$project$Main$DragAt)),
+						A2(
+						elm$core$Platform$Sub$map,
+						function (msg) {
+							return author$project$Main$TabGroupResizeMsg(
+								_Utils_Tuple2(tabGroupID, msg));
+						},
+						author$project$Main$mouseUps(author$project$Main$DragEnd))
+					]));
+		}
+	});
 var elm$json$Json$Decode$andThen = _Json_andThen;
 var elm$json$Json$Decode$string = _Json_decodeString;
 var author$project$Main$tabScreenshot = _Platform_incomingPort(
@@ -5604,7 +5606,7 @@ var author$project$Main$tabScreenshot = _Platform_incomingPort(
 				elm$json$Json$Decode$andThen,
 				function (id) {
 					return elm$json$Json$Decode$succeed(
-						{d: id, Z: img});
+						{W: id, X: img});
 				},
 				A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
 		},
@@ -5632,51 +5634,32 @@ var author$project$Main$tabs = _Platform_incomingPort(
 							function (screenshot) {
 								return A2(
 									elm$json$Json$Decode$andThen,
-									function (id) {
-										return A2(
-											elm$json$Json$Decode$andThen,
-											function (drag) {
-												return elm$json$Json$Decode$succeed(
-													{h: drag, d: id, E: screenshot, m: title, Y: url});
-											},
-											A2(
-												elm$json$Json$Decode$field,
-												'drag',
-												elm$json$Json$Decode$oneOf(
-													_List_fromArray(
-														[
-															elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
-															A2(
-															elm$json$Json$Decode$map,
-															elm$core$Maybe$Just,
-															A2(
+									function (drag) {
+										return elm$json$Json$Decode$succeed(
+											{l: drag, Q: screenshot, n: title, aa: url});
+									},
+									A2(
+										elm$json$Json$Decode$field,
+										'drag',
+										elm$json$Json$Decode$oneOf(
+											_List_fromArray(
+												[
+													elm$json$Json$Decode$null(elm$core$Maybe$Nothing),
+													A2(
+													elm$json$Json$Decode$map,
+													elm$core$Maybe$Just,
+													A2(
+														elm$json$Json$Decode$andThen,
+														function (start) {
+															return A2(
 																elm$json$Json$Decode$andThen,
-																function (start) {
-																	return A2(
-																		elm$json$Json$Decode$andThen,
-																		function (current) {
-																			return elm$json$Json$Decode$succeed(
-																				{O: current, x: start});
-																		},
-																		A2(
-																			elm$json$Json$Decode$field,
-																			'current',
-																			A2(
-																				elm$json$Json$Decode$andThen,
-																				function (y) {
-																					return A2(
-																						elm$json$Json$Decode$andThen,
-																						function (x) {
-																							return elm$json$Json$Decode$succeed(
-																								{p: x, q: y});
-																						},
-																						A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
-																				},
-																				A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+																function (current) {
+																	return elm$json$Json$Decode$succeed(
+																		{L: current, C: start});
 																},
 																A2(
 																	elm$json$Json$Decode$field,
-																	'start',
+																	'current',
 																	A2(
 																		elm$json$Json$Decode$andThen,
 																		function (y) {
@@ -5684,14 +5667,28 @@ var author$project$Main$tabs = _Platform_incomingPort(
 																				elm$json$Json$Decode$andThen,
 																				function (x) {
 																					return elm$json$Json$Decode$succeed(
-																						{p: x, q: y});
+																						{o: x, p: y});
 																				},
 																				A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
 																		},
-																		A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int)))))
-														]))));
-									},
-									A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int));
+																		A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int))));
+														},
+														A2(
+															elm$json$Json$Decode$field,
+															'start',
+															A2(
+																elm$json$Json$Decode$andThen,
+																function (y) {
+																	return A2(
+																		elm$json$Json$Decode$andThen,
+																		function (x) {
+																			return elm$json$Json$Decode$succeed(
+																				{o: x, p: y});
+																		},
+																		A2(elm$json$Json$Decode$field, 'x', elm$json$Json$Decode$int));
+																},
+																A2(elm$json$Json$Decode$field, 'y', elm$json$Json$Decode$int)))))
+												]))));
 							},
 							A2(
 								elm$json$Json$Decode$field,
@@ -5706,11 +5703,42 @@ var author$project$Main$tabs = _Platform_incomingPort(
 					A2(elm$json$Json$Decode$field, 'title', elm$json$Json$Decode$string));
 			},
 			A2(elm$json$Json$Decode$field, 'url', elm$json$Json$Decode$string))));
+var elm$core$Dict$map = F2(
+	function (func, dict) {
+		if (dict.$ === -2) {
+			return elm$core$Dict$RBEmpty_elm_builtin;
+		} else {
+			var color = dict.a;
+			var key = dict.b;
+			var value = dict.c;
+			var left = dict.d;
+			var right = dict.e;
+			return A5(
+				elm$core$Dict$RBNode_elm_builtin,
+				color,
+				key,
+				A2(func, key, value),
+				A2(elm$core$Dict$map, func, left),
+				A2(elm$core$Dict$map, func, right));
+		}
+	});
+var elm$core$Dict$values = function (dict) {
+	return A3(
+		elm$core$Dict$foldr,
+		F3(
+			function (key, value, valueList) {
+				return A2(elm$core$List$cons, value, valueList);
+			}),
+		_List_Nil,
+		dict);
+};
 var author$project$Main$subscriptions = function (model) {
 	var resizeSubs = elm$core$Platform$Sub$batch(
-		A2(elm$core$List$map, author$project$Main$tabGroupResizeSub, model.e));
+		elm$core$Dict$values(
+			A2(elm$core$Dict$map, author$project$Main$tabGroupResizeSub, model.d)));
 	var dragSubs = elm$core$Platform$Sub$batch(
-		A2(elm$core$List$map, author$project$Main$tabGroupDragSub, model.e));
+		elm$core$Dict$values(
+			A2(elm$core$Dict$map, author$project$Main$tabGroupDragSub, model.d)));
 	return elm$core$Platform$Sub$batch(
 		_List_fromArray(
 			[
@@ -5721,26 +5749,34 @@ var author$project$Main$subscriptions = function (model) {
 				resizeSubs
 			]));
 };
-var author$project$Main$initTabGroup = F3(
-	function (id, title, initialTabs) {
+var author$project$Main$initTabGroup = F2(
+	function (title, initialTabs) {
 		return {
-			G: false,
-			P: {B: 300, z: 400},
-			h: elm$core$Maybe$Nothing,
-			d: id,
-			S: A2(author$project$Main$Position, 10, 10),
-			t: elm$core$Maybe$Nothing,
-			o: initialTabs,
-			m: title
+			E: false,
+			M: {z: 300, x: 400},
+			l: elm$core$Maybe$Nothing,
+			P: A2(author$project$Main$Position, 10, 10),
+			s: elm$core$Maybe$Nothing,
+			j: initialTabs,
+			n: title
 		};
 	});
-var author$project$Main$blankTabGroup = function (id) {
-	return A3(author$project$Main$initTabGroup, id, 'Add Title Here', _List_Nil);
-};
+var author$project$Main$blankTabGroup = A2(author$project$Main$initTabGroup, 'Add Title Here', _List_Nil);
 var author$project$Main$Drag = F2(
 	function (start, current) {
-		return {O: current, x: start};
+		return {L: current, C: start};
 	});
+var author$project$Main$getPosition = function (_n0) {
+	var position = _n0.P;
+	var drag = _n0.l;
+	if (drag.$ === 1) {
+		return position;
+	} else {
+		var start = drag.a.C;
+		var current = drag.a.L;
+		return A2(author$project$Main$Position, (position.o + current.o) - start.o, (position.p + current.p) - start.p);
+	}
+};
 var elm$core$Basics$neq = _Utils_notEqual;
 var elm$core$Maybe$map = F2(
 	function (f, maybe) {
@@ -5752,54 +5788,9 @@ var elm$core$Maybe$map = F2(
 			return elm$core$Maybe$Nothing;
 		}
 	});
-var author$project$Main$dragTab = F3(
-	function (id, msg, item) {
-		if (!_Utils_eq(id, item.d)) {
-			return elm$core$Maybe$Just(item);
-		} else {
-			switch (msg.$) {
-				case 0:
-					var xy = msg.a;
-					return elm$core$Maybe$Just(
-						_Utils_update(
-							item,
-							{
-								h: elm$core$Maybe$Just(
-									A2(author$project$Main$Drag, xy, xy))
-							}));
-				case 1:
-					var xy = msg.a;
-					return elm$core$Maybe$Just(
-						_Utils_update(
-							item,
-							{
-								h: A2(
-									elm$core$Maybe$map,
-									function (_n1) {
-										var start = _n1.x;
-										return A2(author$project$Main$Drag, start, xy);
-									},
-									item.h)
-							}));
-				default:
-					return elm$core$Maybe$Nothing;
-			}
-		}
-	});
-var author$project$Main$getPosition = function (_n0) {
-	var position = _n0.S;
-	var drag = _n0.h;
-	if (drag.$ === 1) {
-		return position;
-	} else {
-		var start = drag.a.x;
-		var current = drag.a.O;
-		return A2(author$project$Main$Position, (position.p + current.p) - start.p, (position.q + current.q) - start.q);
-	}
-};
-var author$project$Main$dragTabGroup = F3(
-	function (id, msg, tabGroup) {
-		if (!_Utils_eq(id, tabGroup.d)) {
+var author$project$Main$dragTabGroup = F4(
+	function (targetID, msg, tabGroupID, tabGroup) {
+		if (!_Utils_eq(targetID, tabGroupID)) {
 			return tabGroup;
 		} else {
 			switch (msg.$) {
@@ -5808,7 +5799,7 @@ var author$project$Main$dragTabGroup = F3(
 					return _Utils_update(
 						tabGroup,
 						{
-							h: elm$core$Maybe$Just(
+							l: elm$core$Maybe$Just(
 								A2(author$project$Main$Drag, xy, xy))
 						});
 				case 1:
@@ -5816,20 +5807,20 @@ var author$project$Main$dragTabGroup = F3(
 					return _Utils_update(
 						tabGroup,
 						{
-							h: A2(
+							l: A2(
 								elm$core$Maybe$map,
 								function (_n1) {
-									var start = _n1.x;
+									var start = _n1.C;
 									return A2(author$project$Main$Drag, start, xy);
 								},
-								tabGroup.h)
+								tabGroup.l)
 						});
 				default:
 					return _Utils_update(
 						tabGroup,
 						{
-							h: elm$core$Maybe$Nothing,
-							S: author$project$Main$getPosition(tabGroup)
+							l: elm$core$Maybe$Nothing,
+							P: author$project$Main$getPosition(tabGroup)
 						});
 			}
 		}
@@ -5841,11 +5832,11 @@ var author$project$Main$getTabs = _Platform_outgoingPort(
 	});
 var author$project$Main$Model = F4(
 	function (tabGroups, tabs, tabDrag, error) {
-		return {Q: error, L: tabDrag, e: tabGroups, o: tabs};
+		return {N: error, _: tabDrag, d: tabGroups, j: tabs};
 	});
-var author$project$Main$Tab = F5(
-	function (id, title, url, screenshot, drag) {
-		return {h: drag, d: id, E: screenshot, m: title, Y: url};
+var author$project$Main$Tab = F4(
+	function (title, url, screenshot, drag) {
+		return {l: drag, Q: screenshot, n: title, aa: url};
 	});
 var author$project$Main$positionDecoder = A3(
 	elm$json$Json$Decode$map2,
@@ -5857,7 +5848,7 @@ var author$project$Main$dragDecoder = A3(
 	author$project$Main$Drag,
 	A2(elm$json$Json$Decode$field, 'start', author$project$Main$positionDecoder),
 	A2(elm$json$Json$Decode$field, 'current', author$project$Main$positionDecoder));
-var elm$json$Json$Decode$map5 = _Json_map5;
+var elm$json$Json$Decode$map4 = _Json_map4;
 var elm$json$Json$Decode$nullable = function (decoder) {
 	return elm$json$Json$Decode$oneOf(
 		_List_fromArray(
@@ -5866,10 +5857,9 @@ var elm$json$Json$Decode$nullable = function (decoder) {
 				A2(elm$json$Json$Decode$map, elm$core$Maybe$Just, decoder)
 			]));
 };
-var author$project$Main$tabDecoder = A6(
-	elm$json$Json$Decode$map5,
+var author$project$Main$tabDecoder = A5(
+	elm$json$Json$Decode$map4,
 	author$project$Main$Tab,
-	A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int),
 	A2(elm$json$Json$Decode$field, 'title', elm$json$Json$Decode$string),
 	A2(elm$json$Json$Decode$field, 'url', elm$json$Json$Decode$string),
 	A2(
@@ -5880,13 +5870,13 @@ var author$project$Main$tabDecoder = A6(
 		elm$json$Json$Decode$field,
 		'drag',
 		elm$json$Json$Decode$nullable(author$project$Main$dragDecoder)));
-var author$project$Main$TabGroup = F8(
-	function (id, title, tabs, position, drag, changingTitle, dimensions, resize) {
-		return {G: changingTitle, P: dimensions, h: drag, d: id, S: position, t: resize, o: tabs, m: title};
+var author$project$Main$TabGroup = F7(
+	function (title, tabs, position, drag, changingTitle, dimensions, resize) {
+		return {E: changingTitle, M: dimensions, l: drag, P: position, s: resize, j: tabs, n: title};
 	});
 var author$project$Main$Dimensions = F2(
 	function (height, width) {
-		return {B: height, z: width};
+		return {z: height, x: width};
 	});
 var author$project$Main$dimensionsDecoder = A3(
 	elm$json$Json$Decode$map2,
@@ -5894,16 +5884,15 @@ var author$project$Main$dimensionsDecoder = A3(
 	A2(elm$json$Json$Decode$field, 'height', elm$json$Json$Decode$int),
 	A2(elm$json$Json$Decode$field, 'width', elm$json$Json$Decode$int));
 var elm$json$Json$Decode$bool = _Json_decodeBool;
-var elm$json$Json$Decode$map8 = _Json_map8;
-var author$project$Main$tabGroupDecoder = A9(
-	elm$json$Json$Decode$map8,
+var elm$json$Json$Decode$map7 = _Json_map7;
+var author$project$Main$tabGroupDecoder = A8(
+	elm$json$Json$Decode$map7,
 	author$project$Main$TabGroup,
-	A2(elm$json$Json$Decode$field, 'id', elm$json$Json$Decode$int),
 	A2(elm$json$Json$Decode$field, 'title', elm$json$Json$Decode$string),
 	A2(
 		elm$json$Json$Decode$field,
 		'tabs',
-		elm$json$Json$Decode$list(author$project$Main$tabDecoder)),
+		elm$json$Json$Decode$list(elm$json$Json$Decode$int)),
 	A2(elm$json$Json$Decode$field, 'position', author$project$Main$positionDecoder),
 	A2(
 		elm$json$Json$Decode$field,
@@ -5915,7 +5904,6 @@ var author$project$Main$tabGroupDecoder = A9(
 		elm$json$Json$Decode$field,
 		'resize',
 		elm$json$Json$Decode$nullable(author$project$Main$dragDecoder)));
-var elm$json$Json$Decode$map4 = _Json_map4;
 var elm$json$Json$Decode$maybe = function (decoder) {
 	return elm$json$Json$Decode$oneOf(
 		_List_fromArray(
@@ -5971,7 +5959,7 @@ var author$project$Main$modelDecoder = A5(
 	A2(
 		elm$json$Json$Decode$field,
 		'tabGroups',
-		elm$json$Json$Decode$list(author$project$Main$tabGroupDecoder)),
+		A2(elm_community$json_extra$Json$Decode$Extra$dict2, elm$json$Json$Decode$int, author$project$Main$tabGroupDecoder)),
 	A2(
 		elm$json$Json$Decode$field,
 		'tabs',
@@ -5979,7 +5967,7 @@ var author$project$Main$modelDecoder = A5(
 	A2(
 		elm$json$Json$Decode$field,
 		'tabDrag',
-		elm$json$Json$Decode$nullable(author$project$Main$tabDecoder)),
+		elm$json$Json$Decode$maybe(elm$json$Json$Decode$int)),
 	A2(
 		elm$json$Json$Decode$field,
 		'error',
@@ -6013,10 +6001,10 @@ var author$project$Main$positionEncode = function (position) {
 			[
 				_Utils_Tuple2(
 				'x',
-				elm$json$Json$Encode$int(position.p)),
+				elm$json$Json$Encode$int(position.o)),
 				_Utils_Tuple2(
 				'y',
-				elm$json$Json$Encode$int(position.q))
+				elm$json$Json$Encode$int(position.p))
 			]));
 };
 var author$project$Main$dragEncode = function (drag) {
@@ -6025,10 +6013,10 @@ var author$project$Main$dragEncode = function (drag) {
 			[
 				_Utils_Tuple2(
 				'start',
-				author$project$Main$positionEncode(drag.x)),
+				author$project$Main$positionEncode(drag.C)),
 				_Utils_Tuple2(
 				'current',
-				author$project$Main$positionEncode(drag.O))
+				author$project$Main$positionEncode(drag.L))
 			]));
 };
 var elm$json$Json$Encode$string = _Json_wrap;
@@ -6037,20 +6025,17 @@ var author$project$Main$tabEncode = function (tab) {
 		_List_fromArray(
 			[
 				_Utils_Tuple2(
-				'id',
-				elm$json$Json$Encode$int(tab.d)),
-				_Utils_Tuple2(
 				'title',
-				elm$json$Json$Encode$string(tab.m)),
+				elm$json$Json$Encode$string(tab.n)),
 				_Utils_Tuple2(
 				'url',
-				elm$json$Json$Encode$string(tab.Y)),
+				elm$json$Json$Encode$string(tab.aa)),
 				_Utils_Tuple2(
 				'screenshot',
-				A2(author$project$Main$maybeEncode, tab.E, elm$json$Json$Encode$string)),
+				A2(author$project$Main$maybeEncode, tab.Q, elm$json$Json$Encode$string)),
 				_Utils_Tuple2(
 				'drag',
-				A2(author$project$Main$maybeEncode, tab.h, author$project$Main$dragEncode))
+				A2(author$project$Main$maybeEncode, tab.l, author$project$Main$dragEncode))
 			]));
 };
 var author$project$Main$dimensionsEncode = function (dimensions) {
@@ -6059,10 +6044,10 @@ var author$project$Main$dimensionsEncode = function (dimensions) {
 			[
 				_Utils_Tuple2(
 				'height',
-				elm$json$Json$Encode$int(dimensions.B)),
+				elm$json$Json$Encode$int(dimensions.z)),
 				_Utils_Tuple2(
 				'width',
-				elm$json$Json$Encode$int(dimensions.z))
+				elm$json$Json$Encode$int(dimensions.x))
 			]));
 };
 var elm$json$Json$Encode$bool = _Json_wrap;
@@ -6080,29 +6065,26 @@ var author$project$Main$tabGroupEncode = function (tabGroup) {
 		_List_fromArray(
 			[
 				_Utils_Tuple2(
-				'id',
-				elm$json$Json$Encode$int(tabGroup.d)),
-				_Utils_Tuple2(
 				'title',
-				elm$json$Json$Encode$string(tabGroup.m)),
+				elm$json$Json$Encode$string(tabGroup.n)),
 				_Utils_Tuple2(
 				'tabs',
-				A2(elm$json$Json$Encode$list, author$project$Main$tabEncode, tabGroup.o)),
+				A2(elm$json$Json$Encode$list, elm$json$Json$Encode$int, tabGroup.j)),
 				_Utils_Tuple2(
 				'position',
-				author$project$Main$positionEncode(tabGroup.S)),
+				author$project$Main$positionEncode(tabGroup.P)),
 				_Utils_Tuple2(
 				'drag',
-				A2(author$project$Main$maybeEncode, tabGroup.h, author$project$Main$dragEncode)),
+				A2(author$project$Main$maybeEncode, tabGroup.l, author$project$Main$dragEncode)),
 				_Utils_Tuple2(
 				'changingTitle',
-				elm$json$Json$Encode$bool(tabGroup.G)),
+				elm$json$Json$Encode$bool(tabGroup.E)),
 				_Utils_Tuple2(
 				'dimensions',
-				author$project$Main$dimensionsEncode(tabGroup.P)),
+				author$project$Main$dimensionsEncode(tabGroup.M)),
 				_Utils_Tuple2(
 				'resize',
-				A2(author$project$Main$maybeEncode, tabGroup.t, author$project$Main$dragEncode))
+				A2(author$project$Main$maybeEncode, tabGroup.s, author$project$Main$dragEncode))
 			]));
 };
 var elm$json$Json$Encode$dict = F3(
@@ -6127,32 +6109,32 @@ var author$project$Main$modelEncode = function (model) {
 			[
 				_Utils_Tuple2(
 				'tabGroups',
-				A2(elm$json$Json$Encode$list, author$project$Main$tabGroupEncode, model.e)),
+				A3(elm$json$Json$Encode$dict, elm$core$String$fromInt, author$project$Main$tabGroupEncode, model.d)),
 				_Utils_Tuple2(
 				'tabs',
-				A3(elm$json$Json$Encode$dict, elm$core$String$fromInt, author$project$Main$tabEncode, model.o)),
+				A3(elm$json$Json$Encode$dict, elm$core$String$fromInt, author$project$Main$tabEncode, model.j)),
 				_Utils_Tuple2(
 				'tabDrag',
-				A2(author$project$Main$maybeEncode, model.L, author$project$Main$tabEncode)),
+				A2(author$project$Main$maybeEncode, model._, elm$json$Json$Encode$int)),
 				_Utils_Tuple2(
 				'error',
-				A2(author$project$Main$maybeEncode, model.Q, elm$json$Json$Encode$string))
+				A2(author$project$Main$maybeEncode, model.N, elm$json$Json$Encode$string))
 			]));
 };
 var author$project$Main$getDimensions = function (_n0) {
-	var dimensions = _n0.P;
-	var resize = _n0.t;
+	var dimensions = _n0.M;
+	var resize = _n0.s;
 	if (resize.$ === 1) {
 		return dimensions;
 	} else {
-		var start = resize.a.x;
-		var current = resize.a.O;
-		return {B: dimensions.B + (current.q - start.q), z: dimensions.z + (current.p - start.p)};
+		var start = resize.a.C;
+		var current = resize.a.L;
+		return {z: dimensions.z + (current.p - start.p), x: dimensions.x + (current.o - start.o)};
 	}
 };
-var author$project$Main$resizeTabGroup = F3(
-	function (id, msg, tabGroup) {
-		if (!_Utils_eq(id, tabGroup.d)) {
+var author$project$Main$resizeTabGroup = F4(
+	function (targetGroupID, msg, tabGroupID, tabGroup) {
+		if (!_Utils_eq(targetGroupID, tabGroupID)) {
 			return tabGroup;
 		} else {
 			switch (msg.$) {
@@ -6161,7 +6143,7 @@ var author$project$Main$resizeTabGroup = F3(
 					return _Utils_update(
 						tabGroup,
 						{
-							t: elm$core$Maybe$Just(
+							s: elm$core$Maybe$Just(
 								A2(author$project$Main$Drag, xy, xy))
 						});
 				case 1:
@@ -6169,44 +6151,86 @@ var author$project$Main$resizeTabGroup = F3(
 					return _Utils_update(
 						tabGroup,
 						{
-							t: A2(
+							s: A2(
 								elm$core$Maybe$map,
 								function (_n1) {
-									var start = _n1.x;
+									var start = _n1.C;
 									return A2(author$project$Main$Drag, start, xy);
 								},
-								tabGroup.t)
+								tabGroup.s)
 						});
 				default:
 					return _Utils_update(
 						tabGroup,
 						{
-							P: author$project$Main$getDimensions(tabGroup),
-							t: elm$core$Maybe$Nothing
+							M: author$project$Main$getDimensions(tabGroup),
+							s: elm$core$Maybe$Nothing
 						});
 			}
 		}
 	});
 var author$project$Main$saveModel = _Platform_outgoingPort('saveModel', elm$core$Basics$identity);
-var elm$core$List$filter = F2(
-	function (isGood, list) {
+var elm$core$Dict$filter = F2(
+	function (isGood, dict) {
 		return A3(
-			elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
+			elm$core$Dict$foldl,
+			F3(
+				function (k, v, d) {
+					return A2(isGood, k, v) ? A3(elm$core$Dict$insert, k, v, d) : d;
 				}),
-			_List_Nil,
-			list);
+			elm$core$Dict$empty,
+			dict);
 	});
-var elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return elm$core$Maybe$Just(x);
-	} else {
-		return elm$core$Maybe$Nothing;
-	}
+var elm$core$Dict$get = F2(
+	function (targetKey, dict) {
+		get:
+		while (true) {
+			if (dict.$ === -2) {
+				return elm$core$Maybe$Nothing;
+			} else {
+				var key = dict.b;
+				var value = dict.c;
+				var left = dict.d;
+				var right = dict.e;
+				var _n1 = A2(elm$core$Basics$compare, targetKey, key);
+				switch (_n1) {
+					case 0:
+						var $temp$targetKey = targetKey,
+							$temp$dict = left;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+					case 1:
+						return elm$core$Maybe$Just(value);
+					default:
+						var $temp$targetKey = targetKey,
+							$temp$dict = right;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+				}
+			}
+		}
+	});
+var elm$core$Dict$sizeHelp = F2(
+	function (n, dict) {
+		sizeHelp:
+		while (true) {
+			if (dict.$ === -2) {
+				return n;
+			} else {
+				var left = dict.d;
+				var right = dict.e;
+				var $temp$n = A2(elm$core$Dict$sizeHelp, n + 1, right),
+					$temp$dict = left;
+				n = $temp$n;
+				dict = $temp$dict;
+				continue sizeHelp;
+			}
+		}
+	});
+var elm$core$Dict$size = function (dict) {
+	return A2(elm$core$Dict$sizeHelp, 0, dict);
 };
 var elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
@@ -6219,6 +6243,10 @@ var elm$core$Maybe$withDefault = F2(
 	});
 var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
+var elm$core$Tuple$pair = F2(
+	function (a, b) {
+		return _Utils_Tuple2(a, b);
+	});
 var elm$json$Json$Decode$decodeValue = _Json_run;
 var author$project$Main$update = F2(
 	function (msg, model) {
@@ -6238,40 +6266,53 @@ var author$project$Main$update = F2(
 							_Utils_update(
 								model,
 								{
-									Q: elm$core$Maybe$Just(
+									N: elm$core$Maybe$Just(
 										elm$json$Json$Decode$errorToString(error))
 								}),
-							elm$core$Platform$Cmd$none);
+							author$project$Main$getTabs(0));
 					} else {
 						var newSavedModel = modelDecodeResult.a;
-						return (!elm$core$List$length(newSavedModel.e)) ? _Utils_Tuple2(
+						return (!elm$core$Dict$size(newSavedModel.d)) ? _Utils_Tuple2(
 							model,
 							author$project$Main$getTabs(0)) : _Utils_Tuple2(newSavedModel, elm$core$Platform$Cmd$none);
 					}
 				}
 			case 1:
 				var tabGroup = msg.a;
+				var tabGroupID = elm$core$Dict$size(model.d);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							e: A2(elm$core$List$cons, tabGroup, model.e)
+							d: A3(elm$core$Dict$insert, tabGroupID, tabGroup, model.d)
 						}),
 					elm$core$Platform$Cmd$none);
 			case 0:
 				var gotTabs = msg.a;
 				var tabGroup = A2(
 					elm$core$Maybe$withDefault,
-					A3(author$project$Main$initTabGroup, 0, 'Main', _List_Nil),
-					elm$core$List$head(model.e));
+					A2(author$project$Main$initTabGroup, 'Main', _List_Nil),
+					A2(elm$core$Dict$get, 0, model.d));
+				var newTabs = A3(
+					elm$core$List$foldl,
+					F2(
+						function (_n3, d) {
+							var id = _n3.a;
+							var tab = _n3.b;
+							return A3(elm$core$Dict$insert, id, tab, d);
+						}),
+					elm$core$Dict$empty,
+					A2(elm$core$List$indexedMap, elm$core$Tuple$pair, gotTabs));
+				var newTabIDs = elm$core$Dict$keys(newTabs);
+				var newTabGroupID = elm$core$Dict$size(model.d);
 				var newTabGroup = _Utils_update(
 					tabGroup,
-					{o: gotTabs});
+					{j: newTabIDs});
 				var newModel = _Utils_update(
 					model,
 					{
-						e: _List_fromArray(
-							[newTabGroup])
+						d: A3(elm$core$Dict$insert, newTabGroupID, newTabGroup, model.d),
+						j: newTabs
 					});
 				return _Utils_Tuple2(
 					newModel,
@@ -6279,27 +6320,18 @@ var author$project$Main$update = F2(
 						author$project$Main$modelEncode(newModel)));
 			case 2:
 				var tabscreenshot = msg.a;
-				var tabGroup = A2(
-					elm$core$Maybe$withDefault,
-					A3(author$project$Main$initTabGroup, 0, 'Main', _List_Nil),
-					elm$core$List$head(model.e));
 				var newTabs = A2(
-					elm$core$List$map,
-					function (tab) {
-						return _Utils_eq(tab.d, tabscreenshot.d) ? _Utils_update(
-							tab,
-							{E: tabscreenshot.Z}) : tab;
-					},
-					tabGroup.o);
-				var newTabGroup = _Utils_update(
-					tabGroup,
-					{o: newTabs});
+					elm$core$Dict$map,
+					F2(
+						function (tabID, tab) {
+							return _Utils_eq(tabID, tabscreenshot.W) ? _Utils_update(
+								tab,
+								{Q: tabscreenshot.X}) : tab;
+						}),
+					model.j);
 				var newModel = _Utils_update(
 					model,
-					{
-						e: _List_fromArray(
-							[newTabGroup])
-					});
+					{j: newTabs});
 				return _Utils_Tuple2(
 					newModel,
 					author$project$Main$saveModel(
@@ -6307,27 +6339,28 @@ var author$project$Main$update = F2(
 			case 7:
 				var id = msg.a;
 				var newTabGroups = A2(
-					elm$core$List$filter,
-					function (tg) {
-						return !_Utils_eq(tg.d, id);
-					},
-					model.e);
+					elm$core$Dict$filter,
+					F2(
+						function (tabGroupID, _n4) {
+							return !_Utils_eq(tabGroupID, id);
+						}),
+					model.d);
 				var newModel = _Utils_update(
 					model,
-					{e: newTabGroups});
+					{d: newTabGroups});
 				return _Utils_Tuple2(
 					newModel,
 					author$project$Main$saveModel(
 						author$project$Main$modelEncode(newModel)));
 			case 8:
-				var newTabGroups = A2(
-					elm$core$List$cons,
-					author$project$Main$blankTabGroup(
-						elm$core$List$length(model.e)),
-					model.e);
+				var newTabGroups = A3(
+					elm$core$Dict$insert,
+					elm$core$Dict$size(model.d),
+					author$project$Main$blankTabGroup,
+					model.d);
 				var newModel = _Utils_update(
 					model,
-					{e: newTabGroups});
+					{d: newTabGroups});
 				return _Utils_Tuple2(
 					newModel,
 					author$project$Main$saveModel(
@@ -6336,16 +6369,17 @@ var author$project$Main$update = F2(
 				var id = msg.a;
 				var newTitle = msg.b;
 				var newTabGroups = A2(
-					elm$core$List$map,
-					function (tabGroup) {
-						return _Utils_eq(tabGroup.d, id) ? _Utils_update(
-							tabGroup,
-							{m: newTitle}) : tabGroup;
-					},
-					model.e);
+					elm$core$Dict$map,
+					F2(
+						function (tabGroupID, tabGroup) {
+							return _Utils_eq(tabGroupID, id) ? _Utils_update(
+								tabGroup,
+								{n: newTitle}) : tabGroup;
+						}),
+					model.d);
 				var newModel = _Utils_update(
 					model,
-					{e: newTabGroups});
+					{d: newTabGroups});
 				return _Utils_Tuple2(
 					newModel,
 					author$project$Main$saveModel(
@@ -6353,16 +6387,17 @@ var author$project$Main$update = F2(
 			case 5:
 				var id = msg.a;
 				var newTabGroups = A2(
-					elm$core$List$map,
-					function (tabGroup) {
-						return _Utils_eq(tabGroup.d, id) ? _Utils_update(
-							tabGroup,
-							{G: false}) : tabGroup;
-					},
-					model.e);
+					elm$core$Dict$map,
+					F2(
+						function (tabGroupID, tabGroup) {
+							return _Utils_eq(tabGroupID, id) ? _Utils_update(
+								tabGroup,
+								{E: false}) : tabGroup;
+						}),
+					model.d);
 				var newModel = _Utils_update(
 					model,
-					{e: newTabGroups});
+					{d: newTabGroups});
 				return _Utils_Tuple2(
 					newModel,
 					author$project$Main$saveModel(
@@ -6370,60 +6405,48 @@ var author$project$Main$update = F2(
 			case 4:
 				var id = msg.a;
 				var newTabGroups = A2(
-					elm$core$List$map,
-					function (tabGroup) {
-						return _Utils_eq(tabGroup.d, id) ? _Utils_update(
-							tabGroup,
-							{G: true}) : tabGroup;
-					},
-					model.e);
+					elm$core$Dict$map,
+					F2(
+						function (tabGroupID, tabGroup) {
+							return _Utils_eq(tabGroupID, id) ? _Utils_update(
+								tabGroup,
+								{E: true}) : tabGroup;
+						}),
+					model.d);
 				var newModel = _Utils_update(
 					model,
-					{e: newTabGroups});
-				return _Utils_Tuple2(
-					newModel,
-					author$project$Main$saveModel(
-						author$project$Main$modelEncode(newModel)));
-			case 11:
-				var _n3 = msg.a;
-				var groupId = _n3.a;
-				var resizeMsg = _n3.b;
-				var newModel = _Utils_update(
-					model,
-					{
-						e: A2(
-							elm$core$List$map,
-							A2(author$project$Main$resizeTabGroup, groupId, resizeMsg),
-							model.e)
-					});
+					{d: newTabGroups});
 				return _Utils_Tuple2(
 					newModel,
 					author$project$Main$saveModel(
 						author$project$Main$modelEncode(newModel)));
 			case 10:
-				var _n4 = msg.a;
-				var groupId = _n4.a;
-				var dragMsg = _n4.b;
+				var _n5 = msg.a;
+				var groupId = _n5.a;
+				var resizeMsg = _n5.b;
 				var newModel = _Utils_update(
 					model,
 					{
-						e: A2(
-							elm$core$List$map,
-							A2(author$project$Main$dragTabGroup, groupId, dragMsg),
-							model.e)
+						d: A2(
+							elm$core$Dict$map,
+							A2(author$project$Main$resizeTabGroup, groupId, resizeMsg),
+							model.d)
 					});
 				return _Utils_Tuple2(
 					newModel,
 					author$project$Main$saveModel(
 						author$project$Main$modelEncode(newModel)));
 			default:
-				var _n5 = msg.a;
-				var tab = _n5.a;
-				var dragMsg = _n5.b;
+				var _n6 = msg.a;
+				var groupId = _n6.a;
+				var dragMsg = _n6.b;
 				var newModel = _Utils_update(
 					model,
 					{
-						L: A3(author$project$Main$dragTab, tab.d, dragMsg, tab)
+						d: A2(
+							elm$core$Dict$map,
+							A2(author$project$Main$dragTabGroup, groupId, dragMsg),
+							model.d)
 					});
 				return _Utils_Tuple2(
 					newModel,
@@ -6462,10 +6485,128 @@ var author$project$Main$addTabGroupButton = A2(
 		[
 			elm$html$Html$text('New Tab Group')
 		]));
+var author$project$Main$maxWholeSquares = F3(
+	function (w, h, x) {
+		return elm$core$Basics$floor(w / x) * elm$core$Basics$floor(h / x);
+	});
+var elm$core$Basics$ge = _Utils_ge;
+var author$project$Main$lessEfficientSquareEdge = F4(
+	function (w, h, n, x) {
+		lessEfficientSquareEdge:
+		while (true) {
+			if (_Utils_cmp(
+				A3(author$project$Main$maxWholeSquares, w, h, x),
+				n) > -1) {
+				return x;
+			} else {
+				var $temp$w = w,
+					$temp$h = h,
+					$temp$n = n,
+					$temp$x = x - 1;
+				w = $temp$w;
+				h = $temp$h;
+				n = $temp$n;
+				x = $temp$x;
+				continue lessEfficientSquareEdge;
+			}
+		}
+	});
+var elm$core$Basics$sqrt = _Basics_sqrt;
+var author$project$Main$perfectlyEfficientSquareEdge = F3(
+	function (w, h, n) {
+		return elm$core$Basics$sqrt((w * h) / n);
+	});
+var author$project$Main$bestFit = F3(
+	function (w, h, n) {
+		return A4(
+			author$project$Main$lessEfficientSquareEdge,
+			w,
+			h,
+			n,
+			A3(author$project$Main$perfectlyEfficientSquareEdge, w, h, n));
+	});
+var author$project$Main$DragStart = function (a) {
+	return {$: 0, a: a};
+};
+var author$project$Main$dragOnMouseDown = function (tabGroupID) {
+	return A2(
+		elm$html$Html$Events$on,
+		'mousedown',
+		A2(
+			elm$json$Json$Decode$map,
+			function (pos) {
+				return author$project$Main$TabGroupDragMsg(
+					_Utils_Tuple2(
+						tabGroupID,
+						author$project$Main$DragStart(pos)));
+			},
+			author$project$Main$mousePositionDecoder));
+};
 var author$project$Main$px = function (number) {
 	return elm$core$String$fromInt(number) + 'px';
 };
+var author$project$Main$tabsInTabGroup = F2(
+	function (tabDict, tabgroup) {
+		return A2(
+			elm$core$List$filterMap,
+			function (tabID) {
+				return A2(
+					elm$core$Maybe$map,
+					function (tab) {
+						return _Utils_Tuple2(tabID, tab);
+					},
+					A2(elm$core$Dict$get, tabID, tabDict));
+			},
+			tabgroup.j);
+	});
+var elm$virtual_dom$VirtualDom$Custom = function (a) {
+	return {$: 3, a: a};
+};
+var elm$html$Html$Events$custom = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$Custom(decoder));
+	});
+var author$project$Main$resizeOnMouseDown = function (tabGroupID) {
+	return A2(
+		elm$html$Html$Events$custom,
+		'mousedown',
+		A2(
+			elm$json$Json$Decode$map,
+			function (pos) {
+				return {
+					a0: author$project$Main$TabGroupResizeMsg(
+						_Utils_Tuple2(
+							tabGroupID,
+							author$project$Main$DragStart(pos))),
+					a6: true,
+					a8: true
+				};
+			},
+			author$project$Main$mousePositionDecoder));
+};
 var elm$html$Html$div = _VirtualDom_node('div');
+var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
+var author$project$Main$viewDraggableCorner = F2(
+	function (tabGroupID, tabGroup) {
+		return A2(
+			elm$html$Html$div,
+			_List_fromArray(
+				[
+					author$project$Main$resizeOnMouseDown(tabGroupID),
+					A2(elm$html$Html$Attributes$style, 'background-color', 'darkblue'),
+					A2(elm$html$Html$Attributes$style, 'height', '20px'),
+					A2(elm$html$Html$Attributes$style, 'width', '20px'),
+					A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
+					A2(elm$html$Html$Attributes$style, 'bottom', '0px'),
+					A2(elm$html$Html$Attributes$style, 'right', '0px'),
+					A2(elm$html$Html$Attributes$style, 'cursor', 'nwse-resize')
+				]),
+			_List_Nil);
+	});
 var elm$html$Html$img = _VirtualDom_node('img');
 var elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -6480,8 +6621,6 @@ var elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
 var elm_community$string_extra$String$Extra$ellipsisWith = F3(
 	function (howLong, append, string) {
 		return (_Utils_cmp(
@@ -6498,10 +6637,12 @@ var elm_community$string_extra$String$Extra$ellipsis = F2(
 		return A3(elm_community$string_extra$String$Extra$ellipsisWith, howLong, '...', string);
 	});
 var author$project$Main$viewTab = F2(
-	function (length, tab) {
+	function (length, _n0) {
+		var tabID = _n0.a;
+		var tab = _n0.b;
 		var screenshot = function () {
-			var _n0 = tab.E;
-			if (_n0.$ === 1) {
+			var _n1 = tab.Q;
+			if (_n1.$ === 1) {
 				return A2(
 					elm$html$Html$div,
 					_List_fromArray(
@@ -6512,7 +6653,7 @@ var author$project$Main$viewTab = F2(
 						]),
 					_List_Nil);
 			} else {
-				var screenshotSrc = _n0.a;
+				var screenshotSrc = _n1.a;
 				return A2(
 					elm$html$Html$img,
 					_List_fromArray(
@@ -6558,138 +6699,29 @@ var author$project$Main$viewTab = F2(
 					_List_fromArray(
 						[
 							elm$html$Html$text(
-							A2(elm_community$string_extra$String$Extra$ellipsis, 20, tab.m))
+							A2(elm_community$string_extra$String$Extra$ellipsis, 20, tab.n))
 						]))
 				]));
 	});
-var elm$html$Html$span = _VirtualDom_node('span');
-var author$project$Main$viewTabDragging = function (maybeTab) {
-	if (maybeTab.$ === 1) {
-		return A2(elm$html$Html$span, _List_Nil, _List_Nil);
-	} else {
-		var tab = maybeTab.a;
-		return A2(author$project$Main$viewTab, 20, tab);
-	}
-};
-var author$project$Main$maxWholeSquares = F3(
-	function (w, h, x) {
-		return elm$core$Basics$floor(w / x) * elm$core$Basics$floor(h / x);
-	});
-var elm$core$Basics$ge = _Utils_ge;
-var author$project$Main$lessEfficientSquareEdge = F4(
-	function (w, h, n, x) {
-		lessEfficientSquareEdge:
-		while (true) {
-			if (_Utils_cmp(
-				A3(author$project$Main$maxWholeSquares, w, h, x),
-				n) > -1) {
-				return x;
-			} else {
-				var $temp$w = w,
-					$temp$h = h,
-					$temp$n = n,
-					$temp$x = x - 1;
-				w = $temp$w;
-				h = $temp$h;
-				n = $temp$n;
-				x = $temp$x;
-				continue lessEfficientSquareEdge;
-			}
-		}
-	});
-var elm$core$Basics$sqrt = _Basics_sqrt;
-var author$project$Main$perfectlyEfficientSquareEdge = F3(
-	function (w, h, n) {
-		return elm$core$Basics$sqrt((w * h) / n);
-	});
-var author$project$Main$bestFit = F3(
-	function (w, h, n) {
-		return A4(
-			author$project$Main$lessEfficientSquareEdge,
-			w,
-			h,
-			n,
-			A3(author$project$Main$perfectlyEfficientSquareEdge, w, h, n));
-	});
-var author$project$Main$DragStart = function (a) {
-	return {$: 0, a: a};
-};
-var author$project$Main$dragOnMouseDown = function (tabGroup) {
-	return A2(
-		elm$html$Html$Events$on,
-		'mousedown',
-		A2(
-			elm$json$Json$Decode$map,
-			function (pos) {
-				return author$project$Main$TabGroupDragMsg(
-					_Utils_Tuple2(
-						tabGroup.d,
-						author$project$Main$DragStart(pos)));
-			},
-			author$project$Main$mousePositionDecoder));
-};
-var elm$virtual_dom$VirtualDom$Custom = function (a) {
-	return {$: 3, a: a};
-};
-var elm$html$Html$Events$custom = F2(
-	function (event, decoder) {
-		return A2(
-			elm$virtual_dom$VirtualDom$on,
-			event,
-			elm$virtual_dom$VirtualDom$Custom(decoder));
-	});
-var author$project$Main$resizeOnMouseDown = function (tabGroup) {
-	return A2(
-		elm$html$Html$Events$custom,
-		'mousedown',
-		A2(
-			elm$json$Json$Decode$map,
-			function (pos) {
-				return {
-					a0: author$project$Main$TabGroupResizeMsg(
-						_Utils_Tuple2(
-							tabGroup.d,
-							author$project$Main$DragStart(pos))),
-					a6: true,
-					a8: true
-				};
-			},
-			author$project$Main$mousePositionDecoder));
-};
-var author$project$Main$viewDraggableCorner = function (tabGroup) {
-	return A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				author$project$Main$resizeOnMouseDown(tabGroup),
-				A2(elm$html$Html$Attributes$style, 'background-color', 'darkblue'),
-				A2(elm$html$Html$Attributes$style, 'height', '20px'),
-				A2(elm$html$Html$Attributes$style, 'width', '20px'),
-				A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
-				A2(elm$html$Html$Attributes$style, 'bottom', '0px'),
-				A2(elm$html$Html$Attributes$style, 'right', '0px'),
-				A2(elm$html$Html$Attributes$style, 'cursor', 'nwse-resize')
-			]),
-		_List_Nil);
-};
 var author$project$Main$DeleteTabGroup = function (a) {
 	return {$: 7, a: a};
 };
-var author$project$Main$viewTabGroupDeleteButton = function (tabGroup) {
-	return A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				elm$html$Html$Events$onClick(
-				author$project$Main$DeleteTabGroup(tabGroup.d)),
-				A2(elm$html$Html$Attributes$style, 'float', 'right'),
-				A2(elm$html$Html$Attributes$style, 'cursor', 'pointer')
-			]),
-		_List_fromArray(
-			[
-				elm$html$Html$text('X')
-			]));
-};
+var author$project$Main$viewTabGroupDeleteButton = F2(
+	function (tabGroupID, tabGroup) {
+		return A2(
+			elm$html$Html$div,
+			_List_fromArray(
+				[
+					elm$html$Html$Events$onClick(
+					author$project$Main$DeleteTabGroup(tabGroupID)),
+					A2(elm$html$Html$Attributes$style, 'float', 'right'),
+					A2(elm$html$Html$Attributes$style, 'cursor', 'pointer')
+				]),
+			_List_fromArray(
+				[
+					elm$html$Html$text('X')
+				]));
+	});
 var author$project$Main$ChangeGroupTitle = F2(
 	function (a, b) {
 		return {$: 6, a: a, b: b};
@@ -6739,93 +6771,95 @@ var elm$html$Html$Events$onInput = function (tagger) {
 			elm$html$Html$Events$alwaysStop,
 			A2(elm$json$Json$Decode$map, tagger, elm$html$Html$Events$targetValue)));
 };
-var author$project$Main$viewTabGroupTitle = function (tabGroup) {
-	return tabGroup.G ? A2(
-		elm$html$Html$div,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A2(
-				elm$html$Html$input,
-				_List_fromArray(
-					[
-						elm$html$Html$Events$onInput(
-						author$project$Main$ChangeGroupTitle(tabGroup.d)),
-						elm$html$Html$Events$onBlur(
-						author$project$Main$FinishGroupTitleEdit(tabGroup.d)),
-						elm$html$Html$Attributes$value(tabGroup.m)
-					]),
-				_List_fromArray(
-					[
-						elm$html$Html$text(tabGroup.m)
-					]))
-			])) : A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				elm$html$Html$Events$onClick(
-				author$project$Main$StartGroupTitleEdit(tabGroup.d)),
-				A2(elm$html$Html$Attributes$style, 'cursor', 'pointer')
-			]),
-		_List_fromArray(
-			[
-				elm$html$Html$text(tabGroup.m)
-			]));
-};
+var author$project$Main$viewTabGroupTitle = F2(
+	function (tabGroupID, tabGroup) {
+		return tabGroup.E ? A2(
+			elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$input,
+					_List_fromArray(
+						[
+							elm$html$Html$Events$onInput(
+							author$project$Main$ChangeGroupTitle(tabGroupID)),
+							elm$html$Html$Events$onBlur(
+							author$project$Main$FinishGroupTitleEdit(tabGroupID)),
+							elm$html$Html$Attributes$value(tabGroup.n)
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text(tabGroup.n)
+						]))
+				])) : A2(
+			elm$html$Html$div,
+			_List_fromArray(
+				[
+					elm$html$Html$Events$onClick(
+					author$project$Main$StartGroupTitleEdit(tabGroupID)),
+					A2(elm$html$Html$Attributes$style, 'cursor', 'pointer')
+				]),
+			_List_fromArray(
+				[
+					elm$html$Html$text(tabGroup.n)
+				]));
+	});
 var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
-var author$project$Main$viewTabGroup = function (tabGroup) {
-	var tabCount = elm$core$List$length(tabGroup.o);
-	var realPosition = author$project$Main$getPosition(tabGroup);
-	var realDimensions = author$project$Main$getDimensions(tabGroup);
-	var width = realDimensions.z;
-	var height = realDimensions.B;
-	var tabLength = elm$core$Basics$floor(
-		A3(author$project$Main$bestFit, width, height, tabCount));
-	return A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				author$project$Main$dragOnMouseDown(tabGroup),
-				elm$html$Html$Attributes$class('tabGroup'),
-				A2(elm$html$Html$Attributes$style, 'padding', '10px'),
-				A2(elm$html$Html$Attributes$style, 'cursor', 'move'),
-				A2(
-				elm$html$Html$Attributes$style,
-				'width',
-				author$project$Main$px(realDimensions.z)),
-				A2(
-				elm$html$Html$Attributes$style,
-				'height',
-				author$project$Main$px(realDimensions.B)),
-				A2(elm$html$Html$Attributes$style, 'border-radius', '4px'),
-				A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
-				A2(
-				elm$html$Html$Attributes$style,
-				'left',
-				author$project$Main$px(realPosition.p)),
-				A2(
-				elm$html$Html$Attributes$style,
-				'top',
-				author$project$Main$px(realPosition.q)),
-				A2(elm$html$Html$Attributes$style, 'background-color', '#F8F8F8'),
-				A2(elm$html$Html$Attributes$style, 'color', '#B0B1BB')
-			]),
-		A2(
-			elm$core$List$cons,
-			author$project$Main$viewTabGroupDeleteButton(tabGroup),
+var author$project$Main$viewTabGroup = F3(
+	function (tabDict, tabGroupID, tabGroup) {
+		var tabCount = elm$core$List$length(tabGroup.j);
+		var realPosition = author$project$Main$getPosition(tabGroup);
+		var realDimensions = author$project$Main$getDimensions(tabGroup);
+		var width = realDimensions.x;
+		var height = realDimensions.z;
+		var tabLength = elm$core$Basics$floor(
+			A3(author$project$Main$bestFit, width, height, tabCount));
+		return A2(
+			elm$html$Html$div,
+			_List_fromArray(
+				[
+					author$project$Main$dragOnMouseDown(tabGroupID),
+					elm$html$Html$Attributes$class('tabGroup'),
+					A2(elm$html$Html$Attributes$style, 'padding', '10px'),
+					A2(elm$html$Html$Attributes$style, 'cursor', 'move'),
+					A2(
+					elm$html$Html$Attributes$style,
+					'width',
+					author$project$Main$px(realDimensions.x)),
+					A2(
+					elm$html$Html$Attributes$style,
+					'height',
+					author$project$Main$px(realDimensions.z)),
+					A2(elm$html$Html$Attributes$style, 'border-radius', '4px'),
+					A2(elm$html$Html$Attributes$style, 'position', 'absolute'),
+					A2(
+					elm$html$Html$Attributes$style,
+					'left',
+					author$project$Main$px(realPosition.o)),
+					A2(
+					elm$html$Html$Attributes$style,
+					'top',
+					author$project$Main$px(realPosition.p)),
+					A2(elm$html$Html$Attributes$style, 'background-color', '#F8F8F8'),
+					A2(elm$html$Html$Attributes$style, 'color', '#B0B1BB')
+				]),
 			A2(
 				elm$core$List$cons,
-				author$project$Main$viewTabGroupTitle(tabGroup),
+				A2(author$project$Main$viewTabGroupDeleteButton, tabGroupID, tabGroup),
 				A2(
 					elm$core$List$cons,
-					author$project$Main$viewDraggableCorner(tabGroup),
+					A2(author$project$Main$viewTabGroupTitle, tabGroupID, tabGroup),
 					A2(
-						elm$core$List$map,
-						author$project$Main$viewTab(tabLength),
-						tabGroup.o)))));
-};
+						elm$core$List$cons,
+						A2(author$project$Main$viewDraggableCorner, tabGroupID, tabGroup),
+						A2(
+							elm$core$List$map,
+							author$project$Main$viewTab(tabLength),
+							A2(author$project$Main$tabsInTabGroup, tabDict, tabGroup))))));
+	});
 var author$project$Main$view = function (model) {
-	var _n0 = model.Q;
+	var _n0 = model.N;
 	if (!_n0.$) {
 		var err = _n0.a;
 		return A2(
@@ -6843,10 +6877,11 @@ var author$project$Main$view = function (model) {
 				A2(
 					elm$core$List$cons,
 					author$project$Main$addTabGroupButton,
-					A2(
-						elm$core$List$cons,
-						author$project$Main$viewTabDragging(model.L),
-						A2(elm$core$List$map, author$project$Main$viewTabGroup, model.e)))));
+					elm$core$Dict$values(
+						A2(
+							elm$core$Dict$map,
+							author$project$Main$viewTabGroup(model.j),
+							model.d)))));
 	} else {
 		return A2(
 			elm$html$Html$div,
@@ -6863,10 +6898,11 @@ var author$project$Main$view = function (model) {
 				A2(
 					elm$core$List$cons,
 					author$project$Main$addTabGroupButton,
-					A2(
-						elm$core$List$cons,
-						author$project$Main$viewTabDragging(model.L),
-						A2(elm$core$List$map, author$project$Main$viewTabGroup, model.e)))));
+					elm$core$Dict$values(
+						A2(
+							elm$core$Dict$map,
+							author$project$Main$viewTabGroup(model.j),
+							model.d)))));
 	}
 };
 var elm$browser$Browser$element = _Browser_element;
