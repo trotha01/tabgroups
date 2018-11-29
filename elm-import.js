@@ -34,10 +34,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // then return some sample results
     if (!chrome.tabs) {
       console.log("currently not running as a chrome extenstion, sending example tabs");
-      app.ports.tabs.send([
-        { title: "tab 1", url: "tab1.com", screenshot: "", id: 0, drag: null },
-        { title: "tab 2", url: "tab2.com", screenshot: "", id: 1, drag: null },
-        { title: "tab 3", url: "tab3.com", screenshot: "", id: 2, drag: null }
+      app.ports.updatedTabList.send([
+        { title: "tab 1", url: "tab1.com", screenshot: "", height: 0, width: 0, drag: null },
+        { title: "tab 2", url: "tab2.com", screenshot: "", height: 0, width: 0, drag: null },
+        { title: "tab 3", url: "tab3.com", screenshot: "", height: 0, width: 0, drag: null }
       ]);
       return
     }
@@ -55,13 +55,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // append empty screenshot to each tab
       var newTabs = tabs.map(function(tab) {
+        console.log(tab.windowId);
         tab.screenshot = null;
         tab.position = {x: 10, y: 10};
         tab.drag = null;
         return tab;
       });
 
-      app.ports.tabs.send(newTabs);
+      app.ports.updatedTabList.send(newTabs);
     });
   };
 
