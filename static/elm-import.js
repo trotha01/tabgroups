@@ -29,6 +29,19 @@ document.addEventListener('DOMContentLoaded', function() {
     getAllTabs();
   });
 
+	/*
+	 *
+type alias IncomingTabInfo =
+    { title : String
+    , url : String
+    , screenshot : Maybe String
+    , height : Int
+    , width : Int
+    , drag : Maybe Drag
+    , windowID : Maybe WindowID
+    }
+	 * */
+
   getAllTabs = function() {
     // If we're not running in a chrome extension
     // then return some sample results
